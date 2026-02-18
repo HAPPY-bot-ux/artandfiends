@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <title>Site Mastery | Developing...</title>
+    <style>
+        body { background-color: #0a0a0a; cursor: crosshair; }
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        
+        /* Grainy Texture Overlay */
+        .noise::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: .05; pointer-events: none;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        .outline-text {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+        
+        .scanline {
+            width: 100%; height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+    </style>
+</head>
+<body class="text-white font-space antialiased noise selection:bg-white selection:text-black">
+
+    <div class="scanline"></div>
+
+    <div class="fixed top-20 left-10 opacity-10 text-[10px] uppercase tracking-widest leading-relaxed hidden lg:block">
+        compiling_assets...<br>optimize_seo: true<br>ui_ux_fidelity: 100%<br>mastery_index: alpha_v2
+    </div>
+
+    <main class="min-h-screen flex flex-col justify-between p-8 lg:p-16">
+        
+        <header class="flex justify-between items-start w-full relative z-10">
+            <div class="group cursor-pointer">
+                <h2 class="font-sync text-2xl tracking-tighter group-hover:italic transition-all">SITE MASTERY</h2>
+                <p class="text-[10px] tracking-[0.3em] text-zinc-500 uppercase">Development Lab</p>
+            </div>
+            <div class="text-right">
+                <div class="text-xs text-zinc-500 uppercase tracking-widest mb-1">Current Phase</div>
+                <div class="font-bold border-b-2 border-white pb-1 italic">FRONT-END SYNTHESIS</div>
+            </div>
+        </header>
+
+        <div class="relative py-20">
+            <h3 class="absolute -top-10 left-0 outline-text text-7xl lg:text-[12rem] font-sync leading-none z-0 select-none uppercase">
+                Building
+            </h3>
+            
+            <div class="relative z-10">
+                <h1 class="text-6xl lg:text-9xl font-sync uppercase leading-none tracking-tighter">
+                    DIGITAL <br> <span class="pl-0 lg:pl-24">WEAPONRY.</span>
+                </h1>
+                
+                <div class="mt-12 lg:mt-0 lg:ml-[40%] max-w-md">
+                    <p class="text-zinc-400 text-lg mb-8 leading-relaxed">
+                        We are currently deep in the code, forging a platform that redefines how your brand exists online. Minimal noise. Maximum impact.
+                    </p>
+                    
+                    <div class="relative inline-block group">
+                        <div class="absolute inset-0 bg-white translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform"></div>
+                        <button class="relative bg-black border border-white px-10 py-4 text-sm font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors">
+                            Request Early Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-12 border-t border-zinc-800">
+            <div>
+                <span class="block text-[10px] text-zinc-500 uppercase mb-4 tracking-widest">// Project Specs</span>
+                <ul class="text-xs space-y-2 uppercase tracking-tight">
+                    <li class="flex justify-between"><span>Framework</span> <span class="text-zinc-300">Next.js / Tailwind</span></li>
+                    <li class="flex justify-between"><span>Performance</span> <span class="text-zinc-300">99+ Lighthouse</span></li>
+                    <li class="flex justify-between"><span>Status</span> <span class="text-green-500 animate-pulse">Live Dev</span></li>
+                </ul>
+            </div>
+            
+            <div class="flex items-center justify-center">
+                <div class="relative w-20 h-20 flex items-center justify-center">
+                    <div class="absolute inset-0 border border-zinc-800 rounded-full"></div>
+                    <div class="absolute inset-0 border-t-2 border-white rounded-full animate-spin"></div>
+                    <span class="text-[10px] font-bold">2026</span>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <span class="block text-[10px] text-zinc-500 uppercase mb-4 tracking-widest">// Inquiry</span>
+                <a href="mailto:hello@sitemastery.io" class="text-xl hover:text-zinc-400 transition-colors underline underline-offset-8 decoration-zinc-800">
+                    hello@sitemastery.com
+                </a>
+            </div>
+        </footer>
+
+    </main>
+
+</body>
+</html>
