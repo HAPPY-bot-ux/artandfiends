@@ -1,75 +1,363 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projects | ARC Atelier</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive | ARTANDFIENDS</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
 
-<style>
-body{background:#0f0f0f;}
-.glass{backdrop-filter:blur(20px);background:rgba(255,255,255,0.05);}
-.project{opacity:0;transform:translateY(100px);}
-</style>
+    <style>
+        :root { --gold: #C9A227; --dark: #020202; --red: #ff3c00; --wire: rgba(201, 162, 39, 0.2); }
+        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
+        .mono { font-family: 'Space Mono', monospace; }
+        
+        /* 3D LIDAR Engine */
+        #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+
+        /* Advanced HUD Cursor */
+        #cursor-nexus { position: fixed; width: 50px; height: 50px; border: 1px solid var(--gold); pointer-events: none; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        #cursor-nexus::before { content: ''; position: absolute; width: 100%; height: 1px; background: var(--gold); opacity: 0.3; }
+        #cursor-nexus::after { content: ''; position: absolute; width: 1px; height: 100%; background: var(--gold); opacity: 0.3; }
+        #cursor-data { position: fixed; font-size: 8px; color: var(--gold); pointer-events: none; z-index: 10000; white-space: nowrap; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Layout Architecture */
+        .page-wrapper { position: relative; }
+        .horizontal-scroller { display: flex; width: 600vw; height: 100vh; background: var(--dark); }
+        
+        /* Project Node Styling */
+        .project-node { 
+            position: relative; 
+            width: 100vw; 
+            height: 100vh; 
+            flex-shrink: 0; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 10vw;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .data-panel {
+            width: 30%;
+            padding-right: 50px;
+            z-index: 10;
+        }
+
+        .visual-anchor {
+            position: relative;
+            width: 70%;
+            height: 65vh;
+            background: #111;
+            overflow: hidden;
+            clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: saturate(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-node:hover .project-img {
+            opacity: 1;
+            filter: saturate(1);
+            transform: scale(1.05);
+        }
+
+        /* BIM Meta-Data Overlay */
+        .bim-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: right;
+            font-size: 10px;
+            color: var(--gold);
+            line-height: 1.8;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Glitch Frame */
+        .glitch-frame {
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--wire);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .section-tag {
+            writing-mode: vertical-rl;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            letter-spacing: 10px;
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* Decorative Terminal Elements */
+        .terminal-grid {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(201, 162, 39, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
 </head>
+<body>
 
-<body class="text-white">
+<canvas id="webgl-canvas"></canvas>
+<div class="terminal-grid"></div>
+<div id="cursor-nexus"></div>
+<div id="cursor-data">SYS_INIT_SUCCESS</div>
 
-<nav class="fixed w-full glass px-10 py-5 flex justify-between z-50">
-<h1 class="text-2xl font-bold">ARC Atelier</h1>
-<div class="space-x-8">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="projects.html" class="text-yellow-500">Projects</a>
-<a href="services.html">Services</a>
-<a href="contact.html">Contact</a>
-</div>
+<nav class="fixed w-full z-[100] glass-nav px-12 py-6 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <div class="w-8 h-[2px] bg-[--gold]"></div>
+        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+    </div>
+    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
+        <a href="index.html" class="hover:text-[--gold] transition">HOME</a>
+        <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
+        <a href="projects.html" class="hover:text-[--gold] transition">PROJECTS</a>
+        <a href="attire.html" class="hover:text-[--gold] transition">ATTIRE</a>
+        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition">CONTACT</a>
+    </div>
 </nav>
 
-<section class="pt-40 px-20 pb-32">
-
-<h2 class="text-5xl font-bold mb-20">Featured Projects</h2>
-
-<div class="grid md:grid-cols-3 gap-10">
-
-<div class="project glass rounded-xl overflow-hidden transform hover:scale-110 hover:rotate-1 transition">
-<img src="https://images.unsplash.com/photo-1502673530728-f79b4cab31b1">
-<div class="p-6">
-<h3 class="text-xl font-semibold">Skyline Tower</h3>
-<p class="text-gray-400">Commercial</p>
-</div>
+<div class="fixed bottom-10 left-12 z-50 flex items-center gap-6">
+    <div class="flex flex-col gap-1">
+        <span class="mono text-[8px] text-white/40">BUFFER_LOAD</span>
+        <div class="w-48 h-[1px] bg-white/10 relative">
+            <div id="scroll-bar" class="absolute h-full bg-[--gold] w-0"></div>
+        </div>
+    </div>
+    <span id="scroll-percent" class="mono text-[10px] text-[--gold]">00%</span>
 </div>
 
-<div class="project glass rounded-xl overflow-hidden transform hover:scale-110 hover:rotate-1 transition">
-<img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb">
-<div class="p-6">
-<h3 class="text-xl font-semibold">Minimal Villa</h3>
-<p class="text-gray-400">Residential</p>
-</div>
-</div>
+<main class="page-wrapper">
+    <section class="h-screen flex items-center px-12 lg:px-40">
+        <div class="max-w-5xl">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-[1px] bg-[--gold]"></div>
+                <span class="mono text-[--gold] text-xs tracking-[0.8em] animate-pulse">SYSTEM_ARCHIVE_V04.2</span>
+            </div>
+            <h2 class="text-[12vw] font-black leading-[0.8] uppercase mb-12 tracking-tighter">
+                The<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Artifacts.</span>
+            </h2>
+            <div class="grid lg:grid-cols-2 gap-20">
+                <p class="text-2xl text-gray-400 leading-tight">
+                    Every project is a collision. We do not curate artifacts; we expose the **metadata of rebellion**. 
+                </p>
+                <div class="mono text-[10px] text-gray-500 border-l border-white/10 pl-10 space-y-2">
+                    <p>[AUTH]: DESIGN_LEAD_REBEL</p>
+                    <p>[STATUS]: DEPLOYED_REALITY</p>
+                    <p>[SYNC]: 1:1_BIM_MODEL_FIDELITY</p>
+                    <p>[DESC]: TRANSITIONING_TO_NEXUS_SCROLLER</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="project glass rounded-xl overflow-hidden transform hover:scale-110 hover:rotate-1 transition">
-<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
-<div class="p-6">
-<h3 class="text-xl font-semibold">Urban Complex</h3>
-<p class="text-gray-400">Mixed Use</p>
-</div>
-</div>
+    <div class="horizontal-wrapper">
+        <div class="horizontal-scroller">
+            
+            <section class="project-node">
+                <span class="section-tag mono uppercase">ARCHITECTURAL_RIGOR</span>
+                <div class="data-panel">
+                    <span class="mono text-[--gold] text-sm mb-4 block">NODE_01 // COM_072</span>
+                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Skyline<br>Nexus</h3>
+                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                        A vertical defiance of structural limits. Integrated MEP and parametric optimization allowed for a 20% reduction in material waste while maintaining a radical glass envelope.
+                    </p>
+                    <ul class="mono text-[10px] space-y-3 text-[--gold]">
+                        <li>> LOD_400_MODEL_SYNC</li>
+                        <li>> CLASH_DETECTION_PASS</li>
+                        <li>> THERMAL_ENVELOPE_V04</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor group">
+                    <div class="glitch-frame"></div>
+                    <div class="bim-overlay mono">
+                        COORD: 40.7128° N, 74.0060° W<br>SCALE: 1:1_BUILDABLE<br>REVIT_V26_ID: 884-292
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img">
+                </div>
+            </section>
 
-</div>
-</section>
+            <section class="project-node">
+                <span class="section-tag mono uppercase">INTERIOR_ELEGANCE</span>
+                <div class="data-panel">
+                    <span class="mono text-[--red] text-sm mb-4 block">NODE_02 // RES_104</span>
+                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Tectonic<br>Villa</h3>
+                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                        Where high-end luxury meets raw construction data. Every junction was visualized in photorealistic 1:1 renders before the first concrete pour.
+                    </p>
+                    <ul class="mono text-[10px] space-y-3 text-[--red]">
+                        <li>> LIGHT_STUDY_SIM_B2</li>
+                        <li>> MATERIAL_FIDELITY_MAX</li>
+                        <li>> RADICAL_SYMMETRY_DEPLOYED</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame" style="border-color: var(--red);"></div>
+                    <div class="bim-overlay mono" style="color: var(--red);">
+                        COORD: 34.0522° N, 118.2437° W<br>MAT: POLISHED_GRAPHITE<br>LUX_VAL: 850_AVG
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1600607687940-4e2a09695d51?q=80&w=2070" class="project-img">
+                </div>
+            </section>
+
+            <section class="project-node">
+                <span class="section-tag mono uppercase">CLASH_RESOLUTION</span>
+                <div class="data-panel">
+                    <span class="mono text-[--gold] text-sm mb-4 block">NODE_03 // LAB_331</span>
+                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Kinetic<br>Fabric</h3>
+                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                        A multi-use experiment in architectural fluidity. A data-driven facade that responds to solar orientation in real-time.
+                    </p>
+                    <ul class="mono text-[10px] space-y-3 text-[--gold]">
+                        <li>> KINETIC_FACADE_ACTIVE</li>
+                        <li>> BIM_DATA_STREAM_02</li>
+                        <li>> SOLAR_OPTIMIZATION_V9</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame"></div>
+                    <div class="bim-overlay mono">
+                        FACADE_FLUX: 12.4mm/sec<br>ENERGY_YIELD: +18%<br>STRUCTURAL_LOAD: NOMINAL
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1511818330032-830144aa2945?q=80&w=2070" class="project-img">
+                </div>
+            </section>
+
+            <section class="project-node !w-[150vw] bg-white text-black">
+                <div class="flex flex-col gap-8">
+                    <h4 class="text-[12vw] font-black uppercase leading-[0.8] tracking-tighter">
+                        Dream<br>& Data.
+                    </h4>
+                    <p class="text-3xl max-w-2xl font-bold leading-tight">
+                        We bridge the gap between obsessive creativity and technical rigor. The rebellion is grounded.
+                    </p>
+                    <a href="contact.html" class="mono text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all">ESTABLISH_CONNECTION</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
-gsap.utils.toArray(".project").forEach(el=>{
-gsap.to(el,{
-scrollTrigger:{trigger:el,start:"top 85%"},
-opacity:1,y:0,duration:1.2
-});
-});
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. THREE.JS: LIDAR SCANNER BACKGROUND
+    const canvas = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const geo = new THREE.BufferGeometry();
+    const pCount = 10000;
+    const pPos = new Float32Array(pCount * 3);
+    for(let i=0; i < pCount * 3; i++) {
+        pPos[i] = (Math.random() - 0.5) * 15;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const mat = new THREE.PointsMaterial({ size: 0.008, color: 0xC9A227, transparent: true, opacity: 0.4 });
+    const points = new THREE.Points(geo, mat);
+    scene.add(points);
+    camera.position.z = 5;
+
+    function animatePoints() {
+        requestAnimationFrame(animatePoints);
+        points.rotation.y += 0.0005;
+        renderer.render(scene, camera);
+    }
+    animatePoints();
+
+    // 2. TACTICAL HUD CURSOR
+    const cursor = document.getElementById('cursor-nexus');
+    const cData = document.getElementById('cursor-data');
+    
+    document.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, { x: e.clientX - 25, y: e.clientY - 25, duration: 0.2 });
+        gsap.to(cData, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
+        cData.innerText = `X:${e.clientX} Y:${e.clientY} // NODE_SCAN: ${Math.random().toFixed(2)}`;
+    });
+
+    // 3. THE KINETIC SCROLLER (ScrollTrigger Mastery)
+    const scroller = document.querySelector('.horizontal-scroller');
+    
+    let scrollTween = gsap.to(scroller, {
+        x: () => -(scroller.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-wrapper",
+            pin: true,
+            scrub: 1,
+            end: () => "+=" + scroller.scrollWidth,
+            onUpdate: (self) => {
+                const prog = Math.round(self.progress * 100);
+                document.getElementById('scroll-bar').style.width = prog + "%";
+                document.getElementById('scroll-percent').innerText = prog.toString().padStart(2, '0') + "%";
+                points.rotation.z = self.progress * 2; // Spin the background on scroll
+            }
+        }
+    });
+
+    // 4. ANIMATE PROJECT CONTENT ON ARRIVAL
+    gsap.utils.toArray(".project-node").forEach(node => {
+        const h3 = node.querySelector("h3");
+        const img = node.querySelector(".visual-anchor");
+
+        gsap.from(h3, {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: node,
+                containerAnimation: scrollTween,
+                start: "left 80%",
+            }
+        });
+
+        gsap.from(img, {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.5,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: node,
+                containerAnimation: scrollTween,
+                start: "left 70%",
+            }
+        });
+    });
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
 
 </body>

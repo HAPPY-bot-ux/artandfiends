@@ -1,63 +1,428 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Contact | ARC Atelier</title>
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uplink: Project Protocol | ARTANDFIENDS</title>
 
-<style>
-body{background:#0f0f0f;}
-.glass{backdrop-filter:blur(20px);background:rgba(255,255,255,0.05);}
-</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --gold: #C9A227; --dark: #050505; --accent: #ff3c00; }
+        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow: hidden; cursor: none; }
+        .mono { font-family: 'Space Mono', monospace; }
+
+        #webgl-canvas { position: fixed; inset: 0; z-index: -1; filter: brightness(0.7) contrast(1.2); }
+        
+        /* Tactical HUD Cursor */
+        #cursor-nexus { position: fixed; width: 40px; height: 40px; border: 1px solid var(--gold); pointer-events: none; z-index: 10000; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; }
+        #cursor-nexus::after { content: ''; width: 4px; height: 4px; background: var(--accent); }
+
+        /* Glass Panel Styling */
+        .glass-panel {
+            background: rgba(255,255,255,0.01); backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.05); border-left: 3px solid var(--gold);
+            padding: 3rem; position: relative; height: 72vh; overflow-y: auto; overflow-x: hidden;
+        }
+        .glass-panel::-webkit-scrollbar { width: 2px; }
+        .glass-panel::-webkit-scrollbar-thumb { background: var(--gold); }
+
+        .step-container { display: none; opacity: 0; transform: translateX(20px); }
+        .step-active { display: block; opacity: 1; transform: translateX(0); }
+
+        input, textarea, select {
+            background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%; padding: 0.8rem 1rem; font-family: 'Space Mono'; font-size: 1rem; outline: none; transition: 0.3s; color: white;
+        }
+        input:focus { border-color: var(--gold); background: rgba(201, 162, 39, 0.05); }
+
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .check-item { border: 1px solid rgba(255,255,255,0.1); padding: 10px; font-size: 10px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .check-item:hover, .check-item.active { border-color: var(--gold); background: rgba(201, 162, 39, 0.1); color: var(--gold); }
+
+        .btn-rebel {
+            background: var(--gold); color: black; font-weight: 900; padding: 1rem 2.5rem;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); text-transform: uppercase; font-size: 11px; letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .btn-rebel:hover { background: white; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+
+        .label-mini { font-size: 8px; color: var(--gold); letter-spacing: 3px; margin-bottom: 5px; display: block; opacity: 0.6; }
+        
+        /* Nav Link Effects */
+        .nav-link { position: relative; transition: 0.3s; }
+        .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--gold); transition: 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Fix for white-on-white dropdowns */
+select option {
+    background-color: #111; /* Deep charcoal */
+    color: white;
+    padding: 10px;
+    font-family: 'Space Mono', monospace;
+}
+
+/* Enhances the select box itself to look more tactical */
+select {
+    appearance: none; /* Removes default browser arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C9A227'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+}
+    </style>
 </head>
+<body>
 
-<body class="text-white">
+<canvas id="webgl-canvas"></canvas>
+<div id="cursor-nexus"></div>
 
-<nav class="fixed w-full glass px-10 py-5 flex justify-between z-50">
-<h1 class="text-2xl font-bold">ARC Atelier</h1>
-<div class="space-x-8">
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="projects.html">Projects</a>
-<a href="services.html">Services</a>
-<a href="contact.html" class="text-yellow-500">Contact</a>
-</div>
+<nav class="fixed w-full z-[100] px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
+    <div class="flex items-center gap-4">
+        <div class="w-8 h-[2px] bg-[--gold]"></div>
+        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+    </div>
+    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
+        <a href="index.html" class="nav-link hover:text-[--gold]">HOME</a>
+        <a href="about.html" class="nav-link hover:text-[--gold]">ABOUT</a>
+        <a href="projects.html" class="nav-link hover:text-[--gold]">PROJECTS</a>
+        <a href="attire.html" class="nav-link hover:text-[--gold]">ATTIRE</a>
+        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition ml-4">CONTACT</a>
+    </div>
 </nav>
 
-<section class="pt-40 px-20 pb-32 grid md:grid-cols-2 gap-20">
+<main class="h-screen flex items-center px-12 lg:px-40 pt-24">
+    <div class="grid lg:grid-cols-12 w-full gap-16 items-start">
+        
+        <div class="lg:col-span-3 flex flex-col gap-10 mt-10">
+            <div class="space-y-4">
+                <p class="mono text-[9px] text-[--gold] tracking-widest">>> SYSTEM_LOAD</p>
+                <div class="w-full h-[1px] bg-white/10">
+                    <div id="progress-bar" class="h-full bg-[--gold] transition-all duration-700 shadow-[0_0_15px_var(--gold)]" style="width: 14%;"></div>
+                </div>
+                <div class="flex justify-between mono text-[10px]">
+                    <span id="step-id">PHASE_01</span>
+                    <span id="percent">14%</span>
+                </div>
+            </div>
 
-<div>
-<h2 class="text-5xl font-bold mb-12">Let’s Build Together</h2>
+            <div class="p-6 border border-white/5 bg-white/2 backdrop-blur-md rounded-sm space-y-4 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-[2px] h-full bg-[--gold]"></div>
+                <div class="mono text-[8px] opacity-40 uppercase tracking-widest">Telemetry_Stream</div>
+                <div class="text-[10px] mono">LATENCY: <span class="text-white">12ms</span></div>
+                <div class="text-[10px] mono">BUFFER: <span class="text-white" id="tele-buffer">STABLE</span></div>
+                <div class="text-[10px] mono">COORDS: <span class="text-white" id="tele-coords">0,0</span></div>
+            </div>
+            
+            <div class="mono text-[8px] leading-relaxed opacity-30 italic">
+                All transmissions are encrypted. Establish connection only if ready to break standard conventions.
+            </div>
+        </div>
 
-<form class="space-y-8 glass p-12 rounded-2xl">
-<div class="relative">
-<input type="text" class="peer w-full bg-transparent border-b border-gray-500 focus:border-yellow-500 outline-none py-2">
-<label class="absolute left-0 top-2 text-gray-400 peer-focus:-top-4 peer-focus:text-sm transition-all">Full Name</label>
-</div>
+        <div class="lg:col-span-9 glass-panel" id="main-panel">
+            <form id="protocol-form">
+                
+                <div class="step-container step-active" id="step-1">
+                    <span class="label-mini">// IDENTITY_NODE_01</span>
+                    <h2 class="text-6xl font-black uppercase italic mb-10 tracking-tighter">Origin<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Details.</span></h2>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div><label class="label-mini">FULL_NAME*</label><input type="text" placeholder="IDENTITY" required></div>
+                        <div><label class="label-mini">EMAIL_ADDRESS*</label><input type="email" placeholder="UPLINK_ADDR" required></div>
+                        <div><label class="label-mini">PHONE_DIRECT*</label><input type="tel" placeholder="+00..."></div>
+                        <div><label class="label-mini">COMPANY_NAME</label><input type="text" placeholder="COMMERCIAL_ENTITY"></div>
+                    </div>
+                    <button type="button" class="btn-rebel mt-12" onclick="nextPhase(2)">Initialize_Phase_02</button>
+                </div>
 
-<div class="relative">
-<input type="email" class="peer w-full bg-transparent border-b border-gray-500 focus:border-yellow-500 outline-none py-2">
-<label class="absolute left-0 top-2 text-gray-400 peer-focus:-top-4 peer-focus:text-sm transition-all">Email</label>
-</div>
+                <div class="step-container" id="step-2">
+                    <span class="label-mini">// GEOMETRY_OVERVIEW_02</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Project<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Scope.</span></h2>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="label-mini">TYPOLOGY*</label>
+                            <select class="mono">
+                                <option>Residential – New Build</option>
+                                <option>Residential – Renovation</option>
+                                <option>Commercial Development</option>
+                                <option>Interior Architecture</option>
+                                <option>Landscape Design</option>
+                                <option>Mixed-Use Development</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div><label class="label-mini">CITY</label><input type="text" placeholder="LONDON"></div>
+                            <div><label class="label-mini">PROVINCE</label><input type="text" placeholder="ENG"></div>
+                            <div><label class="label-mini">COUNTRY</label><input type="text" placeholder="UK"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div><label class="label-mini">PROPERTY_SIZE (SQM/FT)</label><input type="text" placeholder="SIZE_SPECS"></div>
+                            <div>
+                                <label class="label-mini">OWNERSHIP_STATUS*</label>
+                                <select><option>I am the owner</option><option>Representing a Client</option><option>Other</option></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(1)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="nextPhase(3)">Phase_03</button>
+                    </div>
+                </div>
 
-<div class="relative">
-<textarea class="peer w-full bg-transparent border-b border-gray-500 focus:border-yellow-500 outline-none py-2"></textarea>
-<label class="absolute left-0 top-2 text-gray-400 peer-focus:-top-4 peer-focus:text-sm transition-all">Message</label>
-</div>
+                <div class="step-container" id="step-3">
+                    <span class="label-mini">// CHRONOS_ANALYSIS_03</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Current<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Status.</span></h2>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="label-mini">PHASE_STATUS*</label>
+                            <select>
+                                <option>Idea / Concept Phase</option>
+                                <option>Planning & Budgeting</option>
+                                <option>Ready to Begin Design</option>
+                                <option>Seeking Planning Permission</option>
+                                <option>Construction Phase</option>
+                            </select>
+                        </div>
+                        <div class="p-6 border border-white/5 bg-white/2">
+                            <label class="label-mini">EXISTING_PLANS_AVAILABLE?</label>
+                            <div class="flex gap-12 mt-4">
+                                <label class="mono flex items-center cursor-pointer"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> YES</label>
+                                <label class="mono flex items-center cursor-pointer"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> NO</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(2)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="nextPhase(4)">Phase_04</button>
+                    </div>
+                </div>
 
-<button class="mt-8 bg-yellow-500 text-black px-8 py-3 rounded-full hover:scale-110 transition">
-Send Message
-</button>
+                <div class="step-container" id="step-4">
+                    <span class="label-mini">// RESOURCE_ALLOCATION_04</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Capital<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">& Time.</span></h2>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="col-span-2">
+                            <label class="label-mini">ESTIMATED_BUDGET*</label>
+                            <select>
+                                <option>Under £100,000</option>
+                                <option>£100,000 – £500,000</option>
+                                <option>£500,000 – £1M</option>
+                                <option>£1M+</option>
+                            </select>
+                        </div>
+                        <div><label class="label-mini">DESIRED_START</label><input type="date"></div>
+                        <div><label class="label-mini">TARGET_COMPLETION</label><input type="date"></div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(3)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="nextPhase(5)">Phase_05</button>
+                    </div>
+                </div>
 
-</form>
-</div>
+                <div class="step-container" id="step-5">
+                    <span class="label-mini">// REQUIREMENT_MATRIX_05</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Service<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Selection.</span></h2>
+                    <div class="checkbox-grid">
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Architectural Design</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Concept Development</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">3D Visualisation</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Planning Assistance</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Interior Design</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Project Management</div>
+                        <div class="check-item mono" onclick="this.classList.toggle('active')">Site Supervision</div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(4)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="nextPhase(6)">Phase_06</button>
+                    </div>
+                </div>
 
-<div>
-<iframe class="w-full h-full rounded-2xl"
-src="https://maps.google.com/maps?q=london&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
-</div>
+                <div class="step-container" id="step-6">
+                    <span class="label-mini">// AESTHETIC_BIAS_06</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Design<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Soul.</span></h2>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="label-mini">ARCHITECTURAL_STYLE</label>
+                            <select>
+                                <option>Modern</option><option>Contemporary</option><option>Minimalist</option>
+                                <option>Classical</option><option>Industrial</option><option>Eco-focused</option>
+                                <option>Undecided</option>
+                            </select>
+                        </div>
+                        <label class="label-mini">KEY_PRIORITIES (SELECT UP TO 3)</label>
+                        <div class="checkbox-grid">
+                            <div class="check-item mono" onclick="this.classList.toggle('active')">Natural Light</div>
+                            <div class="check-item mono" onclick="this.classList.toggle('active')">Energy Efficiency</div>
+                            <div class="check-item mono" onclick="this.classList.toggle('active')">Luxury Finishes</div>
+                            <div class="check-item mono" onclick="this.classList.toggle('active')">Fast Completion</div>
+                            <div class="check-item mono" onclick="this.classList.toggle('active')">Sustainability</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(5)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="nextPhase(7)">Final_Phase</button>
+                    </div>
+                </div>
 
-</section>
+                <div class="step-container" id="step-7">
+                    <span class="label-mini">// DATA_DUMP_07</span>
+                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Final<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Brief.</span></h2>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="label-mini">PROJECT_DESCRIPTION*</label>
+                            <textarea rows="4" placeholder="DESCRIBE YOUR ARCHITECTURAL DEFIANCE..."></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div>
+                                <label class="label-mini">UPLOAD_DOCUMENTS</label>
+                                <input type="file" class="text-[10px] mono p-2 border border-dashed border-white/20">
+                            </div>
+                            <div>
+                                <label class="label-mini">DISCOVERY_SOURCE</label>
+                                <select><option>Google</option><option>Instagram</option><option>Referral</option><option>Website</option></select>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex flex-col gap-3">
+                            <label class="mono text-[10px] flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" required class="accent-[--gold]"> I CONFIRM ACCURACY OF DATA
+                            </label>
+                            <label class="mono text-[10px] flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" required class="accent-[--gold]"> AGREE TO BE CONTACTED
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-12">
+                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(6)">[ REVERT ]</button>
+                        <button type="button" class="btn-rebel" onclick="finalizeDeployment()">Request Consultation</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    // 1. THREE.JS ENGINE
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const group = new THREE.Group();
+    const cubes = [];
+    const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+
+    for(let i=0; i<800; i++) {
+        const material = new THREE.MeshBasicMaterial({ color: 0xC9A227, wireframe: true, transparent: true, opacity: 0.1 });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set((Math.random()-0.5)*40, (Math.random()-0.5)*40, (Math.random()-0.5)*40);
+        cubes.push(cube);
+        group.add(cube);
+    }
+    scene.add(group);
+    camera.position.z = 22;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        group.rotation.y += 0.0005;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // 2. ENHANCED PHASE ENGINE
+    let currentPhase = 1;
+    const totalPhases = 7;
+
+    function nextPhase(phase) {
+        const currentEl = document.getElementById(`step-${currentPhase}`);
+        const nextEl = document.getElementById(`step-${phase}`);
+        const panel = document.getElementById('main-panel');
+
+        // Screen Shake & Glitch Effect
+        gsap.to(panel, { x: "+=10", yoyo: true, repeat: 5, duration: 0.05 });
+        document.getElementById('tele-buffer').innerText = "GLITCHING...";
+
+        gsap.to(currentEl, { opacity: 0, x: -30, filter: "blur(10px)", duration: 0.4, onComplete: () => {
+            currentEl.classList.remove('step-active');
+            nextEl.classList.add('step-active');
+            
+            gsap.fromTo(nextEl, 
+                { opacity: 0, x: 30, filter: "blur(10px)" }, 
+                { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.6, ease: "power2.out" }
+            );
+            
+            currentPhase = phase;
+            updateUI();
+            morphGeometry(phase);
+            document.getElementById('tele-buffer').innerText = "STABLE";
+        }});
+    }
+
+    function updateUI() {
+        const progress = (currentPhase / totalPhases) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+        document.getElementById('percent').innerText = `${Math.round(progress)}%`;
+        document.getElementById('step-id').innerText = `PHASE_0${currentPhase}`;
+    }
+
+    function morphGeometry(phase) {
+        cubes.forEach((c, i) => {
+            let target = { x: (Math.random()-0.5)*40, y: (Math.random()-0.5)*40, z: (Math.random()-0.5)*40 };
+            let color = 0xC9A227;
+
+            if (phase === 2) { // Blueprint Grid
+                target = { x: (i % 25) - 12, y: Math.floor(i / 25) - 12, z: Math.sin(i)*2 };
+            } else if (phase === 4) { // Financial Tower
+                target = { x: (i % 6) - 3, y: i * 0.04 - 15, z: Math.cos(i) * 3 };
+                color = 0xffffff;
+            } else if (phase === 5) { // Logic Matrix
+                target = { x: (i % 20) - 10, y: (i / 20) % 20 - 10, z: Math.floor(i / 400) * 5 };
+            } else if (phase === 7) { // Data Core
+                target = { x: Math.sin(i) * 6, y: Math.cos(i) * 6, z: Math.tan(i) * 0.2 };
+                color = 0xff3c00;
+            }
+
+            gsap.to(c.position, { x: target.x, y: target.y, z: target.z, duration: 2.5, ease: "expo.inOut" });
+            c.material.color.setHex(color);
+        });
+    }
+
+    // 3. FINAL DEPLOYMENT
+    function finalizeDeployment() {
+        document.getElementById('tele-buffer').innerText = "SYNCING_FINAL...";
+        
+        gsap.to('#main-panel', { skewX: 30, opacity: 0, duration: 0.8, ease: "power4.in", onComplete: () => {
+            document.querySelector('.glass-panel').innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 border-2 border-[--gold] animate-spin mb-8"></div>
+                    <h2 class="text-6xl font-black mb-4 tracking-tighter italic">Uplink Success.</h2>
+                    <p class="mono text-[--gold] animate-pulse uppercase tracking-[0.5em]">Protocol established. Synthesis beginning.</p>
+                </div>
+            `;
+            gsap.fromTo('#main-panel', { skewX: -30, opacity: 0 }, { skewX: 0, opacity: 1, duration: 1.2 });
+            
+            // Camera Fly-through
+            gsap.to(camera.position, { z: 2, duration: 4, ease: "expo.inOut" });
+            document.getElementById('tele-buffer').innerText = "TRANSMITTED";
+        }});
+    }
+
+    // 4. HUD INTERACTION
+    document.addEventListener('mousemove', (e) => {
+        gsap.to('#cursor-nexus', { x: e.clientX - 20, y: e.clientY - 20, duration: 0.1 });
+        document.getElementById('tele-coords').innerText = `${e.clientX}, ${e.clientY}`;
+    });
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
 
 </body>
 </html>
