@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Manifesto | ARTANDFIENDS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --gold: #C9A227; --dark: #050505; --red: #ff3c00; }
+        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
+        .mono { font-family: 'Space Mono', monospace; }
+        
+        /* 3D LIDAR Background */
+        #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; opacity: 0.6; }
+
+        /* Advanced HUD Cursor */
+        #cursor-nexus { position: fixed; width: 40px; height: 40px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease-out; }
+        #cursor-nexus::after { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+        #cursor-label { position: fixed; font-size: 8px; color: var(--gold); font-family: 'Space Mono'; pointer-events: none; z-index: 10000; text-transform: uppercase; letter-spacing: 2px; }
+
+        .glass-nav { backdrop-filter: blur(30px); background: rgba(5, 5, 5, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* Interactive Scroller */
+        .sticky-wrapper { position: relative; height: 400vh; }
+        .sticky-content { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        .layer-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: filter 0.8s ease; }
+        .wireframe-overlay { filter: brightness(0.2) contrast(1.5) sepia(1) hue-rotate(-15deg); }
+        
+        .nexus-card { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        .nexus-card:hover { border-color: var(--gold); background: rgba(201, 162, 39, 0.05); transform: translateY(-10px); }
+        
+        .text-stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
+        
+        /* Glitch Effect for Technical Sections */
+        .glitch-text:hover { animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-[--dark]">
+
+<canvas id="webgl-canvas"></canvas>
+<div id="cursor-nexus"></div>
+<div id="cursor-label">SYS_COORDS</div>
+
+<nav class="fixed w-full z-[100] glass-nav px-12 py-6 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <div class="w-8 h-[2px] bg-[--gold]"></div>
+        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+    </div>
+    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
+        <a href="#home" class="hover:text-[--gold] transition">HOME</a>
+        <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
+        <a href="" class="hover:text-[--gold] transition">PROJECTS</a>
+        <a href="" class="hover:text-[--gold] transition">ATTIRE</a>
+        <a href="" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition">CONTACT</a>
+    </div>
+</nav>
+
+
+<main>
+    <section class="min-h-screen flex flex-col justify-center px-10 lg:px-40 pt-40 relative">
+        <div class="max-w-6xl z-10">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="mono text-[--gold] text-sm tracking-[0.5em]">// THE NEXUS PHILOSOPHY</span>
+                <div class="h-[1px] w-32 bg-white/10"></div>
+            </div>
+            
+            <h2 class="text-[9vw] font-black leading-[0.8] uppercase mb-12 skew-x-[-2deg]" id="hero-title">
+                Structural Rigor.<br>
+                <span class="text-stroke italic">Creative Rebellion.</span>
+            </h2>
+
+            <div class="grid lg:grid-cols-2 gap-20">
+                <p class="text-2xl text-gray-400 leading-relaxed reveal-text">
+                    We refuse the role of the passive service provider. We are an architectural nucleus engineered for the collision of professional discipline and obsessive visual narrative.
+                </p>
+                <div class="relative group">
+                    <p class="text-xl text-gray-400 leading-relaxed border-l-2 border-[--gold] pl-10">
+                        Our identity is forged from two volatile elements: The <span class="text-white font-black italic">Art</span> (Elegance & Intent) and The <span class="text-[--red] font-black italic glitch-text">Fiends</span> (Tectonic Energy).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sticky-wrapper">
+        <div class="sticky-content">
+            
+            
+            <img src="https://images.unsplash.com/photo-1503387762-592dee58c460?q=80&w=2070" class="layer-img wireframe-overlay" id="img-data">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="layer-img opacity-0 scale-125" id="img-dream">
+
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="text-center px-10">
+                    <div class="mono text-[--gold] text-xs mb-4 tracking-[1em] animate-pulse" id="status-line">SCANNING_DATA_POINT_742</div>
+                    <h3 id="sticky-text" class="text-8xl lg:text-[12vw] font-black uppercase tracking-tighter">THE DATA</h3>
+                    <p id="sticky-sub" class="mono text-[--gold] mt-4 tracking-widest uppercase text-sm">Parametric Optimization & Fidelity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-40 px-10 lg:px-40 bg-white text-black relative z-10">
+        <div class="flex flex-col lg:flex-row justify-between items-end mb-32 gap-10">
+            <h2 class="text-8xl font-black uppercase leading-[0.8]">The<br>Workflow</h2>
+            <div class="mono text-[10px] text-black/60 font-black tracking-[0.5em] uppercase border-b border-black pb-2">Grounding the Dream</div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <tbody class="text-3xl lg:text-5xl font-black uppercase">
+                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
+                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">01_</td>
+                        <td class="py-14">Sophisticated Intent</td>
+                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">Optimized Precision</td>
+                    </tr>
+                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
+                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">02_</td>
+                        <td class="py-14">Interior Elegance</td>
+                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">Integrated MEP</td>
+                    </tr>
+                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
+                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">03_</td>
+                        <td class="py-14">Clash Resolution</td>
+                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">BIM Compliance</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="py-60 px-10 lg:px-40 bg-[--dark]">
+        <div class="grid lg:grid-cols-4 gap-6">
+            <div class="nexus-card p-12 border-t-2 border-[--gold] reveal-box">
+                <span class="mono text-[--gold] text-xs">// 01</span>
+                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Wireframe</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">The immutable backbone. Establishing core spatial data from the first stroke.</p>
+            </div>
+            <div class="nexus-card p-12 border-t-2 border-white reveal-box">
+                <span class="mono text-white text-xs">// 02</span>
+                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Sketch</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">Where the dream meets the grid. Layering aesthetic subversion onto the functional base.</p>
+            </div>
+            <div class="nexus-card p-12 border-t-2 border-[--red] reveal-box">
+                <span class="mono text-[--red] text-xs">// 03</span>
+                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Narrative</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">Interrogating spatial truth through high-fidelity visualization before site construction.</p>
+            </div>
+            <div class="nexus-card p-12 border-t-2 border-white reveal-box">
+                <span class="mono text-white text-xs">// 04</span>
+                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Reality</h4>
+                <p class="text-gray-500 text-sm leading-relaxed">A 1:1 derivation of the vision. Coordinated, data-optimized, and built to last.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. THREE.JS Point Cloud Engine
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const particlesGeo = new THREE.BufferGeometry();
+    const pCount = 4000;
+    const posArr = new Float32Array(pCount * 3);
+    for(let i=0; i < pCount * 3; i++) {
+        posArr[i] = (Math.random() - 0.5) * 12;
+    }
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+    const pMat = new THREE.PointsMaterial({ size: 0.006, color: 0xC9A227, transparent: true, opacity: 0.4 });
+    const points = new THREE.Points(particlesGeo, pMat);
+    scene.add(points);
+    camera.position.z = 4;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.0008;
+        points.rotation.x += 0.0003;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // 2. KINETIC HUD CURSOR
+    const nexusCursor = document.getElementById('cursor-nexus');
+    const cursorLabel = document.getElementById('cursor-label');
+
+    document.addEventListener("mousemove", (e) => {
+        gsap.to(nexusCursor, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3, ease: "power2.out" });
+        gsap.to(cursorLabel, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
+        cursorLabel.textContent = `X:${e.clientX} Y:${e.clientY}`;
+    });
+
+    // 3. ADVANCED SCROLL NARRATIVE
+    const stickyTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".sticky-wrapper",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.2
+        }
+    });
+
+    stickyTl.to("#img-dream", { opacity: 1, scale: 1, duration: 1 })
+            .to("#sticky-text", { textContent: "THE DREAM", duration: 0.1 }, 0.5)
+            .to("#status-line", { textContent: "OPTIMIZATION_COMPLETE // RENDERING_FIDELITY", color: "#ffffff" }, 0.5)
+            .to("#sticky-sub", { textContent: "High-Fidelity Architectural Intent", color: "#ffffff" }, 0.5)
+            .to(points.position, { z: 2, duration: 1 }, 0); // Zoom in on the 3D particles
+
+    // 4. ELEMENT REVEALS
+    gsap.from("#hero-title", { opacity: 0, x: -100, duration: 1.5, ease: "power4.out" });
+
+    gsap.utils.toArray(".reveal-box").forEach((box, i) => {
+        gsap.from(box, {
+            scrollTrigger: { trigger: box, start: "top 90%" },
+            y: 80, opacity: 0, duration: 1.2, delay: i * 0.15
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
+</body>
+</html>
