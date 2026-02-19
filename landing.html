@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTANDFIENDS | Architectural Rebellion</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --gold: #C9A227; --dark: #020202; --accent: #ff3c00; }
+        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow: hidden; cursor: none; }
+        .mono { font-family: 'Space Mono', monospace; }
+
+        /* Background Image Layer */
+        #bg-image-layer {
+            position: fixed; inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(1) brightness(0.3) contrast(1.2);
+            z-index: 0;
+            transform: scale(1.1);
+        }
+
+        #hero-canvas { position: fixed; inset: 0; z-index: 2; mix-blend-mode: screen; }
+        
+        /* Tactical Overlays */
+        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%); z-index: 5; pointer-events: none; }
+        .grain { position: fixed; inset: 0; background: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.05; z-index: 6; pointer-events: none; }
+
+        /* Cursor */
+        #cursor-nexus { position: fixed; width: 40px; height: 40px; border: 1px solid var(--gold); pointer-events: none; z-index: 10000; display: flex; align-items: center; justify-content: center; mix-blend-mode: difference; }
+        #cursor-nexus::after { content: ''; width: 4px; height: 4px; background: var(--accent); }
+
+        /* Typography */
+        .hero-title { font-size: clamp(4rem, 15vw, 12rem); line-height: 0.8; font-weight: 900; letter-spacing: -0.06em; text-transform: uppercase; }
+        .nav-link { font-size: 10px; letter-spacing: 0.5em; position: relative; overflow: hidden; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: -100%; width: 100%; height: 1px; background: var(--gold); transition: 0.4s; }
+        .nav-link:hover::after { left: 0; }
+
+        /* The Button: Engineering Spectacle */
+        .btn-wrapper { position: relative; padding: 4px; background: linear-gradient(90deg, var(--gold), transparent); clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%); }
+        .btn-enter {
+            background: black; padding: 1.5rem 5rem; display: block;
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%); transition: 0.4s;
+        }
+        .btn-enter:hover { background: var(--gold); color: black; }
+
+        /* UI Corner Brackets */
+        .corner { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(201, 162, 39, 0.3); z-index: 100; pointer-events: none; }
+        .tl { top: 40px; left: 40px; border-right: 0; border-bottom: 0; }
+        .br { bottom: 40px; right: 40px; border-left: 0; border-top: 0; }
+    </style>
+</head>
+<body>
+
+<div id="bg-image-layer"></div>
+<div id="cursor-nexus"></div>
+<div class="vignette"></div>
+<div class="grain"></div>
+<div class="corner tl"></div>
+<div class="corner br"></div>
+<canvas id="hero-canvas"></canvas>
+
+<nav class="fixed top-0 w-full z-[100] px-12 py-10 flex justify-between items-start">
+    <div class="space-y-1">
+        <div class="flex items-center gap-2">
+            <span class="w-8 h-[1px] bg-[--gold]"></span>
+            <p class="mono text-[9px] text-[--gold] tracking-[0.5em]">SYSTEM_INIT</p>
+        </div>
+        <h1 class="text-3xl font-black tracking-tighter italic">ARTANDFIENDS</h1>
+    </div>
+
+</nav>
+
+<main class="relative z-50 h-screen flex flex-col justify-center items-center text-center px-4">
+    <div class="mb-2">
+        <span class="mono text-[11px] text-[--gold] tracking-[1.2em] opacity-0 hero-sub translate-y-10 block">BREAKING CONVENTIONAL GEOMETRY</span>
+    </div>
+    
+    <h2 class="hero-title mb-10 overflow-hidden">
+        <span class="block translate-y-full opacity-0 title-line">ARTAND</span>
+        <span class="block translate-y-full opacity-0 title-line text-transparent" style="-webkit-text-stroke: 1.5px white;">FIENDS.</span>
+    </h2>
+
+    <div class="mt-4 opacity-0 btn-reveal">
+        <div class="btn-wrapper">
+            <a href="index.html" class="btn-enter group">
+                <span class="mono text-[10px] tracking-[0.8em]">ENGAGE_PROTOCOL</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+<div class="fixed bottom-12 right-12 z-[100] mono text-[9px] text-right space-y-1 opacity-40">
+    <p id="data-stream">BIT_RATE: 124.5kbps</p>
+    <p>BUFFER: STABLE</p>
+    <p>AUTH: GRANTED</p>
+</div>
+
+<script>
+    // 1. THREE.JS - ADVANCED GEOMETRY
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Create a geometric web
+    const particles = 8000;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(particles * 3);
+    
+    for(let i=0; i < particles * 3; i++) {
+        pos[i] = (Math.random() - 0.5) * 60;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+    const mat = new THREE.PointsMaterial({
+        size: 0.07,
+        color: 0xC9A227,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+    });
+
+    const mesh = new THREE.Points(geo, mat);
+    scene.add(mesh);
+    camera.position.z = 25;
+
+    // 2. INTERACTIVE MOTION
+    let targetX = 0, targetY = 0;
+    document.addEventListener('mousemove', (e) => {
+        targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+        
+        gsap.to('#cursor-nexus', { x: e.clientX - 20, y: e.clientY - 20, duration: 0.1 });
+        // Subtle background image shift
+        gsap.to('#bg-image-layer', { x: -targetX * 20, y: -targetY * 20, duration: 2 });
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.y += 0.0008;
+        mesh.rotation.x += 0.0004;
+
+        // Camera follow mouse
+        camera.position.x += (targetX * 5 - camera.position.x) * 0.05;
+        camera.position.y += (-targetY * 5 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+        
+        // Randomize Data Stream text
+        if(Math.random() > 0.95) {
+            document.getElementById('data-stream').innerText = `BIT_RATE: ${(Math.random()*200).toFixed(1)}kbps`;
+        }
+    }
+    animate();
+
+    // 3. MASTER ENTRANCE
+    window.onload = () => {
+        const tl = gsap.timeline();
+        
+        tl.to('#bg-image-layer', { scale: 1, duration: 3, ease: "power4.out" })
+          .to('.hero-sub', { opacity: 1, translateY: 0, duration: 1 }, "-=2")
+          .to('.title-line', { 
+            translateY: 0, 
+            opacity: 1, 
+            stagger: 0.2, 
+            duration: 1.5, 
+            ease: "expo.out" 
+          }, "-=1.5")
+          .to('.btn-reveal', { opacity: 1, duration: 1 }, "-=0.5")
+          .from('.corner', { width: 0, height: 0, opacity: 0, duration: 1 }, "-=1");
+    };
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
+</body>
+</html>
