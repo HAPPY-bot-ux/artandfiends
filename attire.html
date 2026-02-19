@@ -92,7 +92,7 @@
         <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
-        <a href="index.html" class="hover:text-[--gold] transition">HOME</a>
+        <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
         <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
         <a href="projects.html" class="hover:text-[--gold] transition">PROJECTS</a>
         <a href="attire.html" class="hover:text-[--gold] transition">ATTIRE</a>
@@ -101,6 +101,7 @@
 </nav>
 
 <main>
+
     <section class="h-[130vh] flex items-center px-12 lg:px-40 relative">
         <div class="blueprint-callout top-1/4 right-1/4">REF_MODEL_ALPHA_09</div>
         <div class="blueprint-callout bottom-1/3 left-1/3">COORD_SYSTEM: WGS84</div>
@@ -123,13 +124,46 @@
         </div>
     </section>
 
+    <!-- change the layout added this about page just change ther information -->
+     <section class="min-h-screen ">
+
+       
+        <div class="grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-8 bento-card p-12 reveal">
+                <span class="mono text-[--gold] text-xs uppercase mb-6 block tracking-widest">/ The Art /</span>
+                <img src="images/image1.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+                <h3 class="text-6xl font-black mb-8 leading-none uppercase">High-Fidelity<br>Intent.</h3>
+                <p class="text-gray-400 text-xl leading-relaxed max-w-xl">Translating abstract concepts into functional environments, prioritizing user experience and architectural elegance.</p>
+            </div>
+            <div class="lg:col-span-4 bento-card p-12 reveal bg-[--gold]/10 border-[--gold]/20">
+                <img src="images/iamge2.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+                <h4 class="text-2xl font-bold mb-4 uppercase">Legacy</h4>
+                <p class="text-sm text-white/60">Meaningful data harnessed to extract emotions. We do not build for function; we build for legacy.</p>
+            </div>
+            <div class="lg:col-span-4 bento-card p-12 reveal">
+                <span class="mono text-[--red] text-xs uppercase mb-6 block">/ The Fiend /</span>
+                <img src="images/image4.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+                <h4 class="text-4xl font-black mb-4 uppercase">Obsessive<br>Craft.</h4>
+                <p class="text-sm text-gray-400">A relentless drive to perfect the build reality over corporate polish.</p>
+            </div>
+            <div class="lg:col-span-8 bento-card p-12 reveal relative overflow-hidden group">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+                <h4 class="relative text-3xl font-bold uppercase">Radical Collaboration</h4>
+                <p class="relative text-gray-400 mt-4 max-w-md">The bridge between aesthetic intent and structural reality.</p>
+            </div>
+        </div>
+
+    </section>
+    
+
+
     <div class="h-1 w-full bg-gradient-to-r from-transparent via-[--gold] to-transparent opacity-20"></div>
 
     <section class="service-section" id="res-node">
         <div class="grid lg:grid-cols-12 gap-10 w-full items-center">
             <div class="lg:col-span-7 glass-card">
                 <span class="mono text-[--gold] text-[10px] tracking-[0.5em] mb-4 block">// CAPABILITY_01</span>
-                <h3 class="text-8xl font-black uppercase mb-8 leading-none">Residential<br>High-End</h3>
+                <h3 class="text-8xl font-black uppercase mb-8 leading-none">Residential<br>High End</h3>
                 <p class="text-xl text-gray-400 leading-relaxed mb-10 max-w-xl">
                     Engineering hyper-personalized domestic environments. Our residential workflow integrates <span class="text-white">environmental simulation</span> directly into the aesthetic draft.
                 </p>
@@ -155,12 +189,36 @@
                 </div>
             </div>
         </div>
+
+         <span class="section-tag mono uppercase">INTERIOR_ELEGANCE</span>
+                <div class="data-panel">
+                    <span class="mono text-[--red] text-sm mb-4 block">NODE_02 // RES_104</span>
+                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Tectonic<br>Villa</h3>
+                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                        Where high-end luxury meets raw construction data. Every junction was visualized in photorealistic 1:1 renders before the first concrete pour.
+                    </p>
+                    <ul class="mono text-[10px] space-y-3 text-[--red]">
+                        <li>> LIGHT_STUDY_SIM_B2</li>
+                        <li>> MATERIAL_FIDELITY_MAX</li>
+                        <li>> RADICAL_SYMMETRY_DEPLOYED</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame" style="border-color: var(--red);"></div>
+                    <div class="bim-overlay mono" style="color: var(--red);">
+                        COORD: 34.0522° N, 118.2437° W<br>MAT: POLISHED_GRAPHITE<br>LUX_VAL: 850_AVG
+                    </div>
+                    <!-- <img src="images/image1.jpg" class="project-img"> -->
+                </div>
+
     </section>
 
     <section class="service-section" id="com-node">
         <div class="grid lg:grid-cols-12 gap-10 w-full items-center">
             <div class="lg:col-span-5 flex justify-center">
                 <div class="w-64 h-64 border-2 border-[--accent] rounded-full animate-pulse flex items-center justify-center">
+                    <!-- Add a image fot this section -->
+                    <img src="images/image1.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
                     <div class="text-[--accent] mono text-[10px]">RETAIL_CORE</div>
                 </div>
             </div>

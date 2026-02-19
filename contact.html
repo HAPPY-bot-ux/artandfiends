@@ -87,7 +87,7 @@ select {
         <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
-        <a href="index.html" class="nav-link hover:text-[--gold]">HOME</a>
+        <a href="home.html" class="nav-link hover:text-[--gold]">HOME</a>
         <a href="about.html" class="nav-link hover:text-[--gold]">ABOUT</a>
         <a href="projects.html" class="nav-link hover:text-[--gold]">PROJECTS</a>
         <a href="attire.html" class="nav-link hover:text-[--gold]">ATTIRE</a>
@@ -302,10 +302,88 @@ select {
                 </div>
             </form>
         </div>
+
+        
     </div>
 </main>
 
+<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-12 py-16">
+    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none">
+        REF_PN: 77-004-AF // CORE_SPEC
+    </div>
 
+    <div class="max-w-screen-2xl mx-auto">
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+            
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 border-2 border-[--gold] rotate-45 flex items-center justify-center">
+                        <div class="w-2 h-2 bg-white"></div>
+                    </div>
+                    <h3 class="text-xl font-black tracking-widest uppercase italic">ARTANDFIENDS</h3>
+                </div>
+                <p class="mono text-[10px] leading-relaxed opacity-50 uppercase">
+                    Architectural defiance and digital craftsmanship. <br>
+                    Established 2024 // London Core.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="label-mini opacity-100">// NAVIGATION_NODES</h4>
+                <ul class="mono text-[10px] space-y-2">
+                    <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
+                    <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> ARCHIVES</a></li>
+                    <li><a href="about.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> IDENTITY</a></li>
+                    <li><a href="contact.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[04]</span> UPLINK</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="label-mini opacity-100">// SOCIAL_SYNTHESIS</h4>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
+                        <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
+                    </a>
+                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
+                        <span class="mono text-[10px] group-hover:text-[--gold]">LI</span>
+                    </a>
+                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
+                        <span class="mono text-[10px] group-hover:text-[--gold]">X_</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="label-mini opacity-100">// SYSTEM_STATUS</h4>
+                <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
+                    <div class="flex justify-between mono text-[9px]">
+                        <span class="opacity-50">TIME:</span>
+                        <span id="footer-clock" class="text-[--gold]">00:00:00 UTC</span>
+                    </div>
+                    <div class="flex justify-between mono text-[9px]">
+                        <span class="opacity-50">LOCATION:</span>
+                        <span class="text-white">51.5074° N</span>
+                    </div>
+                    <div class="flex justify-between mono text-[9px]">
+                        <span class="opacity-50">STATUS:</span>
+                        <span class="text-green-500 animate-pulse">OPTIMIZED</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-6">
+            <div class="mono text-[8px] opacity-30 tracking-widest">
+                © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // DESIGNED FOR THE REBELLION.
+            </div>
+            
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="group flex flex-col items-center gap-2">
+                <div class="w-[1px] h-10 bg-white/20 group-hover:bg-[--gold] transition-all"></div>
+                <span class="mono text-[8px] tracking-[0.4em] opacity-40 group-hover:opacity-100">RETURN_TO_SUMMIT</span>
+            </button>
+        </div>
+    </div>
+</footer>
 
 <script>
     // 1. THREE.JS ENGINE
