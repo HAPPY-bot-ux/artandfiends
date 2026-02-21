@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Nexus Manifesto | ARTANDFIENDS</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,12 @@
         :root { --gold: #C9A227; --dark: #050505; --red: #ff3c00; }
         body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
         .mono { font-family: 'Space Mono', monospace; }
+        
+        /* disable custom cursor on mobile for usability */
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            #cursor-nexus, #cursor-label { display: none; }
+        }
         
         /* 3D LIDAR Background */
         #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; opacity: 0.6; }
@@ -48,6 +54,35 @@
             80% { transform: translate(2px, -2px); }
             100% { transform: translate(0); }
         }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        .mobile-menu.open { right: 0; }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
+        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
+        @media (max-width: 1024px) { .menu-toggle { display: flex; } }
+        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
+
+        /* responsive typography & spacing */
+        @media (max-width: 768px) {
+            h2.text-8xl { font-size: 4rem; }
+            h2.text-[9vw] { font-size: 15vw; }
+            .text-2xl { font-size: 1.25rem; }
+            .text-xl { font-size: 1rem; }
+            section .px-10 { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .sticky-content h3 { font-size: 15vw; }
+            .nexus-card.p-12 { padding: 2rem; }
+        }
+        @media (max-width: 640px) {
+            .grid { gap: 1rem; }
+            .text-8xl { font-size: 3.5rem; }
+            .table .text-5xl { font-size: 2rem; }
+        }
     </style>
 </head>
 
@@ -57,10 +92,26 @@
 <div id="cursor-nexus"></div>
 <div id="cursor-label">SYS_COORDS</div>
 
-<nav class="fixed w-full z-[100] glass-nav px-12 py-6 flex justify-between items-center">
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Menu Panel -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT</a>
+    <a href="projects.html">PROJECTS</a>
+    <a href="attire.html">ATTIRE</a>
+    <a href="contact.html" class="contact-mobile">CONTACT</a>
+</div>
+
+<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
         <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
@@ -73,24 +124,24 @@
 
 
 <main>
-    <section class="min-h-screen flex flex-col justify-center px-10 lg:px-40 pt-40 relative">
+    <section class="min-h-screen flex flex-col justify-center px-6 sm:px-10 lg:px-40 pt-40 relative">
         <div class="max-w-6xl z-10">
             <div class="flex items-center gap-4 mb-8">
-                <span class="mono text-[--gold] text-sm tracking-[0.5em]">// THE NEXUS PHILOSOPHY</span>
-                <div class="h-[1px] w-32 bg-white/10"></div>
+                <span class="mono text-[--gold] text-xs sm:text-sm tracking-[0.5em]">// THE NEXUS PHILOSOPHY</span>
+                <div class="h-[1px] w-16 sm:w-32 bg-white/10"></div>
             </div>
             
-            <h2 class="text-[9vw] font-black leading-[0.8] uppercase mb-12 skew-x-[-2deg]" id="hero-title">
+            <h2 class="text-[12vw] sm:text-[9vw] font-black leading-[0.8] uppercase mb-8 sm:mb-12 skew-x-[-2deg]" id="hero-title">
                 Structural Rigor.<br>
                 <span class="text-stroke italic">Creative Rebellion.</span>
             </h2>
 
-            <div class="grid lg:grid-cols-2 gap-20">
-                <p class="text-2xl text-gray-400 leading-relaxed reveal-text">
+            <div class="grid lg:grid-cols-2 gap-10 lg:gap-20">
+                <p class="text-xl sm:text-2xl text-gray-400 leading-relaxed reveal-text">
                     We refuse the role of the passive service provider. We are an architectural nucleus engineered for the collision of professional discipline and obsessive visual narrative.
                 </p>
                 <div class="relative group">
-                    <p class="text-xl text-gray-400 leading-relaxed border-l-2 border-[--gold] pl-10">
+                    <p class="text-lg sm:text-xl text-gray-400 leading-relaxed border-l-2 border-[--gold] pl-6 sm:pl-10">
                         Our identity is forged from two volatile elements: The <span class="text-white font-black italic">Art</span> (Elegance & Intent) and The <span class="text-[--red] font-black italic glitch-text">Fiends</span> (Tectonic Energy).
                     </p>
                 </div>
@@ -102,42 +153,42 @@
         <div class="sticky-content">
             
             
-            <img src="https://images.unsplash.com/photo-1503387762-592dee58c460?q=80&w=2070" class="layer-img wireframe-overlay" id="img-data">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="layer-img opacity-0 scale-125" id="img-dream">
+            <img src="https://images.unsplash.com/photo-1503387762-592dee58c460?q=80&w=2070" class="layer-img wireframe-overlay" id="img-data" alt="data layer">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="layer-img opacity-0 scale-125" id="img-dream" alt="dream layer">
 
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div class="text-center px-10">
-                    <div class="mono text-[--gold] text-xs mb-4 tracking-[1em] animate-pulse" id="status-line">SCANNING_DATA_POINT_742</div>
-                    <h3 id="sticky-text" class="text-8xl lg:text-[12vw] font-black uppercase tracking-tighter">THE DATA</h3>
-                    <p id="sticky-sub" class="mono text-[--gold] mt-4 tracking-widest uppercase text-sm">Parametric Optimization & Fidelity</p>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none px-4">
+                <div class="text-center">
+                    <div class="mono text-[--gold] text-[0.6rem] sm:text-xs mb-4 tracking-[0.5em] sm:tracking-[1em] animate-pulse" id="status-line">SCANNING_DATA_POINT_742</div>
+                    <h3 id="sticky-text" class="text-6xl sm:text-8xl lg:text-[12vw] font-black uppercase tracking-tighter">THE DATA</h3>
+                    <p id="sticky-sub" class="mono text-[--gold] mt-4 tracking-widest uppercase text-[0.6rem] sm:text-sm">Parametric Optimization & Fidelity</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-40 px-10 lg:px-40 bg-white text-black relative z-10">
-        <div class="flex flex-col lg:flex-row justify-between items-end mb-32 gap-10">
-            <h2 class="text-8xl font-black uppercase leading-[0.8]">The<br>Workflow</h2>
-            <div class="mono text-[10px] text-black/60 font-black tracking-[0.5em] uppercase border-b border-black pb-2">Grounding the Dream</div>
+    <section class="py-20 sm:py-40 px-6 sm:px-10 lg:px-40 bg-white text-black relative z-10">
+        <div class="flex flex-col lg:flex-row justify-between items-end mb-16 sm:mb-32 gap-6 sm:gap-10">
+            <h2 class="text-5xl sm:text-8xl font-black uppercase leading-[0.8]">The<br>Workflow</h2>
+            <div class="mono text-[8px] sm:text-[10px] text-black/60 font-black tracking-[0.5em] uppercase border-b border-black pb-2 whitespace-nowrap">Grounding the Dream</div>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full border-collapse">
-                <tbody class="text-3xl lg:text-5xl font-black uppercase">
+            <table class="w-full border-collapse min-w-[600px] sm:min-w-0">
+                <tbody class="text-2xl sm:text-3xl lg:text-5xl font-black uppercase">
                     <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">01_</td>
-                        <td class="py-14">Sophisticated Intent</td>
-                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">Optimized Precision</td>
+                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">01_</td>
+                        <td class="py-8 sm:py-14">Sophisticated Intent</td>
+                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">Optimized Precision</td>
                     </tr>
                     <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">02_</td>
-                        <td class="py-14">Interior Elegance</td>
-                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">Integrated MEP</td>
+                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">02_</td>
+                        <td class="py-8 sm:py-14">Interior Elegance</td>
+                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">Integrated MEP</td>
                     </tr>
                     <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-14 mono text-xs opacity-30 group-hover:text-[--gold]">03_</td>
-                        <td class="py-14">Clash Resolution</td>
-                        <td class="py-14 text-right mono text-sm opacity-30 group-hover:opacity-100">BIM Compliance</td>
+                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">03_</td>
+                        <td class="py-8 sm:py-14">Clash Resolution</td>
+                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">BIM Compliance</td>
                     </tr>
                 </tbody>
             </table>
@@ -145,39 +196,39 @@
     </section>
 
     
-    <section class="py-60 px-10 lg:px-40 bg-[--dark]">
-        <div class="grid lg:grid-cols-4 gap-6">
-            <div class="nexus-card p-12 border-t-2 border-[--gold] reveal-box">
+    <section class="py-32 sm:py-60 px-6 sm:px-10 lg:px-40 bg-[--dark]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="nexus-card p-8 sm:p-12 border-t-2 border-[--gold] reveal-box">
                 <span class="mono text-[--gold] text-xs">// 01</span>
-                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Wireframe</h4>
-                <p class="text-gray-500 text-sm leading-relaxed">The immutable backbone. Establishing core spatial data from the first stroke.</p>
+                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">The Wireframe</h4>
+                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">The immutable backbone. Establishing core spatial data from the first stroke.</p>
             </div>
-            <div class="nexus-card p-12 border-t-2 border-white reveal-box">
+            <div class="nexus-card p-8 sm:p-12 border-t-2 border-white reveal-box">
                 <span class="mono text-white text-xs">// 02</span>
-                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Sketch</h4>
-                <p class="text-gray-500 text-sm leading-relaxed">Where the dream meets the grid. Layering aesthetic subversion onto the functional base.</p>
+                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">The Sketch</h4>
+                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">Where the dream meets the grid. Layering aesthetic subversion onto the functional base.</p>
             </div>
-            <div class="nexus-card p-12 border-t-2 border-[--red] reveal-box">
+            <div class="nexus-card p-8 sm:p-12 border-t-2 border-[--red] reveal-box">
                 <span class="mono text-[--red] text-xs">// 03</span>
-                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Narrative</h4>
-                <p class="text-gray-500 text-sm leading-relaxed">Interrogating spatial truth through high-fidelity visualization before site construction.</p>
+                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">The Narrative</h4>
+                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">Interrogating spatial truth through high-fidelity visualization before site construction.</p>
             </div>
-            <div class="nexus-card p-12 border-t-2 border-white reveal-box">
+            <div class="nexus-card p-8 sm:p-12 border-t-2 border-white reveal-box">
                 <span class="mono text-white text-xs">// 04</span>
-                <h4 class="text-2xl font-black mt-6 mb-6 uppercase">The Reality</h4>
-                <p class="text-gray-500 text-sm leading-relaxed">A 1:1 derivation of the vision. Coordinated, data-optimized, and built to last.</p>
+                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">The Reality</h4>
+                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">A 1:1 derivation of the vision. Coordinated, data-optimized, and built to last.</p>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-12 py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none">
+<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
+    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
         REF_PN: 77-004-AF // CORE_SPEC
     </div>
 
     <div class="max-w-screen-2xl mx-auto">
-        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
             
             <div class="space-y-6">
                 <div class="flex items-center gap-3">
@@ -193,7 +244,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// NAVIGATION_NODES</h4>
+                <h4 class="opacity-100 text-xs">// NAVIGATION_NODES</h4>
                 <ul class="mono text-[10px] space-y-2">
                     <li><a href="home.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
                     <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> ARCHIVES</a></li>
@@ -203,7 +254,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SOCIAL_SYNTHESIS</h4>
+                <h4 class="opacity-100 text-xs">// SOCIAL_SYNTHESIS</h4>
                 <div class="flex flex-wrap gap-4">
                     <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
                         <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
@@ -218,7 +269,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SYSTEM_STATUS</h4>
+                <h4 class="opacity-100 text-xs">// SYSTEM_STATUS</h4>
                 <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
                     <div class="flex justify-between mono text-[9px]">
                         <span class="opacity-50">TIME:</span>
@@ -236,8 +287,8 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest">
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
                 © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // DESIGNED FOR THE REBELLION.
             </div>
             
@@ -264,7 +315,26 @@
 <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. THREE.JS Point Cloud Engine
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // close menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+    }
+
+    // 1. THREE.JS Point Cloud Engine (with resize handling)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: true });
@@ -290,14 +360,16 @@
     }
     animate();
 
-    // 2. KINETIC HUD CURSOR
+    // 2. KINETIC HUD CURSOR (only on desktop)
     const nexusCursor = document.getElementById('cursor-nexus');
     const cursorLabel = document.getElementById('cursor-label');
 
     document.addEventListener("mousemove", (e) => {
-        gsap.to(nexusCursor, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3, ease: "power2.out" });
-        gsap.to(cursorLabel, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
-        cursorLabel.textContent = `X:${e.clientX} Y:${e.clientY}`;
+        if (window.innerWidth > 768) {
+            gsap.to(nexusCursor, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3, ease: "power2.out" });
+            gsap.to(cursorLabel, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
+            cursorLabel.textContent = `X:${e.clientX} Y:${e.clientY}`;
+        }
     });
 
     // 3. ADVANCED SCROLL NARRATIVE
@@ -310,11 +382,14 @@
         }
     });
 
-    stickyTl.to("#img-dream", { opacity: 1, scale: 1, duration: 1 })
-            .to("#sticky-text", { textContent: "THE DREAM", duration: 0.1 }, 0.5)
-            .to("#status-line", { textContent: "OPTIMIZATION_COMPLETE // RENDERING_FIDELITY", color: "#ffffff" }, 0.5)
-            .to("#sticky-sub", { textContent: "High-Fidelity Architectural Intent", color: "#ffffff" }, 0.5)
-            .to(points.position, { z: 2, duration: 1 }, 0); // Zoom in on the 3D particles
+    // Ensure elements exist before tweening
+    if (document.getElementById('img-dream') && document.getElementById('sticky-text')) {
+        stickyTl.to("#img-dream", { opacity: 1, scale: 1, duration: 1 })
+                .to("#sticky-text", { textContent: "THE DREAM", duration: 0.1 }, 0.5)
+                .to("#status-line", { textContent: "OPTIMIZATION_COMPLETE // RENDERING_FIDELITY", color: "#ffffff" }, 0.5)
+                .to("#sticky-sub", { textContent: "High-Fidelity Architectural Intent", color: "#ffffff" }, 0.5)
+                .to(points.position, { z: 2, duration: 1 }, 0); // Zoom in on the 3D particles
+    }
 
     // 4. ELEMENT REVEALS
     gsap.from("#hero-title", { opacity: 0, x: -100, duration: 1.5, ease: "power4.out" });

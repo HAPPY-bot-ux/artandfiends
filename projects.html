@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>The Archive | ARTANDFIENDS</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,12 @@
         :root { --gold: #C9A227; --dark: #020202; --red: #ff3c00; --wire: rgba(201, 162, 39, 0.2); }
         body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
         .mono { font-family: 'Space Mono', monospace; }
+        
+        /* disable custom cursor on mobile for usability */
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            #cursor-nexus, #cursor-data { display: none; }
+        }
         
         /* 3D LIDAR Engine */
         #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
@@ -119,6 +125,52 @@
             background: rgba(0,0,0,0.8);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(2,2,2,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        .mobile-menu.open { right: 0; }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
+        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
+        @media (max-width: 1024px) { .menu-toggle { display: flex; } }
+        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .project-node { padding: 0 5vw; }
+            .data-panel { width: 40%; padding-right: 30px; }
+            .visual-anchor { width: 60%; }
+        }
+
+        @media (max-width: 768px) {
+            .project-node { flex-direction: column; justify-content: center; padding: 0 4rem; }
+            .data-panel { width: 100%; padding-right: 0; margin-bottom: 2rem; }
+            .visual-anchor { width: 100%; height: 45vh; }
+            .project-node .text-7xl { font-size: 3.5rem; }
+            .section-tag { left: 5px; font-size: 8px; letter-spacing: 5px; }
+            .bim-overlay { font-size: 8px; top: 10px; right: 10px; }
+            .fixed.bottom-10.left-12 { left: 1rem; bottom: 2rem; }
+            .fixed.bottom-10.left-12 .w-48 { width: 120px; }
+        }
+
+        @media (max-width: 480px) {
+            .project-node { padding: 0 2rem; }
+            .project-node .text-7xl { font-size: 2.5rem; }
+            .data-panel .text-sm { font-size: 0.75rem; }
+            .visual-anchor { height: 35vh; }
+            .mono.text-\[10px\] { font-size: 8px; }
+        }
+
+        /* final node override for white background */
+        .project-node:last-child { 
+            background: white; 
+            color: black; 
+        }
+        .project-node:last-child .glitch-frame { border-color: rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -128,10 +180,26 @@
 <div id="cursor-nexus"></div>
 <div id="cursor-data">SYS_INIT_SUCCESS</div>
 
-<nav class="fixed w-full z-[100] glass-nav px-12 py-6 flex justify-between items-center">
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Menu Panel -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT</a>
+    <a href="projects.html">PROJECTS</a>
+    <a href="attire.html">ATTIRE</a>
+    <a href="contact.html" class="contact-mobile">CONTACT</a>
+</div>
+
+<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center nav-blur">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
         <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
@@ -142,31 +210,31 @@
     </div>
 </nav>
 
-<div class="fixed bottom-10 left-12 z-50 flex items-center gap-6">
+<div class="fixed bottom-4 sm:bottom-10 left-4 sm:left-12 z-50 flex items-center gap-4 sm:gap-6">
     <div class="flex flex-col gap-1">
-        <span class="mono text-[8px] text-white/40">BUFFER_LOAD</span>
-        <div class="w-48 h-[1px] bg-white/10 relative">
+        <span class="mono text-[6px] sm:text-[8px] text-white/40">BUFFER_LOAD</span>
+        <div class="w-24 sm:w-48 h-[1px] bg-white/10 relative">
             <div id="scroll-bar" class="absolute h-full bg-[--gold] w-0"></div>
         </div>
     </div>
-    <span id="scroll-percent" class="mono text-[10px] text-[--gold]">00%</span>
+    <span id="scroll-percent" class="mono text-[8px] sm:text-[10px] text-[--gold]">00%</span>
 </div>
 
 <main class="page-wrapper">
-    <section class="h-screen flex items-center px-12 lg:px-40">
+    <section class="h-screen flex items-center px-6 sm:px-12 lg:px-40">
         <div class="max-w-5xl">
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-[1px] bg-[--gold]"></div>
-                <span class="mono text-[--gold] text-xs tracking-[0.8em] animate-pulse">SYSTEM_ARCHIVE_V04.2</span>
+                <div class="w-8 sm:w-12 h-[1px] bg-[--gold]"></div>
+                <span class="mono text-[--gold] text-[0.6rem] sm:text-xs tracking-[0.4em] sm:tracking-[0.8em] animate-pulse">SYSTEM_ARCHIVE_V04.2</span>
             </div>
-            <h2 class="text-[12vw] font-black leading-[0.8] uppercase mb-12 tracking-tighter">
+            <h2 class="text-[15vw] sm:text-[12vw] font-black leading-[0.8] uppercase mb-8 sm:mb-12 tracking-tighter">
                 The<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Artifacts.</span>
             </h2>
-            <div class="grid lg:grid-cols-2 gap-20">
-                <p class="text-2xl text-gray-400 leading-tight">
+            <div class="grid lg:grid-cols-2 gap-8 sm:gap-20">
+                <p class="text-xl sm:text-2xl text-gray-400 leading-tight">
                     Every project is a collision. We do not curate artifacts; we expose the **metadata of rebellion**. 
                 </p>
-                <div class="mono text-[10px] text-gray-500 border-l border-white/10 pl-10 space-y-2">
+                <div class="mono text-[8px] sm:text-[10px] text-gray-500 border-l border-white/10 pl-4 sm:pl-10 space-y-2">
                     <p>[AUTH]: DESIGN_LEAD_REBEL</p>
                     <p>[STATUS]: DEPLOYED_REALITY</p>
                     <p>[SYNC]: 1:1_BIM_MODEL_FIDELITY</p>
@@ -180,14 +248,14 @@
         <div class="horizontal-scroller">
             
             <section class="project-node">
-                <span class="section-tag mono uppercase">ARCHITECTURAL_RIGOR</span>
+                <span class="section-tag mono uppercase hidden sm:block">ARCHITECTURAL_RIGOR</span>
                 <div class="data-panel">
-                    <span class="mono text-[--gold] text-sm mb-4 block">NODE_01 // COM_072</span>
-                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Skyline<br>Nexus</h3>
-                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">NODE_01 // COM_072</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Skyline<br>Nexus</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
                         A vertical defiance of structural limits. Integrated MEP and parametric optimization allowed for a 20% reduction in material waste while maintaining a radical glass envelope.
                     </p>
-                    <ul class="mono text-[10px] space-y-3 text-[--gold]">
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
                         <li>> LOD_400_MODEL_SYNC</li>
                         <li>> CLASH_DETECTION_PASS</li>
                         <li>> THERMAL_ENVELOPE_V04</li>
@@ -195,22 +263,22 @@
                 </div>
                 <div class="visual-anchor group">
                     <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono">
+                    <div class="bim-overlay mono hidden sm:block">
                         COORD: 40.7128° N, 74.0060° W<br>SCALE: 1:1_BUILDABLE<br>REVIT_V26_ID: 884-292
                     </div>
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img" alt="project">
                 </div>
             </section>
 
             <section class="project-node">
-                <span class="section-tag mono uppercase">INTERIOR_ELEGANCE</span>
+                <span class="section-tag mono uppercase hidden sm:block">INTERIOR_ELEGANCE</span>
                 <div class="data-panel">
-                    <span class="mono text-[--red] text-sm mb-4 block">NODE_02 // RES_104</span>
-                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Tectonic<br>Villa</h3>
-                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                    <span class="mono text-[--red] text-xs sm:text-sm mb-4 block">NODE_02 // RES_104</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Tectonic<br>Villa</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
                         Where high-end luxury meets raw construction data. Every junction was visualized in photorealistic 1:1 renders before the first concrete pour.
                     </p>
-                    <ul class="mono text-[10px] space-y-3 text-[--red]">
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--red]">
                         <li>> LIGHT_STUDY_SIM_B2</li>
                         <li>> MATERIAL_FIDELITY_MAX</li>
                         <li>> RADICAL_SYMMETRY_DEPLOYED</li>
@@ -218,22 +286,22 @@
                 </div>
                 <div class="visual-anchor">
                     <div class="glitch-frame" style="border-color: var(--red);"></div>
-                    <div class="bim-overlay mono" style="color: var(--red);">
+                    <div class="bim-overlay mono hidden sm:block" style="color: var(--red);">
                         COORD: 34.0522° N, 118.2437° W<br>MAT: POLISHED_GRAPHITE<br>LUX_VAL: 850_AVG
                     </div>
-                    <img src="images/image1.jpg" class="project-img">
+                    <img src="images/image1.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070'">
                 </div>
             </section>
 
             <section class="project-node">
-                <span class="section-tag mono uppercase">CLASH_RESOLUTION</span>
+                <span class="section-tag mono uppercase hidden sm:block">CLASH_RESOLUTION</span>
                 <div class="data-panel">
-                    <span class="mono text-[--gold] text-sm mb-4 block">NODE_03 // LAB_331</span>
-                    <h3 class="text-7xl font-black uppercase leading-none mb-8">Kinetic<br>Fabric</h3>
-                    <p class="text-gray-500 mb-10 text-sm leading-relaxed">
+                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">NODE_03 // LAB_331</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Kinetic<br>Fabric</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
                         A multi-use experiment in architectural fluidity. A data-driven facade that responds to solar orientation in real-time.
                     </p>
-                    <ul class="mono text-[10px] space-y-3 text-[--gold]">
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
                         <li>> KINETIC_FACADE_ACTIVE</li>
                         <li>> BIM_DATA_STREAM_02</li>
                         <li>> SOLAR_OPTIMIZATION_V9</li>
@@ -241,129 +309,120 @@
                 </div>
                 <div class="visual-anchor">
                     <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono">
+                    <div class="bim-overlay mono hidden sm:block">
                         FACADE_FLUX: 12.4mm/sec<br>ENERGY_YIELD: +18%<br>STRUCTURAL_LOAD: NOMINAL
                     </div>
-                    <img src="images/iamge2.jpg" class="project-img">
+                    <img src="images/iamge2.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070'">
                 </div>
             </section>
 
            <section class="project-node">
-    <span class="section-tag mono uppercase">CLIMATE_ADAPTATION</span>
-    <div class="data-panel">
-        <span class="mono text-[--gold] text-sm mb-4 block">NODE_03 // LAB_331</span>
-        <h3 class="text-7xl font-black uppercase leading-none mb-8">
-            Kinetic<br>Fabric
-        </h3>
-        <p class="text-gray-500 mb-10 text-sm leading-relaxed">
-            A responsive architectural skin engineered for dynamic solar mitigation. 
-            The facade adjusts panel orientation using real-time environmental inputs 
-            to maximize daylight penetration and thermal efficiency.
-        </p>
-        <ul class="mono text-[10px] space-y-3 text-[--gold]">
-            <li>> FACADE_KINETICS_ONLINE</li>
-            <li>> SOLAR_TRACKING_ARRAY_V3</li>
-            <li>> AI_ENVIRONMENTAL_FEEDBACK</li>
-        </ul>
-    </div>
-    <div class="visual-anchor">
-        <div class="glitch-frame"></div>
-        <div class="bim-overlay mono">
-            PANEL_ROTATION: 14.2°<br>
-            ENERGY_GAIN: +21%<br>
-            WIND_RESISTANCE: OPTIMIZED
-        </div>
-        <img src="images/image3.jpg" class="project-img">
-    </div>
-</section>
+                <span class="section-tag mono uppercase hidden sm:block">CLIMATE_ADAPTATION</span>
+                <div class="data-panel">
+                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">NODE_04 // LAB_331</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Kinetic<br>Fabric</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
+                        A responsive architectural skin engineered for dynamic solar mitigation. 
+                        The facade adjusts panel orientation using real-time environmental inputs 
+                        to maximize daylight penetration and thermal efficiency.
+                    </p>
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
+                        <li>> FACADE_KINETICS_ONLINE</li>
+                        <li>> SOLAR_TRACKING_ARRAY_V3</li>
+                        <li>> AI_ENVIRONMENTAL_FEEDBACK</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame"></div>
+                    <div class="bim-overlay mono hidden sm:block">
+                        PANEL_ROTATION: 14.2°<br>
+                        ENERGY_GAIN: +21%<br>
+                        WIND_RESISTANCE: OPTIMIZED
+                    </div>
+                    <img src="images/image3.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070'">
+                </div>
+            </section>
 
 
             <section class="project-node">
-    <span class="section-tag mono uppercase">STRUCTURAL_INTELLIGENCE</span>
-    <div class="data-panel">
-        <span class="mono text-[--gold] text-sm mb-4 block">NODE_04 // LAB_408</span>
-        <h3 class="text-7xl font-black uppercase leading-none mb-8">
-            Neural<br>Structure
-        </h3>
-        <p class="text-gray-500 mb-10 text-sm leading-relaxed">
-            A parametric load-distribution framework inspired by neural networks. 
-            Structural stress is redistributed dynamically through algorithmic 
-            recalibration of core support nodes.
-        </p>
-        <ul class="mono text-[10px] space-y-3 text-[--gold]">
-            <li>> PARAMETRIC_GRID_ACTIVE</li>
-            <li>> LOAD_BALANCE_MATRIX_V5</li>
-            <li>> CORE_STRESS_ANALYTICS</li>
-        </ul>
-    </div>
-    <div class="visual-anchor">
-        <div class="glitch-frame"></div>
-        <div class="bim-overlay mono">
-            LOAD_SHIFT: -12%<br>
-            CORE_PRESSURE: STABLE<br>
-            DEFLECTION_RATE: 0.002mm
-        </div>
-        <img src="images/image4.jpg" class="project-img">
-    </div>
-</section>
+                <span class="section-tag mono uppercase hidden sm:block">STRUCTURAL_INTELLIGENCE</span>
+                <div class="data-panel">
+                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">NODE_05 // LAB_408</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Neural<br>Structure</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
+                        A parametric load-distribution framework inspired by neural networks. 
+                        Structural stress is redistributed dynamically through algorithmic 
+                        recalibration of core support nodes.
+                    </p>
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
+                        <li>> PARAMETRIC_GRID_ACTIVE</li>
+                        <li>> LOAD_BALANCE_MATRIX_V5</li>
+                        <li>> CORE_STRESS_ANALYTICS</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame"></div>
+                    <div class="bim-overlay mono hidden sm:block">
+                        LOAD_SHIFT: -12%<br>
+                        CORE_PRESSURE: STABLE<br>
+                        DEFLECTION_RATE: 0.002mm
+                    </div>
+                    <img src="images/image4.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070'">
+                </div>
+            </section>
 
 
            <section class="project-node">
-    <span class="section-tag mono uppercase">SMART_ENVIRONMENT</span>
-    <div class="data-panel">
-        <span class="mono text-[--gold] text-sm mb-4 block">NODE_05 // LAB_512</span>
-        <h3 class="text-7xl font-black uppercase leading-none mb-8">
-            Lumina<br>Grid
-        </h3>
-        <p class="text-gray-500 mb-10 text-sm leading-relaxed">
-            An AI-driven lighting ecosystem integrating occupancy sensors, 
-            daylight harvesting, and circadian rhythm calibration to create 
-            adaptive interior atmospheres.
-        </p>
-        <ul class="mono text-[10px] space-y-3 text-[--gold]">
-            <li>> OCCUPANCY_SENSOR_SYNC</li>
-            <li>> DAYLIGHT_HARVESTING_V2</li>
-            <li>> CIRCADIAN_MODE_ENABLED</li>
-        </ul>
-    </div>
-    <div class="visual-anchor">
-        <div class="glitch-frame"></div>
-        <div class="bim-overlay mono">
-            LUX_OUTPUT: 680lx<br>
-            ENERGY_USAGE: -27%<br>
-            ADAPTIVE_MODE: ACTIVE
-        </div>
-        <img src="images/image5.jpg" class="project-img">
-    </div>
-</section>
+                <span class="section-tag mono uppercase hidden sm:block">SMART_ENVIRONMENT</span>
+                <div class="data-panel">
+                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">NODE_06 // LAB_512</span>
+                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Lumina<br>Grid</h3>
+                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
+                        An AI-driven lighting ecosystem integrating occupancy sensors, 
+                        daylight harvesting, and circadian rhythm calibration to create 
+                        adaptive interior atmospheres.
+                    </p>
+                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
+                        <li>> OCCUPANCY_SENSOR_SYNC</li>
+                        <li>> DAYLIGHT_HARVESTING_V2</li>
+                        <li>> CIRCADIAN_MODE_ENABLED</li>
+                    </ul>
+                </div>
+                <div class="visual-anchor">
+                    <div class="glitch-frame"></div>
+                    <div class="bim-overlay mono hidden sm:block">
+                        LUX_OUTPUT: 680lx<br>
+                        ENERGY_USAGE: -27%<br>
+                        ADAPTIVE_MODE: ACTIVE
+                    </div>
+                    <img src="images/image5.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070'">
+                </div>
+            </section>
 
 
-            <section class="project-node !w-[150vw] bg-white text-black">
-                
-                <div class="flex flex-col gap-8">
-                    <h4 class="text-[12vw] font-black uppercase leading-[0.8] tracking-tighter">
+            <section class="project-node !w-[100vw] sm:!w-[150vw] bg-white text-black flex items-center justify-center">
+                <div class="flex flex-col gap-6 sm:gap-8 px-6 sm:px-0">
+                    <h4 class="text-6xl sm:text-8xl lg:text-[12vw] font-black uppercase leading-[0.8] tracking-tighter">
                         Dream<br>& Data.
                     </h4>
-                    <p class="text-3xl max-w-2xl font-bold leading-tight">
+                    <p class="text-xl sm:text-3xl max-w-2xl font-bold leading-tight">
                         We bridge the gap between obsessive creativity and technical rigor. The rebellion is grounded.
                     </p>
-                    <a href="contact.html" class="mono text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all">ESTABLISH_CONNECTION</a>
-                    
+                    <a href="contact.html" class="mono text-lg sm:text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all self-start">ESTABLISH_CONNECTION</a>
                 </div>
-                
             </section>
 
         </div>
     </div>
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-12 py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none">
+<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
+    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
         REF_PN: 77-004-AF // CORE_SPEC
     </div>
 
     <div class="max-w-screen-2xl mx-auto">
-        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
             
             <div class="space-y-6">
                 <div class="flex items-center gap-3">
@@ -379,7 +438,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// NAVIGATION_NODES</h4>
+                <h4 class="opacity-100 text-xs">// NAVIGATION_NODES</h4>
                 <ul class="mono text-[10px] space-y-2">
                     <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
                     <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> ARCHIVES</a></li>
@@ -389,7 +448,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SOCIAL_SYNTHESIS</h4>
+                <h4 class="opacity-100 text-xs">// SOCIAL_SYNTHESIS</h4>
                 <div class="flex flex-wrap gap-4">
                     <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
                         <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
@@ -404,7 +463,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SYSTEM_STATUS</h4>
+                <h4 class="opacity-100 text-xs">// SYSTEM_STATUS</h4>
                 <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
                     <div class="flex justify-between mono text-[9px]">
                         <span class="opacity-50">TIME:</span>
@@ -422,8 +481,8 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest">
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
                 © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // DESIGNED FOR THE REBELLION.
             </div>
             
@@ -449,6 +508,25 @@
 
 <script>
     gsap.registerPlugin(ScrollTrigger);
+
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // close menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+    }
 
     // 1. THREE.JS: LIDAR SCANNER BACKGROUND
     const canvas = document.getElementById('webgl-canvas');
@@ -476,70 +554,83 @@
     }
     animatePoints();
 
-    // 2. TACTICAL HUD CURSOR
+    // 2. TACTICAL HUD CURSOR (only on desktop)
     const cursor = document.getElementById('cursor-nexus');
     const cData = document.getElementById('cursor-data');
     
     document.addEventListener('mousemove', (e) => {
-        gsap.to(cursor, { x: e.clientX - 25, y: e.clientY - 25, duration: 0.2 });
-        gsap.to(cData, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
-        cData.innerText = `X:${e.clientX} Y:${e.clientY} // NODE_SCAN: ${Math.random().toFixed(2)}`;
+        if (window.innerWidth > 768) {
+            gsap.to(cursor, { x: e.clientX - 25, y: e.clientY - 25, duration: 0.2 });
+            gsap.to(cData, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
+            cData.innerText = `X:${e.clientX} Y:${e.clientY} // NODE_SCAN: ${(Math.random() * 100).toFixed(2)}`;
+        }
     });
 
     // 3. THE KINETIC SCROLLER (ScrollTrigger Mastery)
     const scroller = document.querySelector('.horizontal-scroller');
     
-    let scrollTween = gsap.to(scroller, {
-        x: () => -(scroller.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".horizontal-wrapper",
-            pin: true,
-            scrub: 1,
-            end: () => "+=" + scroller.scrollWidth,
-            onUpdate: (self) => {
-                const prog = Math.round(self.progress * 100);
-                document.getElementById('scroll-bar').style.width = prog + "%";
-                document.getElementById('scroll-percent').innerText = prog.toString().padStart(2, '0') + "%";
-                points.rotation.z = self.progress * 2; // Spin the background on scroll
-            }
-        }
-    });
-
-    // 4. ANIMATE PROJECT CONTENT ON ARRIVAL
-    gsap.utils.toArray(".project-node").forEach(node => {
-        const h3 = node.querySelector("h3");
-        const img = node.querySelector(".visual-anchor");
-
-        gsap.from(h3, {
-            y: 100,
-            opacity: 0,
-            duration: 1,
+    if (scroller) {
+        let scrollTween = gsap.to(scroller, {
+            x: () => -(scroller.scrollWidth - window.innerWidth),
+            ease: "none",
             scrollTrigger: {
-                trigger: node,
-                containerAnimation: scrollTween,
-                start: "left 80%",
+                trigger: ".horizontal-wrapper",
+                pin: true,
+                scrub: 1,
+                end: () => "+=" + scroller.scrollWidth,
+                onUpdate: (self) => {
+                    const prog = Math.round(self.progress * 100);
+                    const scrollBar = document.getElementById('scroll-bar');
+                    const scrollPercent = document.getElementById('scroll-percent');
+                    if (scrollBar) scrollBar.style.width = prog + "%";
+                    if (scrollPercent) scrollPercent.innerText = prog.toString().padStart(2, '0') + "%";
+                    if (points) points.rotation.z = self.progress * 2; // Spin the background on scroll
+                }
             }
         });
 
-        gsap.from(img, {
-            scale: 0.8,
-            opacity: 0,
-            duration: 1.5,
-            ease: "expo.out",
-            scrollTrigger: {
-                trigger: node,
-                containerAnimation: scrollTween,
-                start: "left 70%",
+        // 4. ANIMATE PROJECT CONTENT ON ARRIVAL
+        gsap.utils.toArray(".project-node").forEach(node => {
+            const h3 = node.querySelector("h3");
+            const img = node.querySelector(".visual-anchor");
+
+            if (h3) {
+                gsap.from(h3, {
+                    y: 100,
+                    opacity: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: node,
+                        containerAnimation: scrollTween,
+                        start: "left 80%",
+                    }
+                });
+            }
+
+            if (img) {
+                gsap.from(img, {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: "expo.out",
+                    scrollTrigger: {
+                        trigger: node,
+                        containerAnimation: scrollTween,
+                        start: "left 70%",
+                    }
+                });
             }
         });
-    });
+    }
 
     // Handle Window Resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // update ScrollTrigger on resize
+        ScrollTrigger.refresh();
     });
 </script>
 

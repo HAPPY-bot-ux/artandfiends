@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>ARTANDFIENDS | The Sovereign Nexus</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,6 +14,11 @@
     <style>
         :root { --gold: #C9A227; --dark: #050505; --red: #ff3c00; }
         body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
+        /* disable custom cursor on mobile for usability */
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            #cursor, #cursor-follower { display: none; }
+        }
         .mono { font-family: 'Space Mono', monospace; }
         
         #cursor { width: 8px; height: 8px; background: white; border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
@@ -24,9 +29,13 @@
         #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         .content-layer { position: relative; z-index: 10; }
         
-        /* 3D Horizontal Slider Upgraded */
+        /* 3D Horizontal Slider Upgraded — mobile override */
         .horizontal-container { display: flex; width: 500vw; height: 100vh; will-change: transform; }
         .horizontal-panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+        @media (max-width: 1024px) {
+            .horizontal-container { width: 500vw; } /* preserve horizontal scroll but adjust panel padding */
+            .horizontal-panel { padding: 1rem; }
+        }
         
         /* High-Impact Image Sizing */
         .project-image-container { width: 85%; height: 75%; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
@@ -41,6 +50,41 @@
         .hud-border { position: absolute; border: 1px solid var(--gold); opacity: 0.3; width: 40px; height: 40px; }
         .top-left { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
         .bottom-right { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        .mobile-menu.open { right: 0; }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
+        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
+        @media (max-width: 1024px) { .menu-toggle { display: flex; } }
+        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
+
+        /* responsive typography & spacing */
+        @media (max-width: 768px) {
+            h2.text-9xl { font-size: 4rem; }
+            #home h2 { font-size: 15vw; }
+            #about .grid { gap: 1rem; }
+            .bento-card.p-12 { padding: 2rem; }
+            #about .text-6xl { font-size: 3rem; }
+            #attire h3.text-8xl { font-size: 4rem; }
+            #contact h2.text-9xl { font-size: 4rem; }
+            #contact a.text-5xl { font-size: 2rem; }
+            .footer-clock { font-size: 0.5rem; }
+        }
+        /* adjust horizontal panel text on small devices */
+        @media (max-width: 640px) {
+            .horizontal-panel .text-7xl { font-size: 3rem; }
+            .horizontal-panel .absolute.bottom-12 { bottom: 6rem; left: 1.5rem; }
+            .project-image-container { width: 95%; height: 70%; }
+        }
+        /* ensure images inside bento cards don't overflow */
+        .bento-card { position: relative; isolation: isolate; }
+        .bento-card img { z-index: -1; }
     </style>
 </head>
 
@@ -49,11 +93,28 @@
 <div id="cursor"></div>
 <div id="cursor-follower"></div>
 
-<nav class="fixed w-full z-[100] glass-nav px-12 py-6 flex justify-between items-center">
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Menu Panel -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT</a>
+    <a href="projects.html">PROJECTS</a>
+    <a href="attire.html">ATTIRE</a>
+    <a href="contact.html" class="contact-mobile">CONTACT</a>
+</div>
+
+<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
+    <!-- desktop nav hidden on mobile -->
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
         <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
         <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
@@ -67,43 +128,43 @@
 
 <main class="content-layer">
     
-    <section id="home" class="h-screen flex items-center justify-center px-10">
-        <div class="text-center">
-            <h2 class="text-reveal text-[10vw] font-black leading-none uppercase tracking-tighter" id="hero-main">
+    <section id="home" class="h-screen flex items-center justify-center px-6 sm:px-10">
+        <div class="text-center w-full">
+            <h2 class="text-reveal text-[15vw] sm:text-[10vw] font-black leading-none uppercase tracking-tighter" id="hero-main">
                 DREAM &<br><span class="nexus-gradient">THE DATA</span>
             </h2>
             <div class="mt-10 opacity-0" id="hero-meta">
-                <p class="mono text-gray-500 tracking-[0.5em] text-xs uppercase">Obsessive Design Collective ©2026</p>
-                <div class="mt-8 flex justify-center gap-4">
-                    <div class="w-12 h-[1px] bg-white/20 mt-3"></div>
-                    <span class="text-xs tracking-widest uppercase font-bold">The Facilitator</span>
-                    <div class="w-12 h-[1px] bg-white/20 mt-3"></div>
+                <p class="mono text-gray-500 tracking-[0.5em] text-[8px] sm:text-xs uppercase">Obsessive Design Collective ©2026</p>
+                <div class="mt-8 flex justify-center gap-2 sm:gap-4">
+                    <div class="w-8 sm:w-12 h-[1px] bg-white/20 mt-3"></div>
+                    <span class="text-[10px] sm:text-xs tracking-widest uppercase font-bold">The Facilitator</span>
+                    <div class="w-8 sm:w-12 h-[1px] bg-white/20 mt-3"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-40 px-10 lg:px-40">
-        <div class="grid lg:grid-cols-12 gap-6">
-            <div class="lg:col-span-8 bento-card p-12 reveal">
-                <span class="mono text-[--gold] text-xs uppercase mb-6 block tracking-widest">/ The Art /</span>
-                <img src="images/image1.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
-                <h3 class="text-6xl font-black mb-8 leading-none uppercase">High-Fidelity<br>Intent.</h3>
-                <p class="text-gray-400 text-xl leading-relaxed max-w-xl">Translating abstract concepts into functional environments, prioritizing user experience and architectural elegance.</p>
+    <section id="about" class="py-20 sm:py-40 px-4 sm:px-10 lg:px-40">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+            <div class="md:col-span-8 bento-card p-6 sm:p-12 reveal relative overflow-hidden group min-h-[300px]">
+                <span class="mono text-[--gold] text-xs uppercase mb-4 sm:mb-6 block tracking-widest">/ The Art /</span>
+                <img src="images/image1.jpg" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000" onerror="this.style.display='none'">
+                <h3 class="text-4xl sm:text-6xl font-black mb-4 sm:mb-8 leading-none uppercase">High-Fidelity<br>Intent.</h3>
+                <p class="text-gray-400 text-lg sm:text-xl leading-relaxed max-w-xl">Translating abstract concepts into functional environments, prioritizing user experience and architectural elegance.</p>
             </div>
-            <div class="lg:col-span-4 bento-card p-12 reveal bg-[--gold]/10 border-[--gold]/20">
-                <img src="images/iamge2.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+            <div class="md:col-span-4 bento-card p-6 sm:p-12 reveal bg-[--gold]/10 border-[--gold]/20 relative overflow-hidden group min-h-[250px]">
+                <img src="images/iamge2.jpg" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000" onerror="this.style.display='none'">
                 <h4 class="text-2xl font-bold mb-4 uppercase">Legacy</h4>
                 <p class="text-sm text-white/60">Meaningful data harnessed to extract emotions. We do not build for function; we build for legacy.</p>
             </div>
-            <div class="lg:col-span-4 bento-card p-12 reveal">
-                <span class="mono text-[--red] text-xs uppercase mb-6 block">/ The Fiend /</span>
-                <img src="images/image4.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+            <div class="md:col-span-4 bento-card p-6 sm:p-12 reveal relative overflow-hidden group min-h-[250px]">
+                <span class="mono text-[--red] text-xs uppercase mb-4 sm:mb-6 block">/ The Fiend /</span>
+                <img src="images/image4.jpg" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000" onerror="this.style.display='none'">
                 <h4 class="text-4xl font-black mb-4 uppercase">Obsessive<br>Craft.</h4>
                 <p class="text-sm text-gray-400">A relentless drive to perfect the build reality over corporate polish.</p>
             </div>
-            <div class="lg:col-span-8 bento-card p-12 reveal relative overflow-hidden group">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
+            <div class="md:col-span-8 bento-card p-6 sm:p-12 reveal relative overflow-hidden group min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
                 <h4 class="relative text-3xl font-bold uppercase">Radical Collaboration</h4>
                 <p class="relative text-gray-400 mt-4 max-w-md">The bridge between aesthetic intent and structural reality.</p>
             </div>
@@ -113,37 +174,37 @@
     <section id="projects" class="horizontal-overflow overflow-hidden bg-zinc-950">
         <div class="horizontal-container">
             
-            <div class="horizontal-panel flex-col items-start bg-black">
-                <div class="px-20">
-                    <h3 class="text-[12vw] font-black outline-text uppercase leading-none" style="color: white">Daring<br>Vision</h3>
-                    <img src="images/image1.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
-                    <p class="mono text-[--gold] mt-6 tracking-widest text-xl uppercase">The Gallery of Architectural Rebellion</p>
+            <div class="horizontal-panel flex-col items-start justify-center bg-black px-6 sm:px-20">
+                <div>
+                    <h3 class="text-[15vw] sm:text-[12vw] font-black outline-text uppercase leading-none" style="color: white">Daring<br>Vision</h3>
+                    <img src="images/image1.jpg" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000" onerror="this.style.display='none'">
+                    <p class="mono text-[--gold] mt-6 tracking-widest text-lg sm:text-xl uppercase">The Gallery of Architectural Rebellion</p>
                     <div class="mt-12 w-32 h-[1px] bg-[--gold]"></div>
                 </div>
             </div>
 
-            <div class="horizontal-panel">
+            <div class="horizontal-panel relative">
                 <div class="project-image-container">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80" alt="">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-                    <div class="absolute bottom-12 left-12">
+                    <div class="absolute bottom-6 sm:bottom-12 left-4 sm:left-12 right-4">
                         <span class="mono text-[--gold] text-xs uppercase tracking-widest block mb-2">[ ARCHIVE_01 ]</span>
-                        <h4 class="text-7xl font-black uppercase">The Monolith</h4>
-                        <p class="text-gray-400 max-w-md mt-4">Precision-engineered for urban density without sacrificing the soul of the space.</p>
+                        <h4 class="text-4xl sm:text-7xl font-black uppercase">The Monolith</h4>
+                        <p class="text-gray-400 max-w-md mt-4 text-sm sm:text-base">Precision-engineered for urban density without sacrificing the soul of the space.</p>
                     </div>
                     <div class="hud-border top-left"></div>
                     <div class="hud-border bottom-right"></div>
                 </div>
             </div>
 
-            <div class="horizontal-panel">
+            <div class="horizontal-panel relative">
                 <div class="project-image-container">
-                    <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80">
+                    <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=80" alt="">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-                    <div class="absolute bottom-12 left-12">
+                    <div class="absolute bottom-6 sm:bottom-12 left-4 sm:left-12 right-4">
                         <span class="mono text-[--red] text-xs uppercase tracking-widest block mb-2">[ ARCHIVE_02 ]</span>
-                        <h4 class="text-7xl font-black uppercase">Structural Flow</h4>
-                        <p class="text-gray-400 max-w-md mt-4">Optimizing complexity via industry-leading BIM workflows. Stress-tested for eternity.</p>
+                        <h4 class="text-4xl sm:text-7xl font-black uppercase">Structural Flow</h4>
+                        <p class="text-gray-400 max-w-md mt-4 text-sm sm:text-base">Optimizing complexity via industry-leading BIM workflows. Stress-tested for eternity.</p>
                     </div>
                     <div class="hud-border top-left"></div>
                     <div class="hud-border bottom-right"></div>
@@ -151,28 +212,28 @@
             </div>
 
             <div class="horizontal-panel">
-                <div class="w-[85%] h-[75%] bento-card p-20 border-white/10 flex flex-col justify-center">
-                    <img src="images/image5.jpg" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000">
-                    <h5 class="text-6xl font-black uppercase text-center mb-16">The Evolution Way</h5>
-                    <div class="flex justify-around items-center text-center">
+                <div class="w-[90%] sm:w-[85%] h-[80%] sm:h-[75%] bento-card p-6 sm:p-20 border-white/10 flex flex-col justify-center relative overflow-hidden group">
+                    <img src="images/image5.jpg" alt="" class="absolute inset-0 object-cover opacity-20 group-hover:scale-110 transition duration-1000" onerror="this.style.display='none'">
+                    <h5 class="text-3xl sm:text-6xl font-black uppercase text-center mb-8 sm:mb-16">The Evolution Way</h5>
+                    <div class="flex flex-col sm:flex-row justify-around items-center gap-8 text-center">
                         <div class="space-y-4">
-                            <div class="text-[--gold] font-black text-3xl uppercase">Designers</div>
-                            <div class="text-white/20 text-6xl">↓</div>
-                            <div class="text-white/40 uppercase mono text-sm tracking-widest">Conceptual Phase</div>
+                            <div class="text-[--gold] font-black text-2xl sm:text-3xl uppercase">Designers</div>
+                            <div class="text-white/20 text-4xl sm:text-6xl">↓</div>
+                            <div class="text-white/40 uppercase mono text-xs tracking-widest">Conceptual Phase</div>
                         </div>
-                        <div class="w-48 h-[1px] bg-white/10 relative">
+                        <div class="w-32 sm:w-48 h-[1px] sm:h-auto sm:w-48 bg-white/10 relative rotate-90 sm:rotate-0">
                             <div class="absolute -top-1 left-0 w-2 h-2 rounded-full bg-[--gold]"></div>
                         </div>
-                        <div class="p-16 border-2 border-[--gold] rounded-full animate-pulse shadow-[0_0_30px_rgba(201,162,39,0.3)]">
-                            <span class="font-black text-3xl">NEXUS</span>
+                        <div class="p-8 sm:p-16 border-2 border-[--gold] rounded-full animate-pulse shadow-[0_0_30px_rgba(201,162,39,0.3)]">
+                            <span class="font-black text-xl sm:text-3xl">NEXUS</span>
                         </div>
-                        <div class="w-48 h-[1px] bg-white/10 relative">
+                        <div class="w-32 sm:w-48 h-[1px] sm:h-auto sm:w-48 bg-white/10 relative rotate-90 sm:rotate-0">
                             <div class="absolute -top-1 right-0 w-2 h-2 rounded-full bg-[--red]"></div>
                         </div>
                         <div class="space-y-4">
-                            <div class="text-[--red] font-black text-3xl uppercase">Builders</div>
-                            <div class="text-white/20 text-6xl">↑</div>
-                            <div class="text-white/40 uppercase mono text-sm tracking-widest">Build Reality</div>
+                            <div class="text-[--red] font-black text-2xl sm:text-3xl uppercase">Builders</div>
+                            <div class="text-white/20 text-4xl sm:text-6xl">↑</div>
+                            <div class="text-white/40 uppercase mono text-xs tracking-widest">Build Reality</div>
                         </div>
                     </div>
                 </div>
@@ -180,42 +241,42 @@
         </div>
     </section>
 
-    <section id="attire" class="py-40 px-10 lg:px-40">
-        <div class="reveal grid lg:grid-cols-2 gap-32 items-center">
+    <section id="attire" class="py-20 sm:py-40 px-4 sm:px-10 lg:px-40">
+        <div class="reveal grid lg:grid-cols-2 gap-12 sm:gap-32 items-center">
             <div class="order-2 lg:order-1 relative group">
                 <div class="absolute -inset-4 bg-[--gold] opacity-0 group-hover:opacity-10 transition duration-700 blur-2xl"></div>
-                <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3" class="rounded-2xl opacity-80 transition duration-700">
-                <div class="absolute -bottom-10 -right-10 bg-[--gold] p-10 font-black text-black text-4xl shadow-2xl">ATTIRE 01</div>
+                <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3" class="rounded-2xl opacity-80 transition duration-700 w-full" alt="">
+                <div class="absolute -bottom-6 sm:-bottom-10 -right-4 sm:-right-10 bg-[--gold] p-6 sm:p-10 font-black text-black text-2xl sm:text-4xl shadow-2xl">ATTIRE 01</div>
             </div>
             <div class="order-1 lg:order-2">
-                <h3 class="text-8xl font-black uppercase mb-8">TOTAL<br>EXPERIENCE.</h3>
-                <p class="text-gray-400 text-xl leading-relaxed mb-10">We design the clothing you wear and the furniture you touch. The 'Nexus' of rigor applies to all facets of life.</p>
+                <h3 class="text-5xl sm:text-8xl font-black uppercase mb-8">TOTAL<br>EXPERIENCE.</h3>
+                <p class="text-gray-400 text-lg sm:text-xl leading-relaxed mb-10">We design the clothing you wear and the furniture you touch. The 'Nexus' of rigor applies to all facets of life.</p>
                 <div class="space-y-6">
-                    <div class="flex items-center gap-4 text-[--gold] mono tracking-widest text-lg"><span>[01]</span> <hr class="flex-grow border-white/20"> <span>FURNITURE</span></div>
-                    <div class="flex items-center gap-4 text-white/40 mono tracking-widest text-lg"><span>[02]</span> <hr class="flex-grow border-white/20"> <span>FASHION</span></div>
+                    <div class="flex items-center gap-4 text-[--gold] mono tracking-widest text-base sm:text-lg"><span>[01]</span> <hr class="flex-grow border-white/20"> <span>FURNITURE</span></div>
+                    <div class="flex items-center gap-4 text-white/40 mono tracking-widest text-base sm:text-lg"><span>[02]</span> <hr class="flex-grow border-white/20"> <span>FASHION</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="h-screen flex items-center justify-center relative overflow-hidden bg-black">
-        <div class="absolute text-[30vw] font-black outline-text opacity-5 select-none whitespace-nowrap">JOIN THE REBELLION</div>
-        <div class="text-center relative z-10">
-            <h2 class="text-9xl font-black uppercase mb-10">BUILDING<br><span class="text-[--red]">LEGACY.</span></h2>
-            <p class="mono text-[--gold] mb-12 tracking-[0.5em] uppercase">Ready to enter the Nexus?</p>
-            <a href="mailto:nexus@artandfiends.com" class="text-5xl font-light hover:text-[--gold] transition-all duration-500 underline underline-offset-[24px] decoration-[--gold]">CONNECT NOW</a>
+    <section id="contact" class="h-screen flex items-center justify-center relative overflow-hidden bg-black px-4">
+        <div class="absolute text-[20vw] sm:text-[30vw] font-black outline-text opacity-5 select-none whitespace-nowrap">JOIN THE REBELLION</div>
+        <div class="text-center relative z-10 w-full">
+            <h2 class="text-6xl sm:text-9xl font-black uppercase mb-6 sm:mb-10">BUILDING<br><span class="text-[--red]">LEGACY.</span></h2>
+            <p class="mono text-[--gold] mb-8 sm:mb-12 tracking-[0.5em] uppercase text-xs sm:text-base">Ready to enter the Nexus?</p>
+            <a href="mailto:nexus@artandfiends.com" class="text-3xl sm:text-5xl font-light hover:text-[--gold] transition-all duration-500 underline underline-offset-[16px] sm:underline-offset-[24px] decoration-[--gold] break-all">CONNECT NOW</a>
         </div>
     </section>
 
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-12 py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none">
+<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
+    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
         REF_PN: 77-004-AF // CORE_SPEC
     </div>
 
     <div class="max-w-screen-2xl mx-auto">
-        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
             
             <div class="space-y-6">
                 <div class="flex items-center gap-3">
@@ -231,7 +292,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// NAVIGATION_NODES</h4>
+                <h4 class="label-mini opacity-100 text-xs">// NAVIGATION_NODES</h4>
                 <ul class="mono text-[10px] space-y-2">
                     <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
                     <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> ARCHIVES</a></li>
@@ -241,7 +302,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SOCIAL_SYNTHESIS</h4>
+                <h4 class="label-mini opacity-100 text-xs">// SOCIAL_SYNTHESIS</h4>
                 <div class="flex flex-wrap gap-4">
                     <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
                         <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
@@ -256,7 +317,7 @@
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SYSTEM_STATUS</h4>
+                <h4 class="label-mini opacity-100 text-xs">// SYSTEM_STATUS</h4>
                 <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
                     <div class="flex justify-between mono text-[9px]">
                         <span class="opacity-50">TIME:</span>
@@ -274,8 +335,8 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest">
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
                 © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // DESIGNED FOR THE REBELLION.
             </div>
             
@@ -303,10 +364,32 @@
 const cursor = document.getElementById("cursor");
 const follower = document.getElementById("cursor-follower");
 
-document.addEventListener("mousemove", (e) => {
-    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-    gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.3 });
-});
+if (cursor && follower) {
+    document.addEventListener("mousemove", (e) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.3 });
+    });
+}
+
+// Mobile Menu Toggle
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+    });
+
+    // close menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // allow navigation but close menu
+            menuToggle.classList.remove('open');
+            mobileMenu.classList.remove('open');
+        });
+    });
+}
 
 // --- GSAP SCROLL LOGIC ---
 gsap.registerPlugin(ScrollTrigger);
@@ -315,29 +398,32 @@ window.onload = () => {
     const tl = gsap.timeline();
     tl.from("#hero-main", { y: 200, skewY: 10, opacity: 0, duration: 1.5, ease: "power4.out" })
       .to("#hero-meta", { opacity: 1, duration: 1 }, "-=0.5");
-};
 
-// Horizontal Scroll Implementation
-let sections = gsap.utils.toArray(".horizontal-panel");
-gsap.to(sections, {
-    xPercent: -100 * (sections.length - 1),
-    ease: "none",
-    scrollTrigger: {
-        trigger: ".horizontal-container",
-        pin: true,
-        scrub: 1,
-        snap: 1 / (sections.length - 1),
-        end: () => "+=" + (document.querySelector(".horizontal-container").offsetWidth * 2)
+    // Horizontal Scroll Implementation (safe if sections exist)
+    let sections = gsap.utils.toArray(".horizontal-panel");
+    if (sections.length) {
+        gsap.to(sections, {
+            xPercent: -100 * (sections.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".horizontal-container",
+                pin: true,
+                scrub: 1,
+                snap: 1 / (sections.length - 1),
+                end: () => "+=" + (document.querySelector(".horizontal-container")?.offsetWidth * 2 || 2000),
+                invalidateOnRefresh: true // helps on resize
+            }
+        });
     }
-});
 
-// Animations for Reveal
-gsap.utils.toArray(".reveal").forEach(el => {
-    gsap.from(el, {
-        scrollTrigger: { trigger: el, start: "top 85%" },
-        opacity: 0, y: 100, duration: 1.5, ease: "expo.out"
+    // Animations for Reveal
+    gsap.utils.toArray(".reveal").forEach(el => {
+        gsap.from(el, {
+            scrollTrigger: { trigger: el, start: "top 85%" },
+            opacity: 0, y: 100, duration: 1.5, ease: "expo.out"
+        });
     });
-});
+};
 
 // --- THREE.JS: THE NEXUS GRID ---
 const scene = new THREE.Scene();
