@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Uplink: Project Protocol | ARTANDFIENDS</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,6 +13,11 @@
     <style>
         :root { --gold: #C9A227; --dark: #050505; --accent: #ff3c00; }
         body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow: hidden; cursor: none; }
+        /* disable custom cursor on mobile */
+        @media (max-width: 768px) {
+            body { cursor: auto; overflow-y: auto; }
+            #cursor-nexus { display: none; }
+        }
         .mono { font-family: 'Space Mono', monospace; }
 
         #webgl-canvas { position: fixed; inset: 0; z-index: -1; filter: brightness(0.7) contrast(1.2); }
@@ -25,7 +30,10 @@
         .glass-panel {
             background: rgba(255,255,255,0.01); backdrop-filter: blur(40px);
             border: 1px solid rgba(255,255,255,0.05); border-left: 3px solid var(--gold);
-            padding: 3rem; position: relative; height: 72vh; overflow-y: auto; overflow-x: hidden;
+            padding: 1.5rem; position: relative; height: 72vh; overflow-y: auto; overflow-x: hidden;
+        }
+        @media (min-width: 1024px) {
+            .glass-panel { padding: 3rem; }
         }
         .glass-panel::-webkit-scrollbar { width: 2px; }
         .glass-panel::-webkit-scrollbar-thumb { background: var(--gold); }
@@ -35,18 +43,27 @@
 
         input, textarea, select {
             background: rgba(255,255,255,0.03); border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
-            width: 100%; padding: 0.8rem 1rem; font-family: 'Space Mono'; font-size: 1rem; outline: none; transition: 0.3s; color: white;
+            width: 100%; padding: 0.8rem 1rem; font-family: 'Space Mono'; font-size: 0.9rem; outline: none; transition: 0.3s; color: white;
+        }
+        @media (max-width: 640px) {
+            input, textarea, select { font-size: 0.8rem; padding: 0.6rem; }
         }
         input:focus { border-color: var(--gold); background: rgba(201, 162, 39, 0.05); }
 
-        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
-        .check-item { border: 1px solid rgba(255,255,255,0.1); padding: 10px; font-size: 10px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        @media (max-width: 640px) {
+            .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .check-item { border: 1px solid rgba(255,255,255,0.1); padding: 8px; font-size: 9px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .check-item:hover, .check-item.active { border-color: var(--gold); background: rgba(201, 162, 39, 0.1); color: var(--gold); }
 
         .btn-rebel {
-            background: var(--gold); color: black; font-weight: 900; padding: 1rem 2.5rem;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); text-transform: uppercase; font-size: 11px; letter-spacing: 2px;
-            transition: 0.3s;
+            background: var(--gold); color: black; font-weight: 900; padding: 0.8rem 1.8rem;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); text-transform: uppercase; font-size: 10px; letter-spacing: 2px;
+            transition: 0.3s; white-space: nowrap;
+        }
+        @media (min-width: 768px) {
+            .btn-rebel { padding: 1rem 2.5rem; font-size: 11px; }
         }
         .btn-rebel:hover { background: white; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
 
@@ -58,22 +75,37 @@
         .nav-link:hover::after { width: 100%; }
 
         /* Fix for white-on-white dropdowns */
-select option {
-    background-color: #111; /* Deep charcoal */
-    color: white;
-    padding: 10px;
-    font-family: 'Space Mono', monospace;
-}
+        select option { background-color: #111; color: white; padding: 10px; font-family: 'Space Mono', monospace; }
+        select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C9A227'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
 
-/* Enhances the select box itself to look more tactical */
-select {
-    appearance: none; /* Removes default browser arrow */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23C9A227'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-    padding-right: 2.5rem;
-}
+        /* Mobile Menu */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        .mobile-menu.open { right: 0; }
+        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
+        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
+        @media (max-width: 1024px) { .menu-toggle { display: flex; } }
+        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
+
+        /* Responsive main layout */
+        @media (max-width: 1024px) {
+            main.h-screen { height: auto; min-height: 100vh; overflow-y: auto; padding-top: 100px; padding-bottom: 40px; }
+            .grid.lg\:grid-cols-12 { display: flex; flex-direction: column; gap: 2rem; }
+            .lg\:col-span-3 { width: 100%; margin-top: 0; }
+            .lg\:col-span-9 { width: 100%; }
+            .glass-panel { height: auto; max-height: 70vh; }
+        }
+        @media (max-width: 768px) {
+            main { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .glass-panel { padding: 1.5rem; }
+            .text-6xl { font-size: 3rem; }
+            .grid-cols-2 { grid-template-columns: 1fr; gap: 1rem; }
+            .flex.gap-4.mt-12 { margin-top: 2rem; }
+        }
     </style>
 </head>
 <body>
@@ -81,10 +113,26 @@ select {
 <canvas id="webgl-canvas"></canvas>
 <div id="cursor-nexus"></div>
 
-<nav class="fixed w-full z-[100] px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Mobile Menu Panel -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="home.html">HOME</a>
+    <a href="about.html">ABOUT</a>
+    <a href="projects.html">PROJECTS</a>
+    <a href="attire.html">ATTIRE</a>
+    <a href="contact.html" class="contact-mobile">CONTACT</a>
+</div>
+
+<nav class="fixed w-full z-[100] px-6 sm:px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-xl font-black tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
+        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
     <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
         <a href="home.html" class="nav-link hover:text-[--gold]">HOME</a>
@@ -95,54 +143,55 @@ select {
     </div>
 </nav>
 
-<main class="h-screen flex items-center px-12 lg:px-40 pt-24">
-    <div class="grid lg:grid-cols-12 w-full gap-16 items-start">
+<main class="h-screen flex items-center px-6 sm:px-12 lg:px-40 pt-24 overflow-y-auto lg:overflow-visible">
+    <div class="grid lg:grid-cols-12 w-full gap-8 lg:gap-16 items-start">
         
-        <div class="lg:col-span-3 flex flex-col gap-10 mt-10">
+        <!-- Left panel (telemetry) -->
+        <div class="lg:col-span-3 flex flex-col gap-6 sm:gap-10 mt-0 lg:mt-10">
             <div class="space-y-4">
-                <p class="mono text-[9px] text-[--gold] tracking-widest">>> SYSTEM_LOAD</p>
+                <p class="mono text-[8px] sm:text-[9px] text-[--gold] tracking-widest">>> SYSTEM_LOAD</p>
                 <div class="w-full h-[1px] bg-white/10">
                     <div id="progress-bar" class="h-full bg-[--gold] transition-all duration-700 shadow-[0_0_15px_var(--gold)]" style="width: 14%;"></div>
                 </div>
-                <div class="flex justify-between mono text-[10px]">
+                <div class="flex justify-between mono text-[8px] sm:text-[10px]">
                     <span id="step-id">PHASE_01</span>
                     <span id="percent">14%</span>
                 </div>
             </div>
 
-            <div class="p-6 border border-white/5 bg-white/2 backdrop-blur-md rounded-sm space-y-4 relative overflow-hidden">
+            <div class="p-4 sm:p-6 border border-white/5 bg-white/2 backdrop-blur-md rounded-sm space-y-4 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-[2px] h-full bg-[--gold]"></div>
-                <div class="mono text-[8px] opacity-40 uppercase tracking-widest">Telemetry_Stream</div>
-                <div class="text-[10px] mono">LATENCY: <span class="text-white">12ms</span></div>
-                <div class="text-[10px] mono">BUFFER: <span class="text-white" id="tele-buffer">STABLE</span></div>
-                <div class="text-[10px] mono">COORDS: <span class="text-white" id="tele-coords">0,0</span></div>
+                <div class="mono text-[7px] sm:text-[8px] opacity-40 uppercase tracking-widest">Telemetry_Stream</div>
+                <div class="text-[8px] sm:text-[10px] mono">LATENCY: <span class="text-white">12ms</span></div>
+                <div class="text-[8px] sm:text-[10px] mono">BUFFER: <span class="text-white" id="tele-buffer">STABLE</span></div>
+                <div class="text-[8px] sm:text-[10px] mono">COORDS: <span class="text-white" id="tele-coords">0,0</span></div>
             </div>
             
-            <div class="mono text-[8px] leading-relaxed opacity-30 italic">
+            <div class="mono text-[7px] sm:text-[8px] leading-relaxed opacity-30 italic hidden sm:block">
                 All transmissions are encrypted. Establish connection only if ready to break standard conventions.
             </div>
         </div>
 
-        <!-- contact form -->
+        <!-- contact form panel -->
         <div class="lg:col-span-9 glass-panel" id="main-panel">
             <form id="protocol-form">
                 
                 <div class="step-container step-active" id="step-1">
                     <span class="label-mini">// IDENTITY_NODE_01</span>
-                    <h2 class="text-6xl font-black uppercase italic mb-10 tracking-tighter">Origin<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Details.</span></h2>
-                    <div class="grid grid-cols-2 gap-8">
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase italic mb-6 sm:mb-10 tracking-tighter">Origin<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Details.</span></h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                         <div><label class="label-mini">FULL_NAME*</label><input type="text" placeholder="IDENTITY" required></div>
                         <div><label class="label-mini">EMAIL_ADDRESS*</label><input type="email" placeholder="UPLINK_ADDR" required></div>
                         <div><label class="label-mini">PHONE_DIRECT*</label><input type="tel" placeholder="+00..."></div>
                         <div><label class="label-mini">COMPANY_NAME</label><input type="text" placeholder="COMMERCIAL_ENTITY"></div>
                     </div>
-                    <button type="button" class="btn-rebel mt-12" onclick="nextPhase(2)">Initialize_Phase_02</button>
+                    <button type="button" class="btn-rebel mt-8 sm:mt-12" onclick="nextPhase(2)">Initialize_Phase_02</button>
                 </div>
 
                 <div class="step-container" id="step-2">
                     <span class="label-mini">// GEOMETRY_OVERVIEW_02</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Project<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Scope.</span></h2>
-                    <div class="space-y-8">
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Project<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Scope.</span></h2>
+                    <div class="space-y-6 sm:space-y-8">
                         <div>
                             <label class="label-mini">TYPOLOGY*</label>
                             <select class="mono">
@@ -155,12 +204,12 @@ select {
                                 <option>Other</option>
                             </select>
                         </div>
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div><label class="label-mini">CITY</label><input type="text" placeholder="LONDON"></div>
                             <div><label class="label-mini">PROVINCE</label><input type="text" placeholder="ENG"></div>
                             <div><label class="label-mini">COUNTRY</label><input type="text" placeholder="UK"></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                             <div><label class="label-mini">PROPERTY_SIZE (SQM/FT)</label><input type="text" placeholder="SIZE_SPECS"></div>
                             <div>
                                 <label class="label-mini">OWNERSHIP_STATUS*</label>
@@ -168,16 +217,16 @@ select {
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(1)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(1)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="nextPhase(3)">Phase_03</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step-3">
                     <span class="label-mini">// CHRONOS_ANALYSIS_03</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Current<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Status.</span></h2>
-                    <div class="space-y-8">
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Current<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Status.</span></h2>
+                    <div class="space-y-6 sm:space-y-8">
                         <div>
                             <label class="label-mini">PHASE_STATUS*</label>
                             <select>
@@ -188,25 +237,25 @@ select {
                                 <option>Construction Phase</option>
                             </select>
                         </div>
-                        <div class="p-6 border border-white/5 bg-white/2">
+                        <div class="p-4 sm:p-6 border border-white/5 bg-white/2">
                             <label class="label-mini">EXISTING_PLANS_AVAILABLE?</label>
-                            <div class="flex gap-12 mt-4">
-                                <label class="mono flex items-center cursor-pointer"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> YES</label>
-                                <label class="mono flex items-center cursor-pointer"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> NO</label>
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-12 mt-4">
+                                <label class="mono flex items-center cursor-pointer text-sm sm:text-base"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> YES</label>
+                                <label class="mono flex items-center cursor-pointer text-sm sm:text-base"><input type="radio" name="plans" class="mr-3 accent-[--gold]"> NO</label>
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(2)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(2)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="nextPhase(4)">Phase_04</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step-4">
                     <span class="label-mini">// RESOURCE_ALLOCATION_04</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Capital<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">& Time.</span></h2>
-                    <div class="grid grid-cols-2 gap-8">
-                        <div class="col-span-2">
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Capital<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">& Time.</span></h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                        <div class="col-span-1 sm:col-span-2">
                             <label class="label-mini">ESTIMATED_BUDGET*</label>
                             <select>
                                 <option>Under £100,000</option>
@@ -218,15 +267,15 @@ select {
                         <div><label class="label-mini">DESIRED_START</label><input type="date"></div>
                         <div><label class="label-mini">TARGET_COMPLETION</label><input type="date"></div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(3)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(3)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="nextPhase(5)">Phase_05</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step-5">
                     <span class="label-mini">// REQUIREMENT_MATRIX_05</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Service<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Selection.</span></h2>
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Service<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Selection.</span></h2>
                     <div class="checkbox-grid">
                         <div class="check-item mono" onclick="this.classList.toggle('active')">Architectural Design</div>
                         <div class="check-item mono" onclick="this.classList.toggle('active')">Concept Development</div>
@@ -236,16 +285,16 @@ select {
                         <div class="check-item mono" onclick="this.classList.toggle('active')">Project Management</div>
                         <div class="check-item mono" onclick="this.classList.toggle('active')">Site Supervision</div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(4)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(4)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="nextPhase(6)">Phase_06</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step-6">
                     <span class="label-mini">// AESTHETIC_BIAS_06</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Design<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Soul.</span></h2>
-                    <div class="space-y-8">
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Design<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Soul.</span></h2>
+                    <div class="space-y-6 sm:space-y-8">
                         <div>
                             <label class="label-mini">ARCHITECTURAL_STYLE</label>
                             <select>
@@ -263,58 +312,57 @@ select {
                             <div class="check-item mono" onclick="this.classList.toggle('active')">Sustainability</div>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(5)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(5)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="nextPhase(7)">Final_Phase</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step-7">
                     <span class="label-mini">// DATA_DUMP_07</span>
-                    <h2 class="text-6xl font-black uppercase mb-10 tracking-tighter">Final<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Brief.</span></h2>
+                    <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-6 sm:mb-10 tracking-tighter">Final<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Brief.</span></h2>
                     <div class="space-y-6">
                         <div>
                             <label class="label-mini">PROJECT_DESCRIPTION*</label>
                             <textarea rows="4" placeholder="DESCRIBE YOUR ARCHITECTURAL DEFIANCE..."></textarea>
                         </div>
-                        <div class="grid grid-cols-2 gap-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                             <div>
                                 <label class="label-mini">UPLOAD_DOCUMENTS</label>
-                                <input type="file" class="text-[10px] mono p-2 border border-dashed border-white/20">
+                                <input type="file" class="text-[8px] sm:text-[10px] mono p-2 border border-dashed border-white/20 w-full">
                             </div>
                             <div>
                                 <label class="label-mini">DISCOVERY_SOURCE</label>
                                 <select><option>Google</option><option>Instagram</option><option>Referral</option><option>Website</option></select>
                             </div>
                         </div>
-                        <div class="mt-6 flex flex-col gap-3">
-                            <label class="mono text-[10px] flex items-center gap-3 cursor-pointer">
+                        <div class="mt-4 sm:mt-6 flex flex-col gap-3">
+                            <label class="mono text-[8px] sm:text-[10px] flex items-center gap-3 cursor-pointer">
                                 <input type="checkbox" required class="accent-[--gold]"> I CONFIRM ACCURACY OF DATA
                             </label>
-                            <label class="mono text-[10px] flex items-center gap-3 cursor-pointer">
+                            <label class="mono text-[8px] sm:text-[10px] flex items-center gap-3 cursor-pointer">
                                 <input type="checkbox" required class="accent-[--gold]"> AGREE TO BE CONTACTED
                             </label>
                         </div>
                     </div>
-                    <div class="flex gap-4 mt-12">
-                        <button type="button" class="mono text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(6)">[ REVERT ]</button>
+                    <div class="flex gap-4 mt-8 sm:mt-12">
+                        <button type="button" class="mono text-[9px] sm:text-[10px] opacity-30 hover:opacity-100 transition" onclick="nextPhase(6)">[ REVERT ]</button>
                         <button type="button" class="btn-rebel" onclick="finalizeDeployment()">Request Consultation</button>
                     </div>
                 </div>
             </form>
         </div>
 
-        
     </div>
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-12 py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none">
+<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
+    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
         REF_PN: 77-004-AF // CORE_SPEC
     </div>
 
     <div class="max-w-screen-2xl mx-auto">
-        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-12 mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
             
             <div class="space-y-6">
                 <div class="flex items-center gap-3">
@@ -330,7 +378,7 @@ select {
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// NAVIGATION_NODES</h4>
+                <h4 class="opacity-100 text-xs">// NAVIGATION_NODES</h4>
                 <ul class="mono text-[10px] space-y-2">
                     <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
                     <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> ARCHIVES</a></li>
@@ -340,7 +388,7 @@ select {
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SOCIAL_SYNTHESIS</h4>
+                <h4 class="opacity-100 text-xs">// SOCIAL_SYNTHESIS</h4>
                 <div class="flex flex-wrap gap-4">
                     <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
                         <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
@@ -355,7 +403,7 @@ select {
             </div>
 
             <div class="space-y-4">
-                <h4 class="label-mini opacity-100">// SYSTEM_STATUS</h4>
+                <h4 class="opacity-100 text-xs">// SYSTEM_STATUS</h4>
                 <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
                     <div class="flex justify-between mono text-[9px]">
                         <span class="opacity-50">TIME:</span>
@@ -373,8 +421,8 @@ select {
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest">
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
                 © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // DESIGNED FOR THE REBELLION.
             </div>
             
@@ -387,7 +435,7 @@ select {
 </footer>
 
 <script>
-    // 1. THREE.JS ENGINE
+    // 1. THREE.JS ENGINE (preserved)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: true, antialias: true });
@@ -414,7 +462,25 @@ select {
     }
     animate();
 
-    // 2. ENHANCED PHASE ENGINE
+    // 2. Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+    }
+
+    // 3. PHASE ENGINE
     let currentPhase = 1;
     const totalPhases = 7;
 
@@ -472,16 +538,16 @@ select {
         });
     }
 
-    // 3. FINAL DEPLOYMENT
+    // 4. FINAL DEPLOYMENT
     function finalizeDeployment() {
         document.getElementById('tele-buffer').innerText = "SYNCING_FINAL...";
         
         gsap.to('#main-panel', { skewX: 30, opacity: 0, duration: 0.8, ease: "power4.in", onComplete: () => {
             document.querySelector('.glass-panel').innerHTML = `
                 <div class="h-full flex flex-col items-center justify-center text-center">
-                    <div class="w-20 h-20 border-2 border-[--gold] animate-spin mb-8"></div>
-                    <h2 class="text-6xl font-black mb-4 tracking-tighter italic">Uplink Success.</h2>
-                    <p class="mono text-[--gold] animate-pulse uppercase tracking-[0.5em]">Protocol established. Synthesis beginning.</p>
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 border-2 border-[--gold] animate-spin mb-6 sm:mb-8"></div>
+                    <h2 class="text-4xl sm:text-6xl font-black mb-4 tracking-tighter italic">Uplink Success.</h2>
+                    <p class="mono text-[--gold] animate-pulse uppercase tracking-[0.5em] text-xs sm:text-sm">Protocol established. Synthesis beginning.</p>
                 </div>
             `;
             gsap.fromTo('#main-panel', { skewX: -30, opacity: 0 }, { skewX: 0, opacity: 1, duration: 1.2 });
@@ -492,10 +558,12 @@ select {
         }});
     }
 
-    // 4. HUD INTERACTION
+    // 5. HUD INTERACTION (cursor only on desktop)
     document.addEventListener('mousemove', (e) => {
-        gsap.to('#cursor-nexus', { x: e.clientX - 20, y: e.clientY - 20, duration: 0.1 });
-        document.getElementById('tele-coords').innerText = `${e.clientX}, ${e.clientY}`;
+        if (window.innerWidth > 768) {
+            gsap.to('#cursor-nexus', { x: e.clientX - 20, y: e.clientY - 20, duration: 0.1 });
+            document.getElementById('tele-coords').innerText = `${e.clientX}, ${e.clientY}`;
+        }
     });
 
     window.addEventListener('resize', () => {
