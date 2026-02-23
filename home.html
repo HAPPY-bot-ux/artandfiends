@@ -29,12 +29,32 @@
         #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
         .content-layer { position: relative; z-index: 10; }
         
-        /* 3D Horizontal Slider Upgraded — mobile override */
-        .horizontal-container { display: flex; width: 500vw; height: 100vh; will-change: transform; }
-        .horizontal-panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+        /* 3D Horizontal Slider - Desktop only */
+        @media (min-width: 1025px) {
+            .horizontal-container { display: flex; width: 500vw; height: 100vh; will-change: transform; }
+            .horizontal-panel { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; overflow: hidden; }
+        }
+        
+        /* Mobile vertical layout */
         @media (max-width: 1024px) {
-            .horizontal-container { width: 500vw; } /* preserve horizontal scroll but adjust panel padding */
-            .horizontal-panel { padding: 1rem; }
+            .horizontal-overflow { overflow: visible !important; height: auto !important; }
+            .horizontal-container { 
+                display: block; 
+                width: 100%; 
+                height: auto; 
+                transform: none !important; 
+            }
+            .horizontal-panel { 
+                width: 100%; 
+                height: 100vh; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                position: relative; 
+                overflow: hidden;
+                padding: 1rem;
+                margin-bottom: 2rem;
+            }
         }
         
         /* High-Impact Image Sizing */
@@ -85,6 +105,11 @@
         /* ensure images inside bento cards don't overflow */
         .bento-card { position: relative; isolation: isolate; }
         .bento-card img { z-index: -1; }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 1024px) {
+            .horizontal-panel:last-child { margin-bottom: 0; }
+        }
     </style>
 </head>
 
@@ -109,18 +134,17 @@
     <a href="contact.html" class="contact-mobile">CONTACT</a>
 </div>
 
-<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center">
+<nav class="fixed w-full z-[100] px-6 sm:px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
         <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
-    <!-- desktop nav hidden on mobile -->
-    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
-        <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
-        <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
-        <a href="projects.html" class="hover:text-[--gold] transition">PROJECTS</a>
-        <a href="attire.html" class="hover:text-[--gold] transition">ATTIRE</a>
-        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition">CONTACT</a>         
+    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
+        <a href="home.html" class="nav-link hover:text-[--gold]">HOME</a>
+        <a href="about.html" class="nav-link hover:text-[--gold]">ABOUT</a>
+        <a href="projects.html" class="nav-link hover:text-[--gold]">PROJECTS</a>
+        <a href="attire.html" class="nav-link hover:text-[--gold]">ATTIRE</a>
+        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition ml-4">CONTACT</a>
     </div>
 </nav>
 
@@ -191,7 +215,7 @@
                     <div class="absolute bottom-6 sm:bottom-12 left-4 sm:left-12 right-4">
                         <span class="mono text-[--gold] text-xs uppercase tracking-widest block mb-2">[ COMMERCIAL ]</span>
                         <h4 class="text-4xl sm:text-7xl font-black uppercase">The Monolith</h4>
-                        <p class="text-gray-400 max-w-md mt-4 text-sm sm:text-base">A mixed-use tower in London’s financial district. 32 stories of steel and glass, designed for maximum efficiency and occupant wellbeing.</p>
+                        <p class="text-gray-400 max-w-md mt-4 text-sm sm:text-base">A mixed-use tower in London's financial district. 32 stories of steel and glass, designed for maximum efficiency and occupant wellbeing.</p>
                     </div>
                     <div class="hud-border top-left"></div>
                     <div class="hud-border bottom-right"></div>
@@ -296,10 +320,10 @@
             <div class="space-y-4">
                 <h4 class="label-mini opacity-100 text-xs">// NAVIGATION</h4>
                 <ul class="mono text-[10px] space-y-2">
-                    <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
-                    <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
-                    <li><a href="about.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> STUDIO</a></li>
-                    <li><a href="contact.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[04]</span> CONTACT</a></li>
+                    <li><a href="#home" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
+                    <li><a href="#projects" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
+                    <li><a href="#about" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> STUDIO</a></li>
+                    <li><a href="#contact" class="hover:text-[--gold] transition flex items-center gap-2"><span>[04]</span> CONTACT</a></li>
                 </ul>
             </div>
 
@@ -401,9 +425,9 @@ window.onload = () => {
     tl.from("#hero-main", { y: 200, skewY: 10, opacity: 0, duration: 1.5, ease: "power4.out" })
       .to("#hero-meta", { opacity: 1, duration: 1 }, "-=0.5");
 
-    // Horizontal Scroll Implementation (safe if sections exist)
+    // Horizontal Scroll Implementation - Desktop only
     let sections = gsap.utils.toArray(".horizontal-panel");
-    if (sections.length) {
+    if (sections.length && window.innerWidth >= 1025) {
         gsap.to(sections, {
             xPercent: -100 * (sections.length - 1),
             ease: "none",
@@ -413,7 +437,7 @@ window.onload = () => {
                 scrub: 1,
                 snap: 1 / (sections.length - 1),
                 end: () => "+=" + (document.querySelector(".horizontal-container")?.offsetWidth * 2 || 2000),
-                invalidateOnRefresh: true // helps on resize
+                invalidateOnRefresh: true
             }
         });
     }
@@ -424,6 +448,11 @@ window.onload = () => {
             scrollTrigger: { trigger: el, start: "top 85%" },
             opacity: 0, y: 100, duration: 1.5, ease: "expo.out"
         });
+    });
+    
+    // Refresh ScrollTrigger on resize
+    window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
     });
 };
 

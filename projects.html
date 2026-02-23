@@ -31,20 +31,34 @@
         #cursor-nexus::after { content: ''; position: absolute; width: 1px; height: 100%; background: var(--gold); opacity: 0.3; }
         #cursor-data { position: fixed; font-size: 8px; color: var(--gold); pointer-events: none; z-index: 10000; white-space: nowrap; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Layout Architecture */
-        .page-wrapper { position: relative; }
-        .horizontal-scroller { display: flex; width: 600vw; height: 100vh; background: var(--dark); }
+        /* Layout Architecture - Desktop only */
+        @media (min-width: 1025px) {
+            .horizontal-wrapper { position: relative; }
+            .horizontal-scroller { display: flex; width: 600vw; height: 100vh; background: var(--dark); }
+            .project-node { position: relative; width: 100vw; height: 100vh; flex-shrink: 0; display: flex; align-items: center; padding: 0 10vw; border-right: 1px solid rgba(255,255,255,0.05); }
+        }
         
-        /* Project Node Styling */
-        .project-node { 
-            position: relative; 
-            width: 100vw; 
-            height: 100vh; 
-            flex-shrink: 0; 
-            display: flex; 
-            align-items: center; 
-            padding: 0 10vw;
-            border-right: 1px solid rgba(255,255,255,0.05);
+        /* Mobile vertical layout */
+        @media (max-width: 1024px) {
+            .horizontal-wrapper { height: auto !important; }
+            .horizontal-scroller { 
+                display: block; 
+                width: 100%; 
+                height: auto; 
+                transform: none !important; 
+            }
+            .project-node { 
+                width: 100%; 
+                height: 100vh; 
+                display: flex; 
+                align-items: center; 
+                padding: 0 5vw;
+                margin-bottom: 2rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .project-node:last-child { margin-bottom: 0; }
+            .fixed.bottom-4.left-4 { display: none; } /* Hide scroll progress on mobile */
         }
 
         .data-panel {
@@ -146,23 +160,28 @@
             .visual-anchor { width: 60%; }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .project-node { flex-direction: column; justify-content: center; padding: 0 4rem; }
             .data-panel { width: 100%; padding-right: 0; margin-bottom: 2rem; }
             .visual-anchor { width: 100%; height: 45vh; }
             .project-node .text-7xl { font-size: 3.5rem; }
-            .section-tag { left: 5px; font-size: 8px; letter-spacing: 5px; }
+            .section-tag { left: 5px; font-size: 8px; letter-spacing: 5px; display: none; }
             .bim-overlay { font-size: 8px; top: 10px; right: 10px; }
-            .fixed.bottom-10.left-12 { left: 1rem; bottom: 2rem; }
-            .fixed.bottom-10.left-12 .w-48 { width: 120px; }
+        }
+
+        @media (max-width: 768px) {
+            .project-node { padding: 0 2rem; }
+            .project-node .text-7xl { font-size: 3rem; }
+            .data-panel .text-sm { font-size: 0.8rem; }
+            .visual-anchor { height: 40vh; }
+            .mono.text-\[10px\] { font-size: 8px; }
         }
 
         @media (max-width: 480px) {
-            .project-node { padding: 0 2rem; }
+            .project-node { padding: 0 1.5rem; }
             .project-node .text-7xl { font-size: 2.5rem; }
-            .data-panel .text-sm { font-size: 0.75rem; }
+            .data-panel .text-xs { font-size: 0.7rem; }
             .visual-anchor { height: 35vh; }
-            .mono.text-\[10px\] { font-size: 8px; }
         }
 
         /* final node override for white background */
@@ -188,6 +207,7 @@
 </button>
 
 <!-- Mobile Menu Panel -->
+<!-- Mobile Menu Panel -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="home.html">HOME</a>
     <a href="about.html">ABOUT</a>
@@ -196,21 +216,20 @@
     <a href="contact.html" class="contact-mobile">CONTACT</a>
 </div>
 
-<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center nav-blur">
+<nav class="fixed w-full z-[100] px-6 sm:px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
     <div class="flex items-center gap-4">
         <div class="w-8 h-[2px] bg-[--gold]"></div>
         <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
     </div>
-    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
-        <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
-        <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
-        <a href="projects.html" class="hover:text-[--gold] transition">PROJECTS</a>
-        <a href="attire.html" class="hover:text-[--gold] transition">ATTIRE</a>
-        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition">CONTACT</a>
+    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
+        <a href="home.html" class="nav-link hover:text-[--gold]">HOME</a>
+        <a href="about.html" class="nav-link hover:text-[--gold]">ABOUT</a>
+        <a href="projects.html" class="nav-link hover:text-[--gold]">PROJECTS</a>
+        <a href="attire.html" class="nav-link hover:text-[--gold]">ATTIRE</a>
+        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition ml-4">CONTACT</a>
     </div>
 </nav>
-
-<div class="fixed bottom-4 sm:bottom-10 left-4 sm:left-12 z-50 flex items-center gap-4 sm:gap-6">
+<div class="fixed bottom-4 sm:bottom-10 left-4 sm:left-12 z-50 items-center gap-4 sm:gap-6 desktop-only" style="display: none;">
     <div class="flex flex-col gap-1">
         <span class="mono text-[6px] sm:text-[8px] text-white/40">BUFFER_LOAD</span>
         <div class="w-24 sm:w-48 h-[1px] bg-white/10 relative">
@@ -221,7 +240,7 @@
 </div>
 
 <main class="page-wrapper">
-    <section class="h-screen flex items-center px-6 sm:px-12 lg:px-40">
+    <section id="intro" class="h-screen flex items-center px-6 sm:px-12 lg:px-40">
         <div class="max-w-5xl">
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-8 sm:w-12 h-[1px] bg-[--gold]"></div>
@@ -247,7 +266,7 @@
     <div class="horizontal-wrapper">
         <div class="horizontal-scroller">
             
-            <section class="project-node">
+            <section id="skyline-nexus" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">COMMERCIAL TOWER</span>
                 <div class="data-panel">
                     <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">01 // MIXED-USE</span>
@@ -270,7 +289,7 @@
                 </div>
             </section>
 
-            <section class="project-node">
+            <section id="tectonic-villa" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">RESIDENTIAL</span>
                 <div class="data-panel">
                     <span class="mono text-[--red] text-xs sm:text-sm mb-4 block">02 // PRIVATE RESIDENCE</span>
@@ -293,7 +312,7 @@
                 </div>
             </section>
 
-            <section class="project-node">
+            <section id="kinetic-pavilion" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">CULTURAL</span>
                 <div class="data-panel">
                     <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">03 // PERFORMING ARTS</span>
@@ -316,7 +335,7 @@
                 </div>
             </section>
 
-           <section class="project-node">
+           <section id="timber-loft" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">WORKPLACE</span>
                 <div class="data-panel">
                     <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">04 // OFFICE HQ</span>
@@ -340,7 +359,7 @@
             </section>
 
 
-            <section class="project-node">
+            <section id="neural-structure" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">MIXED-USE</span>
                 <div class="data-panel">
                     <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">05 // URBAN BLOCK</span>
@@ -364,7 +383,7 @@
             </section>
 
 
-           <section class="project-node">
+           <section id="lumina-inn" class="project-node">
                 <span class="section-tag mono uppercase hidden sm:block">HOSPITALITY</span>
                 <div class="data-panel">
                     <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">06 // BOUTIQUE HOTEL</span>
@@ -388,7 +407,7 @@
             </section>
 
 
-            <section class="project-node !w-[100vw] sm:!w-[150vw] bg-white text-black flex items-center justify-center">
+            <section id="build-with-us" class="project-node !w-[100vw] sm:!w-[150vw] bg-white text-black flex items-center justify-center">
                 <div class="flex flex-col gap-6 sm:gap-8 px-6 sm:px-0">
                     <h4 class="text-6xl sm:text-8xl lg:text-[12vw] font-black uppercase leading-[0.8] tracking-tighter">
                         Build<br>With Us.
@@ -396,12 +415,21 @@
                     <p class="text-xl sm:text-3xl max-w-2xl font-bold leading-tight">
                         Every project begins with a conversation. Let's discuss how our approach can bring your vision to life.
                     </p>
-                    <a href="contact.html" class="mono text-lg sm:text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all self-start">INQUIRE ABOUT A PROJECT</a>
+                    <a href="#contact" class="mono text-lg sm:text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all self-start">INQUIRE ABOUT A PROJECT</a>
                 </div>
             </section>
 
         </div>
     </div>
+    
+    <section id="contact" class="h-screen flex items-center justify-center relative overflow-hidden bg-black px-4">
+        <div class="absolute text-[20vw] sm:text-[30vw] font-black outline-text opacity-5 select-none whitespace-nowrap">START YOUR PROJECT</div>
+        <div class="text-center relative z-10 w-full">
+            <h2 class="text-6xl sm:text-9xl font-black uppercase mb-6 sm:mb-10">LET'S<br><span class="text-[--red]">BUILD.</span></h2>
+            <p class="mono text-[--gold] mb-8 sm:mb-12 tracking-[0.5em] uppercase text-xs sm:text-base">Ready to discuss your vision?</p>
+            <a href="mailto:studio@artandfiends.com" class="text-3xl sm:text-5xl font-light hover:text-[--gold] transition-all duration-500 underline underline-offset-[16px] sm:underline-offset-[24px] decoration-[--gold] break-all">studio@artandfiends.com</a>
+        </div>
+    </section>
 </main>
 
 <footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
@@ -428,10 +456,9 @@
             <div class="space-y-4">
                 <h4 class="opacity-100 text-xs">// NAVIGATION</h4>
                 <ul class="mono text-[10px] space-y-2">
-                    <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
-                    <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
-                    <li><a href="about.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> STUDIO</a></li>
-                    <li><a href="contact.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[04]</span> CONTACT</a></li>
+                    <li><a href="#intro" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
+                    <li><a href="#skyline-nexus" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
+                    <li><a href="#contact" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> CONTACT</a></li>
                 </ul>
             </div>
 
@@ -516,6 +543,16 @@
         });
     }
 
+    // Show/hide desktop scroll indicator based on screen size
+    const desktopOnly = document.querySelector('.desktop-only');
+    if (desktopOnly) {
+        if (window.innerWidth >= 1025) {
+            desktopOnly.style.display = 'flex';
+        } else {
+            desktopOnly.style.display = 'none';
+        }
+    }
+
     // 1. THREE.JS: LIDAR SCANNER BACKGROUND
     const canvas = document.getElementById('webgl-canvas');
     const scene = new THREE.Scene();
@@ -554,10 +591,10 @@
         }
     });
 
-    // 3. THE KINETIC SCROLLER (ScrollTrigger Mastery)
+    // 3. THE KINETIC SCROLLER (Desktop only)
     const scroller = document.querySelector('.horizontal-scroller');
     
-    if (scroller) {
+    if (scroller && window.innerWidth >= 1025) {
         let scrollTween = gsap.to(scroller, {
             x: () => -(scroller.scrollWidth - window.innerWidth),
             ease: "none",
@@ -572,12 +609,12 @@
                     const scrollPercent = document.getElementById('scroll-percent');
                     if (scrollBar) scrollBar.style.width = prog + "%";
                     if (scrollPercent) scrollPercent.innerText = prog.toString().padStart(2, '0') + "%";
-                    if (points) points.rotation.z = self.progress * 2; // Spin the background on scroll
+                    if (points) points.rotation.z = self.progress * 2;
                 }
             }
         });
 
-        // 4. ANIMATE PROJECT CONTENT ON ARRIVAL
+        // 4. ANIMATE PROJECT CONTENT ON ARRIVAL (Desktop only)
         gsap.utils.toArray(".project-node").forEach(node => {
             const h3 = node.querySelector("h3");
             const img = node.querySelector(".visual-anchor");
@@ -609,6 +646,36 @@
                 });
             }
         });
+    } else if (scroller) {
+        // Mobile: set initial transform to none
+        scroller.style.transform = 'none';
+    }
+
+    // 5. Mobile reveal animations
+    if (window.innerWidth < 1025) {
+        gsap.utils.toArray(".project-node").forEach((node, i) => {
+            gsap.from(node.querySelector("h3"), {
+                scrollTrigger: {
+                    trigger: node,
+                    start: "top 80%",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: i * 0.1
+            });
+            
+            gsap.from(node.querySelector(".visual-anchor"), {
+                scrollTrigger: {
+                    trigger: node,
+                    start: "top 75%",
+                },
+                scale: 0.9,
+                opacity: 0,
+                duration: 1,
+                delay: i * 0.1
+            });
+        });
     }
 
     // Handle Window Resize
@@ -617,7 +684,16 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
         
-        // update ScrollTrigger on resize
+        // Update desktop-only elements visibility
+        if (desktopOnly) {
+            if (window.innerWidth >= 1025) {
+                desktopOnly.style.display = 'flex';
+            } else {
+                desktopOnly.style.display = 'none';
+            }
+        }
+        
+        // Refresh ScrollTrigger on resize
         ScrollTrigger.refresh();
     });
 </script>
