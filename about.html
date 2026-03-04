@@ -3,319 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ARTANDFIENDS | Architecture & Design Manifesto</title>
+    <title>ARTANDFIENDS · About — Architecture & Engineering</title>
 
+    <!-- Tailwind, GSAP, Three.js (same stack as main) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        :root { --gold: #C9A227; --dark: #050505; --red: #ff3c00; }
-        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
-        .mono { font-family: 'Space Mono', monospace; }
+        /* === EXACT DESIGN STYLING FROM MAIN SITE (index) — adapted for about page === */
+        :root { 
+            --primary: #1E3A5F;      /* Deep navy - professionalism */
+            --secondary: #4A6FA5;    /* Slate blue - technical */
+            --accent: #C3A060;        /* Brass - premium construction */
+            --light: #F5F7FA;         /* Clean white */
+            --dark: #0B1A2A;          /* Dark navy */
+            --success: #2E7D32;       /* Green for project status */
+            --grid: rgba(74, 111, 165, 0.1);
+        }
         
-        /* disable custom cursor on mobile for usability */
+        body { 
+            background: var(--dark); 
+            color: var(--light); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            cursor: none;
+        }
+        
         @media (max-width: 768px) {
             body { cursor: auto; }
-            #cursor-nexus, #cursor-label { display: none; }
+            #cursor, #cursor-follower { display: none; }
         }
         
-        /* 3D LIDAR Background */
-        #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; opacity: 0.6; }
-
-        /* Advanced HUD Cursor */
-        #cursor-nexus { position: fixed; width: 40px; height: 40px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; display: flex; align-items: center; justify-content: center; transition: transform 0.15s ease-out; }
-        #cursor-nexus::after { content: ''; width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
-        #cursor-label { position: fixed; font-size: 8px; color: var(--gold); font-family: 'Space Mono'; pointer-events: none; z-index: 10000; text-transform: uppercase; letter-spacing: 2px; }
-
-        .glass-nav { backdrop-filter: blur(30px); background: rgba(5, 5, 5, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .mono { font-family: 'Space Mono', monospace; }
         
-        /* Interactive Scroller */
-        .sticky-wrapper { position: relative; height: 400vh; }
-        .sticky-content { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        #cursor { 
+            width: 6px; 
+            height: 6px; 
+            background: var(--accent); 
+            border-radius: 50%; 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 10000; 
+        }
         
-        .layer-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: filter 0.8s ease; }
-        .wireframe-overlay { filter: brightness(0.2) contrast(1.5) sepia(1) hue-rotate(-15deg); }
-        
-        .nexus-card { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
-        .nexus-card:hover { border-color: var(--gold); background: rgba(201, 162, 39, 0.05); transform: translateY(-10px); }
-        
-        .text-stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
-        
-        /* Glitch Effect for Technical Sections */
-        .glitch-text:hover { animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite; }
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        #cursor-follower { 
+            width: 40px; 
+            height: 40px; 
+            border: 1px solid var(--accent); 
+            border-radius: 50%; 
+            position: fixed; 
+            pointer-events: none; 
+            z-index: 9999; 
+            transition: transform 0.15s ease-out;
         }
 
-        /* Mobile Menu */
-        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        .glass-panel { 
+            background: rgba(11, 26, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(195, 160, 96, 0.15);
+            border-radius: 4px;
+        }
+        
+        .tech-border {
+            position: relative;
+            border: 1px solid rgba(195, 160, 96, 0.3);
+        }
+        
+        .tech-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+        
+        .tech-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+        }
+
+        .metric-card {
+            background: rgba(245, 247, 250, 0.02);
+            border: 1px solid rgba(195, 160, 96, 0.1);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            border-color: var(--accent);
+            background: rgba(195, 160, 96, 0.05);
+        }
+
+        #bg3d { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: 0; 
+            pointer-events: none; 
+            opacity: 0.15;
+        }
+        
+        .content-layer { 
+            position: relative; 
+            z-index: 10; 
+        }
+
+        /* Mobile menu (copy from main) */
+        .mobile-menu { 
+            position: fixed; 
+            top: 0; 
+            right: -100%; 
+            width: 75%; 
+            max-width: 320px; 
+            height: 100vh; 
+            background: var(--dark);
+            backdrop-filter: blur(40px); 
+            border-left: 1px solid rgba(195, 160, 96, 0.2); 
+            z-index: 10001; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 2rem; 
+            transition: right 0.5s cubic-bezier(0.77,0,0.18,1); 
+            padding: 2rem; 
+        }
+        
         .mobile-menu.open { right: 0; }
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
-        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
-        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
-        .menu-toggle.open span:nth-child(2) { opacity: 0; }
-        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
-        @media (max-width: 1024px) { .menu-toggle { display: flex; } }
-        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
-        .mobile-menu a:hover { color: var(--gold); }
-        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
-
-        /* responsive typography & spacing */
-        @media (max-width: 768px) {
-            h2.text-8xl { font-size: 4rem; }
-            h2.text-[9vw] { font-size: 15vw; }
-            .text-2xl { font-size: 1.25rem; }
-            .text-xl { font-size: 1rem; }
-            section .px-10 { padding-left: 1.5rem; padding-right: 1.5rem; }
-            .sticky-content h3 { font-size: 15vw; }
-            .nexus-card.p-12 { padding: 2rem; }
+        
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            width: 30px; 
+            height: 24px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            z-index: 10002; 
+            position: relative; 
         }
-        @media (max-width: 640px) {
-            .grid { gap: 1rem; }
-            .text-8xl { font-size: 3.5rem; }
-            .table .text-5xl { font-size: 2rem; }
+        
+        .menu-toggle span { 
+            width: 100%; 
+            height: 2px; 
+            background: var(--light); 
+            transition: 0.3s; 
+            transform-origin: left; 
+        }
+        
+        .menu-toggle.open span:nth-child(1) { 
+            transform: rotate(45deg) translate(2px, -2px); 
+            background: var(--accent); 
+        }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { 
+            transform: rotate(-45deg) translate(2px, 2px); 
+            background: var(--accent); 
+        }
+        
+        @media (max-width: 1024px) { 
+            .menu-toggle { display: flex; } 
+        }
+        
+        .mobile-menu a { 
+            font-size: 1.5rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            color: var(--light); 
+            text-decoration: none; 
+            transition: color 0.2s; 
+        }
+        .mobile-menu a:hover { color: var(--accent); }
+
+        /* BIM progress bar (used in about metrics) */
+        .bim-progress {
+            width: 100%;
+            height: 2px;
+            background: rgba(245, 247, 250, 0.1);
+            position: relative;
+        }
+        .bim-progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* spec table from main site */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .spec-table tr {
+            border-bottom: 1px solid rgba(195, 160, 96, 0.1);
+        }
+        .spec-table td {
+            padding: 1rem 0;
+            font-size: 0.875rem;
+        }
+        .spec-table td:first-child {
+            color: var(--accent);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            width: 40%;
+        }
+
+        /* about specific: team grid */
+        .team-card {
+            background: rgba(11, 26, 42, 0.5);
+            border: 1px solid rgba(195, 160, 96, 0.1);
+            backdrop-filter: blur(8px);
+            transition: 0.2s;
+        }
+        .team-card:hover {
+            border-color: var(--accent);
+            background: rgba(195, 160, 96, 0.08);
+        }
+
+        /* utility */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(195, 160, 96, 0.3);
+            color: transparent;
         }
     </style>
 </head>
+<body>
 
-<body class="bg-[--dark]">
+<!-- Cursor (from main) -->
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
 
-<canvas id="webgl-canvas"></canvas>
-<div id="cursor-nexus"></div>
-<div id="cursor-label">SYS_COORDS</div>
-
-<!-- Mobile Menu Toggle -->
+<!-- Mobile Menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-<!-- Mobile Menu Panel -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="home.html">HOME</a>
     <a href="about.html">ABOUT</a>
-    <a href="projects.html">PROJECTS</a>
-    <a href="attire.html">ATTIRE</a>
-    <a href="contact.html" class="contact-mobile">CONTACT</a>
+    <a href="attire.html">SERVICES</a>
+    <a href="projects.html">PROJECTS</a>    
+    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
 </div>
 
-<nav class="fixed w-full z-[100] glass-nav px-6 sm:px-12 py-6 flex justify-between items-center">
-    <div class="flex items-center gap-4">
-        <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
-    </div>
-    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold">
-        <a href="home.html" class="hover:text-[--gold] transition">HOME</a>
-        <a href="about.html" class="hover:text-[--gold] transition">ABOUT</a>
-        <a href="projects.html" class="hover:text-[--gold] transition">PROJECTS</a>
-        <a href="attire.html" class="hover:text-[--gold] transition">ATTIRE</a>
-        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition">CONTACT</a>
+<!-- Navigation (identical to main) -->
+<nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-[2px] bg-[--accent]"></div>
+            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
+            <span class="mono text-[10px] text-[--accent] ml-4 hidden md:block">RIBA · AIA · LEED</span>
+        </div>
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
+            <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
+            <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>
+            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ATTIRE</a>
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
+        </div>
     </div>
 </nav>
 
+<!-- 3D Canvas background (same as main) -->
+<canvas id="bg3d"></canvas>
 
-<main>
-    <section class="min-h-screen flex flex-col justify-center px-6 sm:px-10 lg:px-40 pt-40 relative">
-        <div class="max-w-6xl z-10">
-            <div class="flex items-center gap-4 mb-8">
-                <span class="mono text-[--gold] text-xs sm:text-sm tracking-[0.5em]">// ARCHITECTURAL DESIGN PHILOSOPHY</span>
-                <div class="h-[1px] w-16 sm:w-32 bg-white/10"></div>
+<!-- MAIN CONTENT (about page with main styling) -->
+<main class="content-layer">
+
+    <!-- === HERO / ABOUT INTRO (styled like main home but about text) === -->
+    <section class="h-screen flex items-center justify-center px-6 relative" 
+        style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070') center/cover no-repeat;">
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <div class="mb-6">
+                <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
             </div>
-            
-            <h2 class="text-[12vw] sm:text-[9vw] font-black leading-[0.8] uppercase mb-8 sm:mb-12 skew-x-[-2deg]" id="hero-title">
-                Technical Precision.<br>
-                <span class="text-stroke italic">Creative Vision.</span>
-            </h2>
-
-            <div class="grid lg:grid-cols-2 gap-10 lg:gap-20">
-                <p class="text-xl sm:text-2xl text-gray-400 leading-relaxed reveal-text">
-                    We are a full-service architecture studio built on the fusion of rigorous technical discipline and compelling visual storytelling. Our work bridges the gap between what a building requires and what a space can inspire.
-                </p>
-                <div class="relative group">
-                    <p class="text-lg sm:text-xl text-gray-400 leading-relaxed border-l-2 border-[--gold] pl-6 sm:pl-10">
-                        Our identity balances two essential forces: <span class="text-white font-black italic">Art</span> (Elegance, Intent, and Experience) and <span class="text-[--red] font-black italic glitch-text">Fiends</span> (Tectonic energy, Obsessive Craft, Technical Grit).
-                    </p>
+            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-white drop-shadow-2xl" id="hero-main">
+                PRACTICE<br>PROFILE
+            </h1>
+            <div class="flex flex-col md:flex-row justify-center gap-8 items-center opacity-0" id="hero-meta">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-[1px] bg-[--accent]"></div>
+                    <span class="mono text-xs tracking-widest text-white">SINCE 1986</span>
+                </div>
+                <div class="flex gap-8">
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">450+</div>
+                        <div class="text-xs text-white opacity-80">PROJECTS</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">32</div>
+                        <div class="text-xs text-white opacity-80">PARTNERS</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">6</div>
+                        <div class="text-xs text-white opacity-80">OFFICES</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="sticky-wrapper">
-        <div class="sticky-content">
-            
-            
-            <img src="https://images.unsplash.com/photo-1503387762-592dee58c460?q=80&w=2070" class="layer-img wireframe-overlay" id="img-data" alt="data layer">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="layer-img opacity-0 scale-125" id="img-dream" alt="dream layer">
-
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none px-4">
-                <div class="text-center">
-                    <div class="mono text-[--gold] text-[0.6rem] sm:text-xs mb-4 tracking-[0.5em] sm:tracking-[1em] animate-pulse" id="status-line">INTEGRATED DESIGN PROCESS</div>
-                    <h3 id="sticky-text" class="text-6xl sm:text-8xl lg:text-[12vw] font-black uppercase tracking-tighter">THE DATA</h3>
-                    <p id="sticky-sub" class="mono text-[--gold] mt-4 tracking-widest uppercase text-[0.6rem] sm:text-sm">Parametric Optimization · BIM Integration</p>
+    <!-- === INTEGRATED DESIGN-BUILD (from main about/practice but tailored) === -->
+    <section class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-8">
+                <div class="md:col-span-5">
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ MANIFESTO /</span>
+                    <h2 class="text-4xl md:text-6xl font-black uppercase mt-4 mb-8">Integrated<br>Design Philosophy</h2>
+                    <p class="text-lg opacity-70 leading-relaxed">We believe architecture is the intersection of art and infrastructure. Every project is a dialogue between structural necessity and human experience — delivered with technical precision and creative audacity.</p>
+                    
+                    <div class="mt-12 space-y-6">
+                        <div class="metric-card">
+                            <div class="flex justify-between mb-2">
+                                <span class="mono text-xs">BIM LEVEL 2</span>
+                                <span class="text-[--accent]">ISO 19650</span>
+                            </div>
+                            <div class="bim-progress">
+                                <div class="bim-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex justify-between mb-2">
+                                <span class="mono text-xs">LEED CERTIFICATION</span>
+                                <span class="text-[--accent]">PLATINUM</span>
+                            </div>
+                            <div class="bim-progress">
+                                <div class="bim-progress-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex justify-between mb-2">
+                                <span class="mono text-xs">PROJECT DELIVERY</span>
+                                <span class="text-[--accent]">ON TIME 98%</span>
+                            </div>
+                            <div class="bim-progress">
+                                <div class="bim-progress-fill" style="width: 98%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-6 md:col-start-7">
+                    <div class="tech-border p-6">
+                        <h3 class="text-xl font-bold mb-6">CORE CAPABILITIES</h3>
+                        <table class="spec-table">
+                            <tr><td>ARCHITECTURAL DESIGN</td><td>RIBA Stages 0-7</td></tr>
+                            <tr><td>STRUCTURAL ENGINEERING</td><td>In-house team</td></tr>
+                            <tr><td>MEP ENGINEERING</td><td>BIM coordinated</td></tr>
+                            <tr><td>PROJECT MANAGEMENT</td><td>APM accredited</td></tr>
+                            <tr><td>SUSTAINABILITY</td><td>Passivhaus · BREEAM</td></tr>
+                            <tr><td>CONSTRUCTION</td><td>Direct delivery</td></tr>
+                        </table>
+                        
+                        <div class="mt-8 grid grid-cols-2 gap-4">
+                            <div class="text-center p-4 glass-panel">
+                                <div class="text-3xl font-bold text-[--accent]">42</div>
+                                <div class="mono text-xs">CURRENT PROJECTS</div>
+                            </div>
+                            <div class="text-center p-4 glass-panel">
+                                <div class="text-3xl font-bold text-[--accent]">£2.4B</div>
+                                <div class="mono text-xs">IN CONSTRUCTION</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 sm:py-40 px-6 sm:px-10 lg:px-40 bg-white text-black relative z-10">
-        <div class="flex flex-col lg:flex-row justify-between items-end mb-16 sm:mb-32 gap-6 sm:gap-10">
-            <h2 class="text-5xl sm:text-8xl font-black uppercase leading-[0.8]">The<br>Process</h2>
-            <div class="mono text-[8px] sm:text-[10px] text-black/60 font-black tracking-[0.5em] uppercase border-b border-black pb-2 whitespace-nowrap">From Concept to Construction</div>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse min-w-[600px] sm:min-w-0">
-                <tbody class="text-2xl sm:text-3xl lg:text-5xl font-black uppercase">
-                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">01_</td>
-                        <td class="py-8 sm:py-14">Concept Design</td>
-                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">Spatial Strategy · Massing</td>
-                    </tr>
-                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">02_</td>
-                        <td class="py-8 sm:py-14">Design Development</td>
-                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">Materiality · Systems Integration</td>
-                    </tr>
-                    <tr class="border-b-2 border-black/10 group cursor-none hover:bg-black hover:text-white transition-all duration-700">
-                        <td class="py-8 sm:py-14 pr-4 mono text-[0.6rem] sm:text-xs opacity-30 group-hover:text-[--gold]">03_</td>
-                        <td class="py-8 sm:py-14">Construction Documentation</td>
-                        <td class="py-8 sm:py-14 text-right mono text-xs sm:text-sm opacity-30 group-hover:opacity-100">BIM · Technical Specifications</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- === TEAM / LEADERSHIP (new section in style of main) === -->
+    <section class="py-24 px-6 border-t border-[--accent] border-opacity-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-12">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PRINCIPALS /</span>
+                <div class="h-[1px] flex-grow bg-[--accent] opacity-20"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="team-card p-6 tech-border">
+                    <div class="w-20 h-20 rounded-full border-2 border-[--accent] mb-6 bg-[--primary] flex items-center justify-center">
+                        <span class="mono text-3xl text-[--accent]">M</span>
+                    </div>
+                    <h4 class="text-2xl font-bold">Miles C.&nbsp;Reid</h4>
+                    <div class="mono text-xs text-[--accent] mb-3">RIBA · DESIGN DIRECTOR</div>
+                    <p class="text-sm opacity-60">Leading design since 1998, obsessed with tectonic expression and material honesty.</p>
+                </div>
+                <div class="team-card p-6 tech-border">
+                    <div class="w-20 h-20 rounded-full border-2 border-[--accent] mb-6 bg-[--primary] flex items-center justify-center">
+                        <span class="mono text-3xl text-[--accent]">J</span>
+                    </div>
+                    <h4 class="text-2xl font-bold">Jara K.&nbsp;Novak</h4>
+                    <div class="mono text-xs text-[--accent] mb-3">LEED AP · TECHNICAL PRINCIPAL</div>
+                    <p class="text-sm opacity-60">BIM implementation, building physics, and construction methodology.</p>
+                </div>
+                <div class="team-card p-6 tech-border">
+                    <div class="w-20 h-20 rounded-full border-2 border-[--accent] mb-6 bg-[--primary] flex items-center justify-center">
+                        <span class="mono text-3xl text-[--accent]">S</span>
+                    </div>
+                    <h4 class="text-2xl font-bold">Samir El-&nbsp;Dahan</h4>
+                    <div class="mono text-xs text-[--accent] mb-3">CENG · MICE</div>
+                    <p class="text-sm opacity-60">Structural innovation and complex geometries, bridging engineering and architecture.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    
-    <section class="py-32 sm:py-60 px-6 sm:px-10 lg:px-40 bg-[--dark]">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div class="nexus-card p-8 sm:p-12 border-t-2 border-[--gold] reveal-box">
-                <span class="mono text-[--gold] text-xs">// 01</span>
-                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">Feasibility</h4>
-                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">Site analysis, zoning review, and program validation to establish a solid foundation for design.</p>
+    <!-- === ACCREDITATIONS / METRICS (from main metrics) === -->
+    <section class="py-32 px-6" style="background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed; background-blend-mode: overlay;">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PERFORMANCE METRICS /</span>
+                <h2 class="text-4xl md:text-5xl font-black uppercase mt-4">Delivery Excellence</h2>
             </div>
-            <div class="nexus-card p-8 sm:p-12 border-t-2 border-white reveal-box">
-                <span class="mono text-white text-xs">// 02</span>
-                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">Schematic Design</h4>
-                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">Translating client vision into architectural form, testing layouts, massing, and initial aesthetics.</p>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="metric-card text-center">
+                    <div class="text-5xl font-bold text-[--accent] mb-2">98%</div>
+                    <div class="mono text-xs opacity-60">ON-TIME DELIVERY</div>
+                    <div class="bim-progress mt-4"><div class="bim-progress-fill" style="width: 98%"></div></div>
+                </div>
+                <div class="metric-card text-center">
+                    <div class="text-5xl font-bold text-[--accent] mb-2">0.4%</div>
+                    <div class="mono text-xs opacity-60">DEFECT RATE</div>
+                    <div class="bim-progress mt-4"><div class="bim-progress-fill" style="width: 99.6%"></div></div>
+                </div>
+                <div class="metric-card text-center">
+                    <div class="text-5xl font-bold text-[--accent] mb-2">ISO</div>
+                    <div class="mono text-xs opacity-60">9001:2015</div>
+                    <div class="bim-progress mt-4"><div class="bim-progress-fill" style="width: 100%"></div></div>
+                </div>
+                <div class="metric-card text-center">
+                    <div class="text-5xl font-bold text-[--accent] mb-2">34</div>
+                    <div class="mono text-xs opacity-60">INDUSTRY AWARDS</div>
+                    <div class="bim-progress mt-4"><div class="bim-progress-fill" style="width: 100%"></div></div>
+                </div>
             </div>
-            <div class="nexus-card p-8 sm:p-12 border-t-2 border-[--red] reveal-box">
-                <span class="mono text-[--red] text-xs">// 03</span>
-                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">Visualization</h4>
-                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">High-fidelity renderings and virtual reality walkthroughs to experience the space before breaking ground.</p>
+            
+            <!-- BIM/Technical Showcase (same as main) -->
+            <div class="grid md:grid-cols-2 gap-8 mt-16">
+                <div class="glass-panel p-8">
+                    <h3 class="text-xl font-bold mb-6">BIM Capabilities</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><span class="mono text-[--accent] text-xs">Revit</span><div class="text-sm mt-1">2024</div></div>
+                        <div><span class="mono text-[--accent] text-xs">Navisworks</span><div class="text-sm mt-1">Manage</div></div>
+                        <div><span class="mono text-[--accent] text-xs">ArchiCAD</span><div class="text-sm mt-1">26</div></div>
+                        <div><span class="mono text-[--accent] text-xs">Tekla</span><div class="text-sm mt-1">Structures</div></div>
+                    </div>
+                </div>
+                <div class="glass-panel p-8">
+                    <h3 class="text-xl font-bold mb-6">Quality Assurance</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> ISO 19650 BIM certification</li>
+                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> Independent peer review</li>
+                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> Construction phase audits</li>
+                    </ul>
+                </div>
             </div>
-            <div class="nexus-card p-8 sm:p-12 border-t-2 border-white reveal-box">
-                <span class="mono text-white text-xs">// 04</span>
-                <h4 class="text-xl sm:text-2xl font-black mt-4 sm:mt-6 mb-4 sm:mb-6 uppercase">Construction Oversight</h4>
-                <p class="text-gray-500 text-xs sm:text-sm leading-relaxed">Coordinating with contractors, material selection, and site visits to ensure fidelity to the design.</p>
+        </div>
+    </section>
+
+    <!-- === CONTACT PROMPT (from main contact but shorter) === -->
+    <section class="h-screen flex items-center justify-center px-6" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ INITIATE DIALOGUE /</span>
+            <h2 class="text-6xl md:text-8xl font-black uppercase my-8">Join the<br>process</h2>
+            <p class="text-xl opacity-70 mb-12">We collaborate with clients, engineers, and artists to realise uncompromising architecture.</p>
+            
+            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
+                <a href="mailto:studio@artandfiends.com" class="text-2xl md:text-3xl font-light hover:text-[--accent] transition border-b border-[--accent] pb-1">studio@artandfiends.com</a>
+                <span class="mono text-[--accent] text-sm">+44 (0)20 7946 0138</span>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+                <div><span class="mono text-[--accent] text-xs">LONDON</span><div class="text-sm mt-1">EC2A 4PS</div></div>
+                <div><span class="mono text-[--accent] text-xs">NEW YORK</span><div class="text-sm mt-1">10005</div></div>
+                <div><span class="mono text-[--accent] text-xs">DUBAI</span><div class="text-sm mt-1">DIFC</div></div>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
-        REF_PN: 77-004-AF // CORE_SPEC
-    </div>
-
-    <div class="max-w-screen-2xl mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
-            
-            <div class="space-y-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-6 h-6 border-2 border-[--gold] rotate-45 flex items-center justify-center">
-                        <div class="w-2 h-2 bg-white"></div>
-                    </div>
-                    <h3 class="text-xl font-black tracking-widest uppercase italic">ARTANDFIENDS</h3>
-                </div>
-                <p class="mono text-[10px] leading-relaxed opacity-50 uppercase">
-                    Architecture · Interiors · Masterplanning <br>
-                    London | New York | Dubai
-                </p>
+<!-- Footer (identical to main site) -->
+<footer class="relative z-[100] border-t border-[--accent] border-opacity-20 bg-[--dark] px-6 py-12">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+            <div>
+                <div class="text-lg font-bold tracking-widest mb-4">ARTANDFIENDS</div>
+                <p class="mono text-xs opacity-50">Chartered Architects · RIBA · AIA</p>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// NAVIGATION</h4>
-                <ul class="mono text-[10px] space-y-2">
-                    <li><a href="index.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
-                    <li><a href="projects.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
-                    <li><a href="about.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> STUDIO</a></li>
-                    <li><a href="contact.html" class="hover:text-[--gold] transition flex items-center gap-2"><span>[04]</span> CONTACT</a></li>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">OFFICES</h4>
+                <ul class="space-y-2 text-xs opacity-70">
+                    <li>London · 42 Shoreditch High St</li>
+                    <li>New York · 200 Park Avenue</li>
+                    <li>Dubai · DIFC Gate Village</li>
                 </ul>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// SOCIAL</h4>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
-                    </a>
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">LI</span>
-                    </a>
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">X_</span>
-                    </a>
-                </div>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">CERTIFICATIONS</h4>
+                <ul class="space-y-2 text-xs opacity-70">
+                    <li>ISO 9001:2015</li>
+                    <li>ISO 14001:2015</li>
+                    <li>ISO 45001:2018</li>
+                </ul>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// SYSTEM_STATUS</h4>
-                <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">TIME:</span>
-                        <span id="footer-clock" class="text-[--gold]">00:00:00 UTC</span>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">PROJECT STATUS</h4>
+                <div class="p-4 glass-panel">
+                    <div class="flex justify-between text-xs">
+                        <span class="opacity-50">UTC</span>
+                        <span id="footer-clock">00:00:00</span>
                     </div>
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">LOCATION:</span>
-                        <span class="text-white">51.5074° N</span>
-                    </div>
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">STATUS:</span>
-                        <span class="text-green-500 animate-pulse">ACCEPTING NEW COMMISSIONS</span>
+                    <div class="flex justify-between text-xs mt-2">
+                        <span class="opacity-50">STATUS</span>
+                        <span class="text-[--success]">ACCEPTING COMMISSIONS</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
-                © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // CHARTERED ARCHITECTS · RIBA · AIA
-            </div>
-            
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="group flex flex-col items-center gap-2">
-                <div class="w-[1px] h-10 bg-white/20 group-hover:bg-[--gold] transition-all"></div>
-                <span class="mono text-[8px] tracking-[0.4em] opacity-40 group-hover:opacity-100">BACK TO TOP</span>
-            </button>
+        
+        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
+            <div>© 2024 ARTANDFIENDS. ALL RIGHTS RESERVED.</div>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-[--accent] transition">BACK TO TOP ↑</button>
         </div>
     </div>
 </footer>
 
+<!-- === SCRIPTS (identical to main site) === -->
 <script>
-    // Live Footer Clock
+    // Clock
     function updateFooterClock() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'UTC' }) + ' UTC';
-        const clockEl = document.getElementById('footer-clock');
-        if(clockEl) clockEl.innerText = timeString;
+        const clock = document.getElementById('footer-clock');
+        if(clock) clock.innerText = new Date().toLocaleTimeString('en-GB', { hour12: false });
     }
     setInterval(updateFooterClock, 1000);
     updateFooterClock();
-</script>
 
-<script>
-    gsap.registerPlugin(ScrollTrigger);
+    // Cursor
+    const cursor = document.getElementById("cursor");
+    const follower = document.getElementById("cursor-follower");
 
-    // Mobile Menu Toggle
+    if (cursor && follower) {
+        document.addEventListener("mousemove", (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3 });
+        });
+    }
+
+    // Mobile Menu
     const menuToggle = document.getElementById('menuToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
@@ -325,7 +577,6 @@
             mobileMenu.classList.toggle('open');
         });
 
-        // close menu when a link is clicked
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('open');
@@ -334,72 +585,98 @@
         });
     }
 
-    // 1. THREE.JS Point Cloud Engine (with resize handling)
+    // GSAP
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.onload = () => {
+        // Hero animation
+        gsap.from("#hero-main", { 
+            y: 100, 
+            opacity: 0, 
+            duration: 1.5, 
+            ease: "power4.out" 
+        });
+        
+        gsap.to("#hero-meta", { 
+            opacity: 1, 
+            duration: 1, 
+            delay: 0.5 
+        });
+
+        // Reveal metric cards etc.
+        gsap.utils.toArray(".metric-card").forEach((el, i) => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 85%" },
+                opacity: 0, 
+                y: 50, 
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        });
+
+        // team cards
+        gsap.utils.toArray(".team-card").forEach((el, i) => {
+            gsap.from(el, {
+                scrollTrigger: { trigger: el, start: "top 90%" },
+                opacity: 0,
+                y: 40,
+                duration: 0.7,
+                delay: i * 0.1
+            });
+        });
+
+        ScrollTrigger.refresh();
+    };
+
+    // Three.js grid (same as main)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('webgl-canvas'), alpha: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("bg3d"), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const particlesGeo = new THREE.BufferGeometry();
-    const pCount = 4000;
-    const posArr = new Float32Array(pCount * 3);
-    for(let i=0; i < pCount * 3; i++) {
-        posArr[i] = (Math.random() - 0.5) * 12;
+    const gridHelper = new THREE.GridHelper(30, 20, 0x4A6FA5, 0x1E3A5F);
+    gridHelper.position.y = -5;
+    scene.add(gridHelper);
+
+    const cubes = [];
+    for (let i = 0; i < 30; i++) {
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ 
+            color: 0xC3A060, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.1 
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        
+        cube.position.x = (Math.random() - 0.5) * 20;
+        cube.position.y = (Math.random() - 0.5) * 10;
+        cube.position.z = (Math.random() - 0.5) * 20;
+        
+        cube.scale.set(
+            Math.random() * 2 + 0.5,
+            Math.random() * 2 + 0.5,
+            Math.random() * 2 + 0.5
+        );
+        
+        scene.add(cube);
+        cubes.push(cube);
     }
-    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
-    const pMat = new THREE.PointsMaterial({ size: 0.006, color: 0xC9A227, transparent: true, opacity: 0.4 });
-    const points = new THREE.Points(particlesGeo, pMat);
-    scene.add(points);
-    camera.position.z = 4;
+
+    camera.position.z = 15;
+    camera.position.y = 5;
 
     function animate() {
         requestAnimationFrame(animate);
-        points.rotation.y += 0.0008;
-        points.rotation.x += 0.0003;
+        
+        cubes.forEach(cube => {
+            cube.rotation.x += 0.002;
+            cube.rotation.y += 0.003;
+        });
+        
         renderer.render(scene, camera);
     }
     animate();
-
-    // 2. KINETIC HUD CURSOR (only on desktop)
-    const nexusCursor = document.getElementById('cursor-nexus');
-    const cursorLabel = document.getElementById('cursor-label');
-
-    document.addEventListener("mousemove", (e) => {
-        if (window.innerWidth > 768) {
-            gsap.to(nexusCursor, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3, ease: "power2.out" });
-            gsap.to(cursorLabel, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
-            cursorLabel.textContent = `X:${e.clientX} Y:${e.clientY}`;
-        }
-    });
-
-    // 3. ADVANCED SCROLL NARRATIVE
-    const stickyTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".sticky-wrapper",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1.2
-        }
-    });
-
-    // Ensure elements exist before tweening
-    if (document.getElementById('img-dream') && document.getElementById('sticky-text')) {
-        stickyTl.to("#img-dream", { opacity: 1, scale: 1, duration: 1 })
-                .to("#sticky-text", { textContent: "THE VISION", duration: 0.1 }, 0.5)
-                .to("#status-line", { textContent: "DESIGN_INTENT // REALITY_MAPPING", color: "#ffffff" }, 0.5)
-                .to("#sticky-sub", { textContent: "From Concept to Constructible Reality", color: "#ffffff" }, 0.5)
-                .to(points.position, { z: 2, duration: 1 }, 0); // Zoom in on the 3D particles
-    }
-
-    // 4. ELEMENT REVEALS
-    gsap.from("#hero-title", { opacity: 0, x: -100, duration: 1.5, ease: "power4.out" });
-
-    gsap.utils.toArray(".reveal-box").forEach((box, i) => {
-        gsap.from(box, {
-            scrollTrigger: { trigger: box, start: "top 90%" },
-            y: 80, opacity: 0, duration: 1.2, delay: i * 0.15
-        });
-    });
 
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;

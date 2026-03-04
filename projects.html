@@ -3,538 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Project Archive | ARTANDFIENDS Architecture</title>
+    <title>ARTANDFIENDS · Project Archive — Distinct Motion</title>
 
+    <!-- same stack: tailwind + gsap + three + fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        :root { --gold: #C9A227; --dark: #020202; --red: #ff3c00; --wire: rgba(201, 162, 39, 0.2); }
-        body { background: var(--dark); color: white; font-family: 'Outfit', sans-serif; overflow-x: hidden; cursor: none; }
-        .mono { font-family: 'Space Mono', monospace; }
+        /* === design styling from main index (same look) === */
+        :root { 
+            --primary: #1E3A5F;      /* Deep navy */
+            --secondary: #4A6FA5;    /* Slate blue */
+            --accent: #C3A060;        /* Brass */
+            --light: #F5F7FA;         
+            --dark: #0B1A2A;          
+            --success: #2E7D32;       
+        }
         
-        /* disable custom cursor on mobile for usability */
+        body { 
+            background: var(--dark); 
+            color: var(--light); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            cursor: none;
+        }
+        
         @media (max-width: 768px) {
             body { cursor: auto; }
-            #cursor-nexus, #cursor-data { display: none; }
+            #cursor, #cursor-follower { display: none; }
         }
         
-        /* 3D LIDAR Engine */
-        #webgl-canvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
-
-        /* Advanced HUD Cursor */
-        #cursor-nexus { position: fixed; width: 50px; height: 50px; border: 1px solid var(--gold); pointer-events: none; z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        #cursor-nexus::before { content: ''; position: absolute; width: 100%; height: 1px; background: var(--gold); opacity: 0.3; }
-        #cursor-nexus::after { content: ''; position: absolute; width: 1px; height: 100%; background: var(--gold); opacity: 0.3; }
-        #cursor-data { position: fixed; font-size: 8px; color: var(--gold); pointer-events: none; z-index: 10000; white-space: nowrap; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Layout Architecture - Desktop only */
-        @media (min-width: 1025px) {
-            .horizontal-wrapper { position: relative; }
-            .horizontal-scroller { display: flex; width: 600vw; height: 100vh; background: var(--dark); }
-            .project-node { position: relative; width: 100vw; height: 100vh; flex-shrink: 0; display: flex; align-items: center; padding: 0 10vw; border-right: 1px solid rgba(255,255,255,0.05); }
-        }
+        .mono { font-family: 'Space Mono', monospace; }
         
-        /* Mobile vertical layout */
+        #cursor { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
+        #cursor-follower { width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease-out; }
+
+        .glass-panel { background: rgba(11, 26, 42, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(195, 160, 96, 0.15); border-radius: 4px; }
+        
+        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.3); }
+        .tech-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .tech-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+        .metric-card { background: rgba(245, 247, 250, 0.02); border: 1px solid rgba(195, 160, 96, 0.1); padding: 1.5rem; transition: all 0.3s ease; }
+        .metric-card:hover { border-color: var(--accent); background: rgba(195, 160, 96, 0.05); }
+
+        #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.15; }
+        .content-layer { position: relative; z-index: 10; }
+
+        /* === NEW: Sticky-wrapper + kinetic layers (like about page) === */
+        .sticky-wrapper { position: relative; height: 400vh; }   /* creates scroll space */
+        .sticky-content { 
+            position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        /* project layer images (two overlapping for transition) */
+        .layer-img { 
+            position: absolute; 
+            inset: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: filter 0.8s ease; 
+            filter: brightness(0.5) grayscale(0.8);
+        }
+        .wireframe-overlay { 
+            filter: brightness(0.3) contrast(1.3) sepia(0.3) hue-rotate(200deg); 
+        }
+
+        /* text overlay inside sticky */
+        .sticky-text-container {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            background: rgba(11, 26, 42, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 3rem 5rem;
+            border: 1px solid var(--accent);
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .project-tag {
+            writing-mode: vertical-rl;
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            letter-spacing: 0.5em;
+            color: var(--accent);
+            z-index: 25;
+        }
+
+        /* project cards for the rest of the page (after sticky narrative) */
+        .project-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 4rem 8vw;
+            border-bottom: 1px solid rgba(195,160,96,0.1);
+        }
         @media (max-width: 1024px) {
-            .horizontal-wrapper { height: auto !important; }
-            .horizontal-scroller { 
-                display: block; 
-                width: 100%; 
-                height: auto; 
-                transform: none !important; 
-            }
-            .project-node { 
-                width: 100%; 
-                height: 100vh; 
-                display: flex; 
-                align-items: center; 
-                padding: 0 5vw;
-                margin-bottom: 2rem;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-            }
-            .project-node:last-child { margin-bottom: 0; }
-            .fixed.bottom-4.left-4 { display: none; } /* Hide scroll progress on mobile */
-        }
-
-        .data-panel {
-            width: 30%;
-            padding-right: 50px;
-            z-index: 10;
+            .project-card { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 5vw; }
         }
 
         .visual-anchor {
             position: relative;
-            width: 70%;
-            height: 65vh;
-            background: #111;
+            aspect-ratio: 16/9;
             overflow: hidden;
-            clip-path: polygon(5% 0, 100% 0, 100% 90%, 95% 100%, 0 100%, 0 10%);
+            border: 1px solid rgba(195, 160, 96, 0.2);
         }
-
         .project-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            filter: saturate(0);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%) brightness(0.7);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
+        .project-card:hover .project-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
 
-        .project-node:hover .project-img {
-            opacity: 1;
-            filter: saturate(1);
-            transform: scale(1.05);
-        }
-
-        /* BIM Meta-Data Overlay */
         .bim-overlay {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            text-align: right;
-            font-size: 10px;
-            color: var(--gold);
-            line-height: 1.8;
-            pointer-events: none;
-            opacity: 0.5;
+            position: absolute; top: 1rem; right: 1rem;
+            background: rgba(11, 26, 42, 0.8); backdrop-filter: blur(8px);
+            padding: 1rem; border: 1px solid var(--accent);
+            font-family: 'Space Mono', monospace; font-size: 0.75rem; line-height: 1.6;
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;
         }
+        .visual-anchor:hover .bim-overlay { opacity: 1; }
 
-        /* Glitch Frame */
-        .glitch-frame {
-            position: absolute;
-            inset: 0;
-            border: 1px solid var(--wire);
-            pointer-events: none;
-            z-index: 5;
+        /* scroll progress (decorative) */
+        .scroll-progress {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 100;
+            background: rgba(11,26,42,0.6); backdrop-filter: blur(8px);
+            padding: 0.75rem 1.5rem; border: 1px solid var(--accent);
+            display: flex; align-items: center; gap: 1rem;
         }
+        @media (max-width: 1024px) { .scroll-progress { display: none; } }
 
-        .section-tag {
-            writing-mode: vertical-rl;
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 10px;
-            letter-spacing: 10px;
-            color: rgba(255,255,255,0.2);
-        }
-
-        /* Decorative Terminal Elements */
-        .terminal-grid {
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(rgba(201, 162, 39, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .nav-blur {
-            backdrop-filter: blur(20px);
-            background: rgba(0,0,0,0.8);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: rgba(2,2,2,0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(201,162,39,0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        /* mobile menu (from main) */
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: var(--dark); backdrop-filter: blur(40px); border-left: 1px solid rgba(195, 160, 96, 0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
         .mobile-menu.open { right: 0; }
         .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
-        .menu-toggle span { width: 100%; height: 2px; background: white; transition: 0.3s; transform-origin: left; }
-        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--gold); }
+        .menu-toggle span { width: 100%; height: 2px; background: var(--light); transition: 0.3s; transform-origin: left; }
+        .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--accent); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
-        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--gold); }
+        .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--accent); }
         @media (max-width: 1024px) { .menu-toggle { display: flex; } }
-        .mobile-menu a { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; color: white; text-decoration: none; transition: color 0.2s; }
-        .mobile-menu a:hover { color: var(--gold); }
-        .mobile-menu .contact-mobile { border: 1px solid var(--gold); padding: 0.5rem 2rem; font-size: 1.2rem; color: var(--gold); }
+        .mobile-menu a { font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light); text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--accent); }
 
-        /* Responsive adjustments */
-        @media (max-width: 1200px) {
-            .project-node { padding: 0 5vw; }
-            .data-panel { width: 40%; padding-right: 30px; }
-            .visual-anchor { width: 60%; }
-        }
-
+        /* responsive */
         @media (max-width: 1024px) {
-            .project-node { flex-direction: column; justify-content: center; padding: 0 4rem; }
-            .data-panel { width: 100%; padding-right: 0; margin-bottom: 2rem; }
-            .visual-anchor { width: 100%; height: 45vh; }
-            .project-node .text-7xl { font-size: 3.5rem; }
-            .section-tag { left: 5px; font-size: 8px; letter-spacing: 5px; display: none; }
-            .bim-overlay { font-size: 8px; top: 10px; right: 10px; }
+            .sticky-text-container { padding: 2rem; }
+            .project-tag { display: none; }
         }
-
-        @media (max-width: 768px) {
-            .project-node { padding: 0 2rem; }
-            .project-node .text-7xl { font-size: 3rem; }
-            .data-panel .text-sm { font-size: 0.8rem; }
-            .visual-anchor { height: 40vh; }
-            .mono.text-\[10px\] { font-size: 8px; }
-        }
-
-        @media (max-width: 480px) {
-            .project-node { padding: 0 1.5rem; }
-            .project-node .text-7xl { font-size: 2.5rem; }
-            .data-panel .text-xs { font-size: 0.7rem; }
-            .visual-anchor { height: 35vh; }
-        }
-
-        /* final node override for white background */
-        .project-node:last-child { 
-            background: white; 
-            color: black; 
-        }
-        .project-node:last-child .glitch-frame { border-color: rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-<canvas id="webgl-canvas"></canvas>
-<div class="terminal-grid"></div>
-<div id="cursor-nexus"></div>
-<div id="cursor-data">SYS_INIT_SUCCESS</div>
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
 
-<!-- Mobile Menu Toggle -->
+<!-- mobile menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
     <span></span>
     <span></span>
     <span></span>
 </button>
-
-<!-- Mobile Menu Panel -->
-<!-- Mobile Menu Panel -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="home.html">HOME</a>
     <a href="about.html">ABOUT</a>
-    <a href="projects.html">PROJECTS</a>
-    <a href="attire.html">ATTIRE</a>
-    <a href="contact.html" class="contact-mobile">CONTACT</a>
+    <a href="attire.html">SERVICES</a>
+    <a href="projects.html">PROJECTS</a>    
+    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
 </div>
 
-<nav class="fixed w-full z-[100] px-6 sm:px-12 py-6 flex justify-between items-center bg-black/40 backdrop-blur-md border-b border-white/5">
-    <div class="flex items-center gap-4">
-        <div class="w-8 h-[2px] bg-[--gold]"></div>
-        <h1 class="text-lg sm:text-xl font-black tracking-[0.2em] sm:tracking-[0.4em] uppercase">ARTANDFIENDS</h1>
-    </div>
-    <div class="hidden lg:flex space-x-10 text-[10px] tracking-[0.4em] font-bold items-center">
-        <a href="home.html" class="nav-link hover:text-[--gold]">HOME</a>
-        <a href="about.html" class="nav-link hover:text-[--gold]">ABOUT</a>
-        <a href="projects.html" class="nav-link hover:text-[--gold]">PROJECTS</a>
-        <a href="attire.html" class="nav-link hover:text-[--gold]">ATTIRE</a>
-        <a href="contact.html" class="px-6 py-2 border border-[--gold] text-[--gold] hover:bg-[--gold] hover:text-black transition ml-4">CONTACT</a>
-    </div>
-</nav>
-<div class="fixed bottom-4 sm:bottom-10 left-4 sm:left-12 z-50 items-center gap-4 sm:gap-6 desktop-only" style="display: none;">
-    <div class="flex flex-col gap-1">
-        <span class="mono text-[6px] sm:text-[8px] text-white/40">BUFFER_LOAD</span>
-        <div class="w-24 sm:w-48 h-[1px] bg-white/10 relative">
-            <div id="scroll-bar" class="absolute h-full bg-[--gold] w-0"></div>
+<!-- nav -->
+<nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-[2px] bg-[--accent]"></div>
+            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
+            <span class="mono text-[10px] text-[--accent] ml-4 hidden md:block">RIBA · AIA · LEED</span>
+        </div>
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
+            <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
+            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
         </div>
     </div>
-    <span id="scroll-percent" class="mono text-[8px] sm:text-[10px] text-[--gold]">00%</span>
-</div>
+</nav>
 
-<main class="page-wrapper">
-    <section id="intro" class="h-screen flex items-center px-6 sm:px-12 lg:px-40">
-        <div class="max-w-5xl">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-8 sm:w-12 h-[1px] bg-[--gold]"></div>
-                <span class="mono text-[--gold] text-[0.6rem] sm:text-xs tracking-[0.4em] sm:tracking-[0.8em] animate-pulse">PROJECT PORTFOLIO</span>
+<canvas id="bg3d"></canvas>
+
+<main class="content-layer">
+
+    <!-- hero intro (like main) -->
+    <section class="h-screen flex items-center justify-center px-6 relative" 
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover no-repeat;">
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <div class="mb-6">
+                <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
             </div>
-            <h2 class="text-[15vw] sm:text-[12vw] font-black leading-[0.8] uppercase mb-8 sm:mb-12 tracking-tighter">
-                Selected<br><span class="text-transparent" style="-webkit-text-stroke: 1px white;">Works.</span>
-            </h2>
-            <div class="grid lg:grid-cols-2 gap-8 sm:gap-20">
-                <p class="text-xl sm:text-2xl text-gray-400 leading-tight">
-                    A curated selection of our architectural projects. Each work represents a synthesis of rigorous technical execution and distinctive design vision — from concept to built reality.
-                </p>
-                <div class="mono text-[8px] sm:text-[10px] text-gray-500 border-l border-white/10 pl-4 sm:pl-10 space-y-2">
-                    <p>[SECTOR]: Residential · Commercial · Cultural</p>
-                    <p>[STATUS]: Completed & In-Construction</p>
-                    <p>[METHOD]: BIM LOD 400 · Integrated Delivery</p>
-                    <p>[SCOPE]: Architecture · Interiors · Planning</p>
+            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-white drop-shadow-2xl" id="hero-main">
+                PROJECT<br>ARCHIVE
+            </h1>
+            <div class="flex flex-col md:flex-row justify-center gap-8 items-center opacity-0" id="hero-meta">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-[1px] bg-[--accent]"></div>
+                    <span class="mono text-xs tracking-widest text-white">SELECTED WORKS 2018–2026</span>
+                </div>
+                <div class="flex gap-8">
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">24</div>
+                        <div class="text-xs text-white opacity-80">COMPLETED</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">18</div>
+                        <div class="text-xs text-white opacity-80">IN PROGRESS</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="horizontal-wrapper">
-        <div class="horizontal-scroller">
-            
-            <section id="skyline-nexus" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">COMMERCIAL TOWER</span>
-                <div class="data-panel">
-                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">01 // MIXED-USE</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Skyline<br>Nexus</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A 32-story commercial tower in Manhattan. Integrated MEP coordination and parametric facade optimization reduced material waste by 20% while achieving a distinctive glass envelope.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
-                        <li>> CLIENT: Hines Development</li>
-                        <li>> STATUS: Construction 2026</li>
-                        <li>> AREA: 45,000 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor group">
-                    <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono hidden sm:block">
-                        COORD: 40.7128° N, 74.0060° W<br>LEED: GOLD TARGET<br>REVIT_V26_ID: 884-292
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img" alt="project">
-                </div>
-            </section>
+    <!-- === STICKY NARRATIVE (like about page) === -->
+    <section class="sticky-wrapper">
+        <div class="sticky-content">
+            <!-- two layers: base and overlay -->
+            <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070" class="layer-img wireframe-overlay" id="img-base" alt="base">
+            <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="layer-img opacity-0 scale-110" id="img-overlay" alt="overlay">
 
-            <section id="tectonic-villa" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">RESIDENTIAL</span>
-                <div class="data-panel">
-                    <span class="mono text-[--red] text-xs sm:text-sm mb-4 block">02 // PRIVATE RESIDENCE</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Tectonic<br>Villa</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A hillside residence in Los Angeles, where raw concrete and glass frame panoramic views. Full BIM coordination ensured seamless integration of structure, MEP, and custom millwork.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--red]">
-                        <li>> CLIENT: Private</li>
-                        <li>> STATUS: Completed 2025</li>
-                        <li>> AREA: 850 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor">
-                    <div class="glitch-frame" style="border-color: var(--red);"></div>
-                    <div class="bim-overlay mono hidden sm:block" style="color: var(--red);">
-                        COORD: 34.0522° N, 118.2437° W<br>MAT: Polished Concrete<br>LUX_VAL: 850_AVG
-                    </div>
-                    <img src="images/image1.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070'">
-                </div>
-            </section>
+            <!-- vertical tag -->
+            <div class="project-tag mono">PRINCIPAL WORKS</div>
 
-            <section id="kinetic-pavilion" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">CULTURAL</span>
-                <div class="data-panel">
-                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">03 // PERFORMING ARTS</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Kinetic<br>Pavilion</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A flexible performance space with a kinetic facade that adapts to solar conditions. Real-time environmental feedback drives panel orientation, optimizing both energy performance and user comfort.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
-                        <li>> CLIENT: City of Austin</li>
-                        <li>> STATUS: In Design</li>
-                        <li>> AREA: 2,400 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor">
-                    <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono hidden sm:block">
-                        FACADE: Dynamic Shading<br>ENERGY: +18% Efficiency<br>PROGRAM: Theater + Gallery
-                    </div>
-                    <img src="images/iamge2.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070'">
-                </div>
-            </section>
-
-           <section id="timber-loft" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">WORKPLACE</span>
-                <div class="data-panel">
-                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">04 // OFFICE HQ</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Timber<br>Loft</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A mass timber headquarters for a sustainable investment firm. Exposed CLT structure, biophilic design, and full MEP integration within a 100-year adaptive reuse warehouse shell.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
-                        <li>> CLIENT: GreenCap Partners</li>
-                        <li>> STATUS: Construction Documents</li>
-                        <li>> AREA: 3,200 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor">
-                    <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono hidden sm:block">
-                        STRUCTURE: Mass Timber<br>CARBON: -40% vs Steel<br>WELL: Platinum Target
-                    </div>
-                    <img src="images/image3.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070'">
-                </div>
-            </section>
-
-
-            <section id="neural-structure" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">MIXED-USE</span>
-                <div class="data-panel">
-                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">05 // URBAN BLOCK</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Neural<br>Structure</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A parametric framework for a mixed-use block in Dubai. The structural grid responds dynamically to programmatic loads, optimizing column placement for retail, residential, and parking.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
-                        <li>> CLIENT: Emaar Properties</li>
-                        <li>> STATUS: Schematic Design</li>
-                        <li>> AREA: 28,000 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor">
-                    <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono hidden sm:block">
-                        LOAD_OPTIMIZATION: 12% Reduction<br>PROGRAM: Retail + Residential<br>PARKING: 450 spaces
-                    </div>
-                    <img src="images/image4.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070'">
-                </div>
-            </section>
-
-
-           <section id="lumina-inn" class="project-node">
-                <span class="section-tag mono uppercase hidden sm:block">HOSPITALITY</span>
-                <div class="data-panel">
-                    <span class="mono text-[--gold] text-xs sm:text-sm mb-4 block">06 // BOUTIQUE HOTEL</span>
-                    <h3 class="text-4xl sm:text-7xl font-black uppercase leading-none mb-6 sm:mb-8">Lumina<br>Inn</h3>
-                    <p class="text-gray-500 mb-6 sm:mb-10 text-xs sm:text-sm leading-relaxed">
-                        A 40-key boutique hotel in the Catskills. Daylight harvesting, circadian lighting, and natural ventilation create a restorative environment integrated with the surrounding landscape.
-                    </p>
-                    <ul class="mono text-[8px] sm:text-[10px] space-y-2 sm:space-y-3 text-[--gold]">
-                        <li>> CLIENT: Wanderlust Hospitality</li>
-                        <li>> STATUS: Permitting</li>
-                        <li>> AREA: 2,800 m²</li>
-                    </ul>
-                </div>
-                <div class="visual-anchor">
-                    <div class="glitch-frame"></div>
-                    <div class="bim-overlay mono hidden sm:block">
-                        LIGHTING: Circadian Tuning<br>ENERGY: Passive House principles<br>MATERIALS: Local timber + stone
-                    </div>
-                    <img src="images/image5.jpg" class="project-img" alt="project" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070'">
-                </div>
-            </section>
-
-
-            <section id="build-with-us" class="project-node !w-[100vw] sm:!w-[150vw] bg-white text-black flex items-center justify-center">
-                <div class="flex flex-col gap-6 sm:gap-8 px-6 sm:px-0">
-                    <h4 class="text-6xl sm:text-8xl lg:text-[12vw] font-black uppercase leading-[0.8] tracking-tighter">
-                        Build<br>With Us.
-                    </h4>
-                    <p class="text-xl sm:text-3xl max-w-2xl font-bold leading-tight">
-                        Every project begins with a conversation. Let's discuss how our approach can bring your vision to life.
-                    </p>
-                    <a href="#contact" class="mono text-lg sm:text-2xl border-b-4 border-black pb-4 hover:tracking-[0.2em] transition-all self-start">INQUIRE ABOUT A PROJECT</a>
-                </div>
-            </section>
-
+            <!-- floating text block (animates) -->
+            <div class="sticky-text-container" id="stickyTextBlock">
+                <div class="mono text-[--accent] text-xs tracking-[0.5em] mb-4" id="sticky-status">// DESIGN INTENT</div>
+                <h2 id="sticky-headline" class="text-6xl md:text-8xl font-black uppercase">THE DATA</h2>
+                <p id="sticky-sub" class="mono text-[--accent] mt-6 text-sm tracking-widest">Parametric Optimization · BIM Integration</p>
+            </div>
         </div>
-    </div>
-    
-    <section id="contact" class="h-screen flex items-center justify-center relative overflow-hidden bg-black px-4">
-        <div class="absolute text-[20vw] sm:text-[30vw] font-black outline-text opacity-5 select-none whitespace-nowrap">START YOUR PROJECT</div>
-        <div class="text-center relative z-10 w-full">
-            <h2 class="text-6xl sm:text-9xl font-black uppercase mb-6 sm:mb-10">LET'S<br><span class="text-[--red]">BUILD.</span></h2>
-            <p class="mono text-[--gold] mb-8 sm:mb-12 tracking-[0.5em] uppercase text-xs sm:text-base">Ready to discuss your vision?</p>
-            <a href="mailto:studio@artandfiends.com" class="text-3xl sm:text-5xl font-light hover:text-[--gold] transition-all duration-500 underline underline-offset-[16px] sm:underline-offset-[24px] decoration-[--gold] break-all">studio@artandfiends.com</a>
+    </section>
+
+    <!-- === STATIC PROJECT CARDS (reveal on scroll) === -->
+    <section class="py-20 bg-[--dark] relative z-10">
+        <!-- card 1: Skyline Nexus -->
+        <div class="project-card reveal-card">
+            <div class="data-panel">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">01 // MIXED-USE</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Skyline<br>Nexus</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">A 32-story commercial tower in Manhattan. Integrated MEP coordination and parametric facade optimization reduced material waste by 20%.</p>
+                <div class="grid grid-cols-2 gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Hines</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction 2026</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">45,000 m²</span></div>
+                    <div><span class="opacity-50">LEED</span><br><span class="text-[--accent]">Gold</span></div>
+                </div>
+            </div>
+            <div class="visual-anchor">
+                <div class="bim-overlay">COORD: 40.7128° N<br>REVIT_V26_ID: 884-292</div>
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img" alt="Skyline Nexus">
+            </div>
+        </div>
+
+        <!-- card 2: Tectonic Villa -->
+        <div class="project-card reveal-card">
+            <div class="data-panel">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">02 // RESIDENTIAL</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Tectonic<br>Villa</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Hillside residence in Los Angeles. Raw concrete and glass frame panoramic views. Full BIM coordination.</p>
+                <div class="grid grid-cols-2 gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Private</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Completed 2025</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">850 m²</span></div>
+                    <div><span class="opacity-50">MATERIAL</span><br><span class="text-[--accent]">Concrete + Glass</span></div>
+                </div>
+            </div>
+            <div class="visual-anchor">
+                <div class="bim-overlay">COORD: 34.0522° N<br>LUX_VAL: 850_AVG</div>
+                <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="project-img" alt="Tectonic Villa">
+            </div>
+        </div>
+
+        <!-- card 3: Kinetic Pavilion -->
+        <div class="project-card reveal-card">
+            <div class="data-panel">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">03 // CULTURAL</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Kinetic<br>Pavilion</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Flexible performance space with kinetic facade adapting to solar conditions. Real-time environmental feedback.</p>
+                <div class="grid grid-cols-2 gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">City of Austin</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">In Design</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">2,400 m²</span></div>
+                    <div><span class="opacity-50">ENERGY</span><br><span class="text-[--accent]">+18% Eff.</span></div>
+                </div>
+            </div>
+            <div class="visual-anchor">
+                <div class="bim-overlay">FACADE: Dynamic Shading<br>BIM_LOD: 400</div>
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="project-img" alt="Kinetic Pavilion">
+            </div>
+        </div>
+
+        <!-- card 4: Timber Loft -->
+        <div class="project-card reveal-card">
+            <div class="data-panel">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">04 // WORKPLACE</span>
+                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Timber<br>Loft</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Mass timber headquarters, exposed CLT, biophilic design within a 100-year adaptive reuse warehouse.</p>
+                <div class="grid grid-cols-2 gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">GreenCap Partners</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction Docs</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">3,200 m²</span></div>
+                    <div><span class="opacity-50">CARBON</span><br><span class="text-[--accent]">-40% vs Steel</span></div>
+                </div>
+            </div>
+            <div class="visual-anchor">
+                <div class="bim-overlay">STRUCTURE: Mass Timber<br>WELL: Platinum Target</div>
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2070" class="project-img" alt="Timber Loft">
+            </div>
+        </div>
+
+        <!-- final CTA panel (light) -->
+        <div class="project-card !border-none !bg-[--light] !text-[--dark] py-32" style="background: var(--light);">
+            <div class="col-span-2 text-center max-w-3xl mx-auto">
+                <span class="mono text-[--accent] text-sm tracking-[0.3em]">/ NEXT /</span>
+                <h2 class="text-7xl md:text-9xl font-black uppercase my-8">Build<br>With Us.</h2>
+                <p class="text-2xl opacity-70 mb-12">Every project begins with a conversation.</p>
+                <a href="#contact" class="inline-block px-12 py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-[--light] transition-all text-xl">INITIATE PROJECT</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- contact section (same as main) -->
+    <section id="contact" class="h-screen flex items-center justify-center px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ INITIATE PROJECT /</span>
+            <h2 class="text-6xl md:text-8xl font-black uppercase my-8">Let's Build</h2>
+            <p class="text-xl opacity-70 mb-12">Ready to discuss your next project? Contact our team.</p>
+            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
+                <a href="mailto:studio@artandfiends.com" class="text-2xl md:text-3xl font-light hover:text-[--accent] transition border-b border-[--accent] pb-1">studio@artandfiends.com</a>
+                <span class="mono text-[--accent] text-sm">+44 (0)20 7946 0138</span>
+            </div>
+            <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+                <div><span class="mono text-[--accent] text-xs">LONDON</span><div class="text-sm mt-1">EC2A 4PS</div></div>
+                <div><span class="mono text-[--accent] text-xs">NEW YORK</span><div class="text-sm mt-1">10005</div></div>
+                <div><span class="mono text-[--accent] text-xs">DUBAI</span><div class="text-sm mt-1">DIFC</div></div>
+            </div>
         </div>
     </section>
 </main>
 
-<footer class="relative z-[100] mt-20 border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 sm:px-12 py-12 sm:py-16">
-    <div class="absolute top-0 right-0 p-4 mono text-[8px] opacity-10 select-none hidden sm:block">
-        REF_PN: 77-004-AF // CORE_SPEC
-    </div>
-
-    <div class="max-w-screen-2xl mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-16">
-            
-            <div class="space-y-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-6 h-6 border-2 border-[--gold] rotate-45 flex items-center justify-center">
-                        <div class="w-2 h-2 bg-white"></div>
-                    </div>
-                    <h3 class="text-xl font-black tracking-widest uppercase italic">ARTANDFIENDS</h3>
-                </div>
-                <p class="mono text-[10px] leading-relaxed opacity-50 uppercase">
-                    Architecture · Interiors · Masterplanning <br>
-                    London | New York | Dubai
-                </p>
+<!-- footer (identical to main) -->
+<footer class="relative z-[100] border-t border-[--accent] border-opacity-20 bg-[--dark] px-6 py-12">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+            <div>
+                <div class="text-lg font-bold tracking-widest mb-4">ARTANDFIENDS</div>
+                <p class="mono text-xs opacity-50">Chartered Architects · RIBA · AIA</p>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// NAVIGATION</h4>
-                <ul class="mono text-[10px] space-y-2">
-                    <li><a href="#intro" class="hover:text-[--gold] transition flex items-center gap-2"><span>[01]</span> HOME</a></li>
-                    <li><a href="#skyline-nexus" class="hover:text-[--gold] transition flex items-center gap-2"><span>[02]</span> PROJECTS</a></li>
-                    <li><a href="#contact" class="hover:text-[--gold] transition flex items-center gap-2"><span>[03]</span> CONTACT</a></li>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">OFFICES</h4>
+                <ul class="space-y-2 text-xs opacity-70">
+                    <li>London · 42 Shoreditch High St</li>
+                    <li>New York · 200 Park Avenue</li>
+                    <li>Dubai · DIFC Gate Village</li>
                 </ul>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// SOCIAL</h4>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">IG</span>
-                    </a>
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">LI</span>
-                    </a>
-                    <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[--gold] transition group">
-                        <span class="mono text-[10px] group-hover:text-[--gold]">X_</span>
-                    </a>
-                </div>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">CERTIFICATIONS</h4>
+                <ul class="space-y-2 text-xs opacity-70">
+                    <li>ISO 9001:2015</li>
+                    <li>ISO 14001:2015</li>
+                    <li>ISO 45001:2018</li>
+                </ul>
             </div>
-
-            <div class="space-y-4">
-                <h4 class="opacity-100 text-xs">// SYSTEM_STATUS</h4>
-                <div class="p-4 border border-white/5 bg-white/2 rounded-sm space-y-2">
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">TIME:</span>
-                        <span id="footer-clock" class="text-[--gold]">00:00:00 UTC</span>
+            <div>
+                <h4 class="mono text-[--accent] text-xs mb-4">PROJECT STATUS</h4>
+                <div class="p-4 glass-panel">
+                    <div class="flex justify-between text-xs">
+                        <span class="opacity-50">UTC</span>
+                        <span id="footer-clock">00:00:00</span>
                     </div>
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">LOCATION:</span>
-                        <span class="text-white">51.5074° N</span>
-                    </div>
-                    <div class="flex justify-between mono text-[9px]">
-                        <span class="opacity-50">STATUS:</span>
-                        <span class="text-green-500 animate-pulse">ACCEPTING NEW COMMISSIONS</span>
+                    <div class="flex justify-between text-xs mt-2">
+                        <span class="opacity-50">STATUS</span>
+                        <span class="text-[--success]">ACCEPTING COMMISSIONS</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[8px] opacity-30 tracking-widest text-center">
-                © 2026 ARTANDFIENDS. ALL RIGHTS RESERVED. // CHARTERED ARCHITECTS · RIBA · AIA
-            </div>
-            
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="group flex flex-col items-center gap-2">
-                <div class="w-[1px] h-10 bg-white/20 group-hover:bg-[--gold] transition-all"></div>
-                <span class="mono text-[8px] tracking-[0.4em] opacity-40 group-hover:opacity-100">BACK TO TOP</span>
-            </button>
+        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
+            <div>© 2024 ARTANDFIENDS. ALL RIGHTS RESERVED.</div>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-[--accent] transition">BACK TO TOP ↑</button>
         </div>
     </div>
 </footer>
 
+<!-- scripts -->
 <script>
-    // Live Footer Clock
+    // Clock
     function updateFooterClock() {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'UTC' }) + ' UTC';
-        const clockEl = document.getElementById('footer-clock');
-        if(clockEl) clockEl.innerText = timeString;
+        const clock = document.getElementById('footer-clock');
+        if(clock) clock.innerText = new Date().toLocaleTimeString('en-GB', { hour12: false });
     }
     setInterval(updateFooterClock, 1000);
     updateFooterClock();
-</script>
 
-<script>
-    gsap.registerPlugin(ScrollTrigger);
+    // Cursor
+    const cursor = document.getElementById("cursor");
+    const follower = document.getElementById("cursor-follower");
+    if (cursor && follower) {
+        document.addEventListener("mousemove", (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(follower, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3 });
+        });
+    }
 
-    // Mobile Menu Toggle
+    // Mobile Menu
     const menuToggle = document.getElementById('menuToggle');
     const mobileMenu = document.getElementById('mobileMenu');
-
     if (menuToggle && mobileMenu) {
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('open');
             mobileMenu.classList.toggle('open');
         });
-
-        // close menu when a link is clicked
         mobileMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('open');
@@ -543,157 +445,84 @@
         });
     }
 
-    // Show/hide desktop scroll indicator based on screen size
-    const desktopOnly = document.querySelector('.desktop-only');
-    if (desktopOnly) {
-        if (window.innerWidth >= 1025) {
-            desktopOnly.style.display = 'flex';
-        } else {
-            desktopOnly.style.display = 'none';
-        }
-    }
+    gsap.registerPlugin(ScrollTrigger);
 
-    // 1. THREE.JS: LIDAR SCANNER BACKGROUND
-    const canvas = document.getElementById('webgl-canvas');
+    window.onload = () => {
+        // hero anim
+        gsap.from("#hero-main", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
+        gsap.to("#hero-meta", { opacity: 1, duration: 1, delay: 0.5 });
+
+        // === STICKY NARRATIVE (exactly like about page) ===
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".sticky-wrapper",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1.2,
+            }
+        });
+
+        // layer swap + text change
+        tl.to("#img-overlay", { opacity: 1, scale: 1, duration: 1 })
+          .to("#sticky-headline", { textContent: "THE VISION", duration: 0.1 }, 0.5)
+          .to("#sticky-status", { textContent: "DESIGN INTENT // REALITY MAPPING" }, 0.5)
+          .to("#sticky-sub", { textContent: "From Concept to Constructible Reality" }, 0.5)
+          .to("#stickyTextBlock", { backgroundColor: "rgba(11,26,42,0.8)", borderColor: "var(--accent)" }, 0.5);
+
+        // reveal project cards (individual cards)
+        gsap.utils.toArray(".reveal-card").forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: { trigger: card, start: "top 85%" },
+                opacity: 0,
+                y: 100,
+                duration: 1.2,
+                delay: i * 0.15
+            });
+        });
+
+        ScrollTrigger.refresh();
+    };
+
+    // three.js grid (same as main)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("bg3d"), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const geo = new THREE.BufferGeometry();
-    const pCount = 10000;
-    const pPos = new Float32Array(pCount * 3);
-    for(let i=0; i < pCount * 3; i++) {
-        pPos[i] = (Math.random() - 0.5) * 15;
-    }
-    geo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const mat = new THREE.PointsMaterial({ size: 0.008, color: 0xC9A227, transparent: true, opacity: 0.4 });
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
-    camera.position.z = 5;
+    const gridHelper = new THREE.GridHelper(30, 20, 0x4A6FA5, 0x1E3A5F);
+    gridHelper.position.y = -5;
+    scene.add(gridHelper);
 
-    function animatePoints() {
-        requestAnimationFrame(animatePoints);
-        points.rotation.y += 0.0005;
+    const cubes = [];
+    for (let i = 0; i < 30; i++) {
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ color: 0xC3A060, wireframe: true, transparent: true, opacity: 0.1 });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.x = (Math.random() - 0.5) * 20;
+        cube.position.y = (Math.random() - 0.5) * 10;
+        cube.position.z = (Math.random() - 0.5) * 20;
+        cube.scale.set(Math.random() * 2 + 0.5, Math.random() * 2 + 0.5, Math.random() * 2 + 0.5);
+        scene.add(cube);
+        cubes.push(cube);
+    }
+
+    camera.position.z = 15;
+    camera.position.y = 5;
+
+    function animate() {
+        requestAnimationFrame(animate);
+        cubes.forEach(cube => {
+            cube.rotation.x += 0.002;
+            cube.rotation.y += 0.003;
+        });
         renderer.render(scene, camera);
     }
-    animatePoints();
+    animate();
 
-    // 2. TACTICAL HUD CURSOR (only on desktop)
-    const cursor = document.getElementById('cursor-nexus');
-    const cData = document.getElementById('cursor-data');
-    
-    document.addEventListener('mousemove', (e) => {
-        if (window.innerWidth > 768) {
-            gsap.to(cursor, { x: e.clientX - 25, y: e.clientY - 25, duration: 0.2 });
-            gsap.to(cData, { x: e.clientX + 30, y: e.clientY + 10, duration: 0.1 });
-            cData.innerText = `X:${e.clientX} Y:${e.clientY} // NODE_SCAN: ${(Math.random() * 100).toFixed(2)}`;
-        }
-    });
-
-    // 3. THE KINETIC SCROLLER (Desktop only)
-    const scroller = document.querySelector('.horizontal-scroller');
-    
-    if (scroller && window.innerWidth >= 1025) {
-        let scrollTween = gsap.to(scroller, {
-            x: () => -(scroller.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".horizontal-wrapper",
-                pin: true,
-                scrub: 1,
-                end: () => "+=" + scroller.scrollWidth,
-                onUpdate: (self) => {
-                    const prog = Math.round(self.progress * 100);
-                    const scrollBar = document.getElementById('scroll-bar');
-                    const scrollPercent = document.getElementById('scroll-percent');
-                    if (scrollBar) scrollBar.style.width = prog + "%";
-                    if (scrollPercent) scrollPercent.innerText = prog.toString().padStart(2, '0') + "%";
-                    if (points) points.rotation.z = self.progress * 2;
-                }
-            }
-        });
-
-        // 4. ANIMATE PROJECT CONTENT ON ARRIVAL (Desktop only)
-        gsap.utils.toArray(".project-node").forEach(node => {
-            const h3 = node.querySelector("h3");
-            const img = node.querySelector(".visual-anchor");
-
-            if (h3) {
-                gsap.from(h3, {
-                    y: 100,
-                    opacity: 0,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: node,
-                        containerAnimation: scrollTween,
-                        start: "left 80%",
-                    }
-                });
-            }
-
-            if (img) {
-                gsap.from(img, {
-                    scale: 0.8,
-                    opacity: 0,
-                    duration: 1.5,
-                    ease: "expo.out",
-                    scrollTrigger: {
-                        trigger: node,
-                        containerAnimation: scrollTween,
-                        start: "left 70%",
-                    }
-                });
-            }
-        });
-    } else if (scroller) {
-        // Mobile: set initial transform to none
-        scroller.style.transform = 'none';
-    }
-
-    // 5. Mobile reveal animations
-    if (window.innerWidth < 1025) {
-        gsap.utils.toArray(".project-node").forEach((node, i) => {
-            gsap.from(node.querySelector("h3"), {
-                scrollTrigger: {
-                    trigger: node,
-                    start: "top 80%",
-                },
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                delay: i * 0.1
-            });
-            
-            gsap.from(node.querySelector(".visual-anchor"), {
-                scrollTrigger: {
-                    trigger: node,
-                    start: "top 75%",
-                },
-                scale: 0.9,
-                opacity: 0,
-                duration: 1,
-                delay: i * 0.1
-            });
-        });
-    }
-
-    // Handle Window Resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        // Update desktop-only elements visibility
-        if (desktopOnly) {
-            if (window.innerWidth >= 1025) {
-                desktopOnly.style.display = 'flex';
-            } else {
-                desktopOnly.style.display = 'none';
-            }
-        }
-        
-        // Refresh ScrollTrigger on resize
         ScrollTrigger.refresh();
     });
 </script>
