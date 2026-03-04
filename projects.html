@@ -169,8 +169,6 @@
 </head>
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-follower"></div>
 
 <!-- mobile menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
@@ -365,46 +363,97 @@
 </main>
 
 <!-- footer (identical to main) -->
-<footer class="relative z-[100] border-t border-[--accent] border-opacity-20 bg-[--dark] px-6 py-12">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-8 mb-12">
-            <div>
-                <div class="text-lg font-bold tracking-widest mb-4">ARTANDFIENDS</div>
-                <p class="mono text-xs opacity-50">Chartered Architects · RIBA · AIA</p>
+<footer class="relative z-[100] border-t border-white/5 bg-black px-6 pt-20 pb-12 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+    <div class="max-w-7xl mx-auto relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+            
+            <div class="space-y-6">
+                <div>
+                    <div class="text-2xl font-black tracking-tighter mb-1">ARTANDFIENDS</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                </div>
+                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                    Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
+                </p>
+                <div class="flex gap-4 pt-2">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                </div>
             </div>
+
             <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">OFFICES</h4>
-                <ul class="space-y-2 text-xs opacity-70">
-                    <li>London · 42 Shoreditch High St</li>
-                    <li>New York · 200 Park Avenue</li>
-                    <li>Dubai · DIFC Gate Village</li>
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
+                <ul class="space-y-4 text-sm">
+                    <li>
+                        <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
+                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                    </li>
+                      <li class="pt-2">
+                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
+                        <span class="text-zinc-300 text-xs">+27 71 675 5906</span>
+                    </li>
+                        <li class="pt-2">
+                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
+                        <span class="text-zinc-300 text-xs">mulweli@artandfiends.co.za</span>
+                    </li> 
                 </ul>
             </div>
+
             <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">CERTIFICATIONS</h4>
-                <ul class="space-y-2 text-xs opacity-70">
-                    <li>ISO 9001:2015</li>
-                    <li>ISO 14001:2015</li>
-                    <li>ISO 45001:2018</li>
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
+                <ul class="space-y-3 text-xs text-zinc-400">
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                    </li>
                 </ul>
             </div>
-            <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">PROJECT STATUS</h4>
-                <div class="p-4 glass-panel">
-                    <div class="flex justify-between text-xs">
-                        <span class="opacity-50">UTC</span>
-                        <span id="footer-clock">00:00:00</span>
+
+            <div class="lg:text-right">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
+                <div class="inline-block bg-zinc-900 border border-white/5 p-4 rounded-sm text-left min-w-[200px]">
+                    <div class="flex justify-between items-center gap-8 mb-2">
+                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
                     </div>
-                    <div class="flex justify-between text-xs mt-2">
-                        <span class="opacity-50">STATUS</span>
-                        <span class="text-[--success]">ACCEPTING COMMISSIONS</span>
+                    <div class="h-[1px] bg-white/5 w-full mb-2"></div>
+                    <div class="flex justify-between items-center gap-8">
+                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
-            <div>© 2024 ARTANDFIENDS. ALL RIGHTS RESERVED.</div>
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-[--accent] transition">BACK TO TOP ↑</button>
+
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
+                © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
+            </div>
+            
+            <div class="flex items-center gap-8">
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                    ↑
+                </button>
+            </div>
         </div>
     </div>
 </footer>

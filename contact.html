@@ -223,8 +223,7 @@
 </head>
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-follower"></div>
+
 
 <!-- mobile menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
@@ -263,220 +262,184 @@
 <main class="content-layer min-h-screen flex items-center px-4 md:px-12 lg:px-20 py-24">
     <!-- floating coordinates (kinetic element) -->
     <div class="coords-float" id="live-coords">LAT: 51.5074° N / LONG: 0.1278° W</div>
-
-    <div class="max-w-7xl w-full mx-auto">
-        <div class="contact-grid">
-            
-            <!-- LEFT: TIMELINE TERMINAL (distinct animated nodes) -->
-            <div class="timeline-terminal">
-                <h3 class="mono text-[--accent] text-xs tracking-[0.3em] mb-2">/ CONNECTION PROTOCOL /</h3>
-                <div class="space-y-4">
-                    <div class="timeline-node" id="node1">
-                        <span class="node-pulse"></span>
-                        <div>
-                            <div class="mono text-[10px] text-[--accent]">STEP 01</div>
-                            <div class="font-bold">Establish Identity</div>
-                        </div>
-                    </div>
-                    <div class="timeline-node" id="node2">
-                        <span class="node-pulse"></span>
-                        <div>
-                            <div class="mono text-[10px] text-[--accent]">STEP 02</div>
-                            <div class="font-bold">Project Scope</div>
-                        </div>
-                    </div>
-                    <div class="timeline-node" id="node3">
-                        <span class="node-pulse"></span>
-                        <div>
-                            <div class="mono text-[10px] text-[--accent]">STEP 03</div>
-                            <div class="font-bold">Timeline & Budget</div>
-                        </div>
-                    </div>
-                    <div class="timeline-node" id="node4">
-                        <span class="node-pulse"></span>
-                        <div>
-                            <div class="mono text-[10px] text-[--accent]">STEP 04</div>
-                            <div class="font-bold">Final Brief</div>
-                        </div>
-                    </div>
-                    <div class="timeline-node" id="node5">
-                        <span class="node-pulse"></span>
-                        <div>
-                            <div class="mono text-[10px] text-[--accent]">STEP 05</div>
-                            <div class="font-bold">Uplink Complete</div>
-                        </div>
-                    </div>
+<div class="max-w-7xl w-full mx-auto px-4 py-8 md:py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-stretch">
+        
+        <div class="flex flex-col justify-between space-y-12">
+            <div>
+                <div class="inline-flex items-center gap-3 mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[--accent] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[--accent]"></span>
+                    </span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] uppercase">System: Online</span>
                 </div>
-
-                <!-- telemetry bar (progress) -->
-                <div class="mt-auto pt-6">
-                    <div class="flex justify-between mono text-[8px] mb-2">
-                        <span>UPLINK PROGRESS</span>
-                        <span id="progress-percent">0%</span>
-                    </div>
-                    <div class="telemetry-bar">
-                        <div class="telemetry-fill" id="progress-fill" style="width: 0%;"></div>
-                    </div>
-                </div>
-                <div class="mono text-[8px] opacity-30 mt-4 italic">>> ENCRYPTION: ACTIVE</div>
+                
+                <h2 class="text-5xl md:text-8xl font-black uppercase leading-[0.9] tracking-tighter mb-8">
+                    Start the<br><span class="text-outline">Dialogue.</span>
+                </h2>
+                
+                <p class="text-zinc-400 text-lg md:text-xl max-w-md leading-relaxed">
+                    Direct access to our lead architects. No gatekeepers. Just your vision and our expertise.
+                </p>
             </div>
 
-            <!-- RIGHT: FORM TERMINAL (multi-step, distinct from services) -->
-            <div class="form-terminal" id="form-terminal">
-                <!-- step indicators (compact) -->
-                <div class="flex gap-2 mb-6">
-                    <span class="step-indicator w-2 h-2 rounded-full bg-[--accent]" data-step="1"></span>
-                    <span class="step-indicator w-2 h-2 rounded-full bg-white/20" data-step="2"></span>
-                    <span class="step-indicator w-2 h-2 rounded-full bg-white/20" data-step="3"></span>
-                    <span class="step-indicator w-2 h-2 rounded-full bg-white/20" data-step="4"></span>
-                    <span class="step-indicator w-2 h-2 rounded-full bg-white/20" data-step="5"></span>
+            <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-8">
+                <div>
+                    <div class="mono text-[10px] text-zinc-500 uppercase mb-1">Response Time</div>
+                    <div class="font-bold uppercase tracking-tight text-white">&lt; 24 Hours</div>
                 </div>
-
-                <form id="uplink-form">
-                    <!-- STEP 1: Identity -->
-                    <div class="contact-step active" id="step-1">
-                        <span class="mono text-[--accent] text-[10px] tracking-[0.3em]">// NODE_01: IDENTITY</span>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6">Origin<br>Details</h2>
-                        <div class="space-y-4">
-                            <input type="text" placeholder="Full name *" required>
-                            <input type="email" placeholder="Email address *" required>
-                            <input type="tel" placeholder="Phone number">
-                            <input type="text" placeholder="Company / Organisation">
-                        </div>
-                        <button type="button" class="btn-uplink w-full mt-6" onclick="nextStep(2)">Advance to Scope →</button>
-                    </div>
-
-                    <!-- STEP 2: Scope -->
-                    <div class="contact-step" id="step-2">
-                        <span class="mono text-[--accent] text-[10px] tracking-[0.3em]">// NODE_02: SCOPE</span>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6">Project<br>Type</h2>
-                        <div class="space-y-4">
-                            <select>
-                                <option>Residential – New Build</option>
-                                <option>Residential – Renovation</option>
-                                <option>Commercial</option>
-                                <option>Interior Architecture</option>
-                                <option>Mixed-Use</option>
-                                <option>Other</option>
-                            </select>
-                            <input type="text" placeholder="City / Location">
-                            <input type="text" placeholder="Approximate size (sqm)">
-                        </div>
-                        <div class="flex gap-2 mt-6">
-                            <button type="button" class="btn-uplink flex-1" onclick="prevStep(1)">← Prev</button>
-                            <button type="button" class="btn-uplink flex-1" onclick="nextStep(3)">Next →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 3: Timeline & Budget -->
-                    <div class="contact-step" id="step-3">
-                        <span class="mono text-[--accent] text-[10px] tracking-[0.3em]">// NODE_03: PARAMETERS</span>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6">Time &<br>Capital</h2>
-                        <div class="space-y-4">
-                            <select>
-                                <option>Immediate (within 1 month)</option>
-                                <option>Short-term (1-3 months)</option>
-                                <option>Medium-term (3-6 months)</option>
-                                <option>Long-term (6+ months)</option>
-                            </select>
-                            <select>
-                                <option>Under £100k</option>
-                                <option>£100k – £500k</option>
-                                <option>£500k – £1M</option>
-                                <option>£1M+</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-2 mt-6">
-                            <button type="button" class="btn-uplink flex-1" onclick="prevStep(2)">← Prev</button>
-                            <button type="button" class="btn-uplink flex-1" onclick="nextStep(4)">Next →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 4: Brief -->
-                    <div class="contact-step" id="step-4">
-                        <span class="mono text-[--accent] text-[10px] tracking-[0.3em]">// NODE_04: BRIEF</span>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6">Tell us<br>more</h2>
-                        <div class="space-y-4">
-                            <textarea rows="4" placeholder="Describe your project vision, requirements, or questions..."></textarea>
-                            <div class="flex items-center gap-2">
-                                <input type="checkbox" class="accent-[--accent] w-4 h-4">
-                                <span class="mono text-[10px] opacity-70">I agree to be contacted</span>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 mt-6">
-                            <button type="button" class="btn-uplink flex-1" onclick="prevStep(3)">← Prev</button>
-                            <button type="button" class="btn-uplink flex-1" onclick="nextStep(5)">Finalise →</button>
-                        </div>
-                    </div>
-
-                    <!-- STEP 5: Uplink Complete -->
-                    <div class="contact-step" id="step-5">
-                        <span class="mono text-[--accent] text-[10px] tracking-[0.3em]">// NODE_05: UPLINK</span>
-                        <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6">Ready to<br>Transmit</h2>
-                        <div class="p-6 border border-[--accent] bg-[--accent]/5 mb-6">
-                            <p class="mono text-sm">You're about to establish a direct line to our team. We'll respond within 24 hours.</p>
-                        </div>
-                        <button type="button" class="btn-uplink w-full" onclick="finalUplink()">⟫⟫ TRANSMIT ⟪⟪</button>
-                        <button type="button" class="mono text-[8px] opacity-30 w-full mt-4" onclick="prevStep(4)">[ revise ]</button>
-                    </div>
-                </form>
-
-                <!-- success message (hidden initially) -->
-                <div id="success-message" style="display: none; text-align: center; padding: 3rem 1rem;">
-                    <div class="w-16 h-16 border-2 border-[--accent] rotate-45 mx-auto mb-6 animate-spin-slow"></div>
-                    <h3 class="text-4xl font-black uppercase">Uplink<br>Established</h3>
-                    <p class="mono text-[--accent] text-sm mt-4">Your transmission has been received. We'll decode and respond shortly.</p>
+                <div>
+                    <div class="mono text-[10px] text-zinc-500 uppercase mb-1">Encryption</div>
+                    <div class="font-bold uppercase tracking-tight text-white">Active (AES-256)</div>
                 </div>
             </div>
         </div>
+
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-tr from-[--accent] to-transparent opacity-10 blur transition duration-1000 group-hover:opacity-20"></div>
+            
+            <div class="relative bg-zinc-950 border border-white/10 p-6 md:p-12">
+                <form id="uplink-form" class="space-y-10">
+                    
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <div class="relative">
+                            <input type="text" id="name" required class="peer w-full bg-transparent border-b border-white/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent">
+                            <label for="name" class="absolute left-0 -top-3.5 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-700 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs">Full Name</label>
+                        </div>
+                        <div class="relative">
+                            <input type="email" id="email" required class="peer w-full bg-transparent border-b border-white/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent">
+                            <label for="email" class="absolute left-0 -top-3.5 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-700 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs">Email Address</label>
+                        </div>
+                    </div>
+
+                    <div class="relative pt-4">
+                        <textarea id="vision" required rows="4" class="peer w-full bg-transparent border-b border-white/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent resize-none"></textarea>
+                        <label for="vision" class="absolute left-0 top-0 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-700 peer-placeholder-shown:top-6 peer-focus:top-0 peer-focus:text-[--accent] peer-focus:text-xs">Project Vision / Description</label>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-white text-black py-5 font-black uppercase tracking-widest hover:bg-[--accent] transition-all flex items-center justify-center gap-3 group/btn">
+                            <span>Establish Uplink</span>
+                            <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+
+                    <p class="text-[9px] text-zinc-600 mono uppercase text-center tracking-widest">
+                        Data transmitted via secure studio protocol.
+                    </p>
+                </form>
+
+                <div id="success-overlay" class="hidden absolute inset-0 bg-zinc-950 flex flex-col items-center justify-center text-center p-6 z-10">
+                    <div class="w-20 h-20 border border-[--accent] flex items-center justify-center mb-6">
+                        <div class="w-12 h-12 bg-[--accent] animate-pulse"></div>
+                    </div>
+                    <h3 class="text-3xl font-black uppercase mb-2">Transmission<br>Complete</h3>
+                    <p class="mono text-xs text-[--accent]">Check your inbox for confirmation.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
+    
 </main>
 
 <!-- footer (identical to main) -->
-<footer class="relative z-[100] border-t border-[--accent] border-opacity-20 bg-[--dark] px-6 py-12">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-8 mb-12">
-            <div>
-                <div class="text-lg font-bold tracking-widest mb-4">ARTANDFIENDS</div>
-                <p class="mono text-xs opacity-50">Chartered Architects · RIBA · AIA</p>
+<footer class="relative z-[100] border-t border-white/5 bg-black px-6 pt-20 pb-12 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+    <div class="max-w-7xl mx-auto relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+            
+            <div class="space-y-6">
+                <div>
+                    <div class="text-2xl font-black tracking-tighter mb-1">ARTANDFIENDS</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                </div>
+                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                    Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
+                </p>
+                <div class="flex gap-4 pt-2">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    </a>
+                </div>
             </div>
+
             <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">OFFICES</h4>
-                <ul class="space-y-2 text-xs opacity-70">
-                    <li>London · 42 Shoreditch High St</li>
-                    <li>New York · 200 Park Avenue</li>
-                    <li>Dubai · DIFC Gate Village</li>
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
+                <ul class="space-y-4 text-sm">
+                    <li>
+                        <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
+                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                    </li>
+                     <li class="pt-2">
+                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
+                        <span class="text-zinc-300 text-xs">+27 71 675 5906</span>
+                    </li>
+                        <li class="pt-2">
+                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
+                        <span class="text-zinc-300 text-xs">mulweli@artandfiends.co.za</span>
+                    </li> 
                 </ul>
             </div>
+
             <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">CERTIFICATIONS</h4>
-                <ul class="space-y-2 text-xs opacity-70">
-                    <li>ISO 9001:2015</li>
-                    <li>ISO 14001:2015</li>
-                    <li>ISO 45001:2018</li>
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
+                <ul class="space-y-3 text-xs text-zinc-400">
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                    </li>
                 </ul>
             </div>
-            <div>
-                <h4 class="mono text-[--accent] text-xs mb-4">PROJECT STATUS</h4>
-                <div class="p-4 glass-panel">
-                    <div class="flex justify-between text-xs">
-                        <span class="opacity-50">UTC</span>
-                        <span id="footer-clock">00:00:00</span>
+
+            <div class="lg:text-right">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
+                <div class="inline-block bg-zinc-900 border border-white/5 p-4 rounded-sm text-left min-w-[200px]">
+                    <div class="flex justify-between items-center gap-8 mb-2">
+                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
                     </div>
-                    <div class="flex justify-between text-xs mt-2">
-                        <span class="opacity-50">STATUS</span>
-                        <span class="text-[--success]">ACCEPTING COMMISSIONS</span>
+                    <div class="h-[1px] bg-white/5 w-full mb-2"></div>
+                    <div class="flex justify-between items-center gap-8">
+                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-50">
-            <div>© 2024 ARTANDFIENDS. ALL RIGHTS RESERVED.</div>
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-[--accent] transition">BACK TO TOP ↑</button>
+
+        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
+                © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
+            </div>
+            
+            <div class="flex items-center gap-8">
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                    ↑
+                </button>
+            </div>
         </div>
     </div>
 </footer>
-
 <!-- scripts -->
 <script>
     // Clock
