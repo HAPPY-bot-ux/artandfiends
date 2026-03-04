@@ -308,7 +308,8 @@
 
 <body>
 
-
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
 
 <!-- Mobile Menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
@@ -318,11 +319,11 @@
 </button>
 
 <div class="mobile-menu" id="mobileMenu">
-    <a href="#home">HOME</a>
+    <a href="home.html">HOME</a>
     <a href="about.html">ABOUT</a>
-    <a href="#metrics">Services</a>
+    <a href="attire.html">Services</a>
     <a href="#projects">PROJECTS</a>    
-    <a href="#contact" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
+    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
 </div>
 
 <!-- Navigation -->
@@ -336,7 +337,7 @@
         <div class="hidden lg:flex items-center gap-8">
             <a href="#home" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
             <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
-            <a href="services.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
             <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
             <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
         </div>
@@ -348,7 +349,7 @@
 <main class="content-layer">
 
     <!-- Home Section -->
- <section id="home" class="h-screen flex items-center justify-center px-6 relative" 
+<section id="home" class="h-screen flex items-center justify-center px-6 relative" 
     style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/image3.jpg') center/cover no-repeat;">
     
     <div class="max-w-7xl mx-auto text-center relative z-10">
@@ -378,8 +379,42 @@
                 </div>
             </div>
         </div>
+        
+        <!-- CTA Buttons - Added below the stats -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12 md:mt-16">
+            <!-- WhatsApp Button -->
+            <a href="https://wa.me/27716755906?text=Hi%20ART%20AND%20FIENDS%2C%20I'm%20interested%20in%20discussing%20a%20project." 
+               target="_blank"
+               class="group relative px-8 py-4 bg-[--accent] text-[--dark] font-bold uppercase tracking-widest text-sm overflow-hidden border-2 border-[--accent] hover:bg-transparent hover:text-[--accent] transition-all duration-300 flex items-center justify-center gap-3">
+                <!-- Background animation -->
+                <span class="absolute inset-0 bg-[--dark] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                <!-- Content -->
+                <span class="relative z-10 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.127 1.523 5.875L.055 23.1l5.357-1.42A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.62-.516-5.147-1.478l-.368-.22-3.176.84.854-3.1-.239-.386A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
+                    </svg>
+                    <span>WhatsApp Us</span>
+                </span>
+            </a>
+            
+            <!-- Contact Form Button -->
+            <a href="contact.html" 
+               class="group relative px-8 py-4 border-2 border-[--accent] text-[--accent] font-bold uppercase tracking-widest text-sm overflow-hidden hover:text-[--dark] transition-all duration-300 flex items-center justify-center gap-3">
+                <!-- Background animation -->
+                <span class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                <!-- Content -->
+                <span class="relative z-10 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                    </svg>
+                    <span>Contact Form</span>
+                </span>
+            </a>
+        </div>
     </div>
 </section>
+
     <!-- About/Practice Section -->
     <section id="about" class="py-32 px-6">
         <div class="max-w-7xl mx-auto">

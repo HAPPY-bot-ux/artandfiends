@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ARTANDFIENDS · Project Archive — Distinct Motion</title>
+    <title>ART AND FIENDS · Project Archive — Architectural Intelligence Studio</title>
 
     <!-- same stack: tailwind + gsap + three + fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,16 +86,23 @@
             text-align: center;
             background: rgba(11, 26, 42, 0.5);
             backdrop-filter: blur(12px);
-            padding: 3rem 5rem;
+            padding: 2rem 3rem;
             border: 1px solid var(--accent);
             transform: translateY(20px);
             opacity: 0;
+            max-width: 90%;
+        }
+
+        @media (min-width: 768px) {
+            .sticky-text-container {
+                padding: 3rem 5rem;
+            }
         }
 
         .project-tag {
             writing-mode: vertical-rl;
             position: absolute;
-            left: 2rem;
+            left: 1rem;
             top: 50%;
             transform: translateY(-50%);
             font-size: 0.7rem;
@@ -104,17 +111,28 @@
             z-index: 25;
         }
 
+        @media (min-width: 768px) {
+            .project-tag {
+                left: 2rem;
+            }
+        }
+
         /* project cards for the rest of the page (after sticky narrative) */
         .project-card {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            grid-template-columns: 1fr;
+            gap: 2rem;
             align-items: center;
-            padding: 4rem 8vw;
+            padding: 3rem 1rem;
             border-bottom: 1px solid rgba(195,160,96,0.1);
         }
-        @media (max-width: 1024px) {
-            .project-card { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 5vw; }
+
+        @media (min-width: 1024px) {
+            .project-card {
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                padding: 4rem 8vw;
+            }
         }
 
         .visual-anchor {
@@ -123,6 +141,7 @@
             overflow: hidden;
             border: 1px solid rgba(195, 160, 96, 0.2);
         }
+        
         .project-img {
             width: 100%; height: 100%; object-fit: cover;
             filter: grayscale(100%) brightness(0.7);
@@ -131,12 +150,21 @@
         .project-card:hover .project-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
 
         .bim-overlay {
-            position: absolute; top: 1rem; right: 1rem;
+            position: absolute; top: 0.5rem; right: 0.5rem;
             background: rgba(11, 26, 42, 0.8); backdrop-filter: blur(8px);
-            padding: 1rem; border: 1px solid var(--accent);
-            font-family: 'Space Mono', monospace; font-size: 0.75rem; line-height: 1.6;
+            padding: 0.75rem; border: 1px solid var(--accent);
+            font-family: 'Space Mono', monospace; font-size: 0.7rem; line-height: 1.4;
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;
         }
+
+        @media (min-width: 768px) {
+            .bim-overlay {
+                top: 1rem; right: 1rem;
+                padding: 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
         .visual-anchor:hover .bim-overlay { opacity: 1; }
 
         /* scroll progress (decorative) */
@@ -160,16 +188,16 @@
         .mobile-menu a { font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light); text-decoration: none; transition: color 0.2s; }
         .mobile-menu a:hover { color: var(--accent); }
 
-        /* responsive */
+        /* responsive nav */
         @media (max-width: 1024px) {
-            .sticky-text-container { padding: 2rem; }
-            .project-tag { display: none; }
+            nav .hidden { display: none; }
         }
     </style>
 </head>
 <body>
 
-
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
 <!-- mobile menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
     <span></span>
@@ -185,14 +213,14 @@
 </div>
 
 <!-- nav -->
-<nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
+<nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-[2px] bg-[--accent]"></div>
-            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
-            <span class="mono text-[10px] text-[--accent] ml-4 hidden md:block">RIBA · AIA · LEED</span>
+        <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-6 md:w-8 h-[2px] bg-[--accent]"></div>
+            <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block">ARCHITECTURAL INTELLIGENCE</span>
         </div>
-        <div class="hidden lg:flex items-center gap-8">
+        <div class="hidden lg:flex items-center gap-6 xl:gap-8">
             <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
             <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
             <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
@@ -206,176 +234,234 @@
 
 <main class="content-layer">
 
-    <!-- hero intro (like main) -->
-    <section class="h-screen flex items-center justify-center px-6 relative" 
+    <!-- hero intro - ART AND FIENDS positioning -->
+    <section class="h-screen flex items-center justify-center px-4 md:px-6 relative" 
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover no-repeat;">
         <div class="max-w-7xl mx-auto text-center relative z-10">
-            <div class="mb-6">
-                <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
+            <div class="mb-4 md:mb-6">
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">ARCHITECTURAL INTELLIGENCE STUDIO</span>
             </div>
-            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-white drop-shadow-2xl" id="hero-main">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-white drop-shadow-2xl" id="hero-main">
                 PROJECT<br>ARCHIVE
             </h1>
-            <div class="flex flex-col md:flex-row justify-center gap-8 items-center opacity-0" id="hero-meta">
+            <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8 items-center opacity-0" id="hero-meta">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-[1px] bg-[--accent]"></div>
-                    <span class="mono text-xs tracking-widest text-white">SELECTED WORKS 2018–2026</span>
+                    <div class="w-12 md:w-16 h-[1px] bg-[--accent]"></div>
+                    <span class="mono text-xs tracking-widest text-white">DEVELOPMENT · RESIDENTIAL · MIXED-USE</span>
                 </div>
-                <div class="flex gap-8">
+                <div class="flex gap-4 md:gap-8">
                     <div class="text-left">
-                        <div class="text-2xl font-bold text-[--accent]">24</div>
-                        <div class="text-xs text-white opacity-80">COMPLETED</div>
+                        <div class="text-xl md:text-2xl font-bold text-[--accent]">450+</div>
+                        <div class="text-xs text-white opacity-80">PROJECTS</div>
                     </div>
                     <div class="text-left">
-                        <div class="text-2xl font-bold text-[--accent]">18</div>
-                        <div class="text-xs text-white opacity-80">IN PROGRESS</div>
+                        <div class="text-xl md:text-2xl font-bold text-[--accent]">98%</div>
+                        <div class="text-xs text-white opacity-80">ON-TIME</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- === STICKY NARRATIVE (like about page) === -->
-    <section class="sticky-wrapper">
-        <div class="sticky-content">
-            <!-- two layers: base and overlay -->
-            <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=2070" class="layer-img wireframe-overlay" id="img-base" alt="base">
-            <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="layer-img opacity-0 scale-110" id="img-overlay" alt="overlay">
+  
 
-            <!-- vertical tag -->
-            <div class="project-tag mono">PRINCIPAL WORKS</div>
-
-            <!-- floating text block (animates) -->
-            <div class="sticky-text-container" id="stickyTextBlock">
-                <div class="mono text-[--accent] text-xs tracking-[0.5em] mb-4" id="sticky-status">// DESIGN INTENT</div>
-                <h2 id="sticky-headline" class="text-6xl md:text-8xl font-black uppercase">THE DATA</h2>
-                <p id="sticky-sub" class="mono text-[--accent] mt-6 text-sm tracking-widest">Parametric Optimization · BIM Integration</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- === STATIC PROJECT CARDS (reveal on scroll) === -->
-    <section class="py-20 bg-[--dark] relative z-10">
-        <!-- card 1: Skyline Nexus -->
+    <!-- === PROJECT CARDS SHOWCASING THE 4-TIER APPROACH === -->
+    <section class="py-12 md:py-20 bg-[--dark] relative z-10">
+        
+        <!-- Project 1: Development Feasibility (Tier 1) -->
         <div class="project-card reveal-card">
-            <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">01 // MIXED-USE</span>
-                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Skyline<br>Nexus</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">A 32-story commercial tower in Manhattan. Integrated MEP coordination and parametric facade optimization reduced material waste by 20%.</p>
-                <div class="grid grid-cols-2 gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Hines</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction 2026</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">45,000 m²</span></div>
-                    <div><span class="opacity-50">LEED</span><br><span class="text-[--accent]">Gold</span></div>
+            <div class="data-panel order-2 md:order-1">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 1 // DEVELOPMENT FEASIBILITY</span>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Sandton<br>Precinct</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Mixed-use development feasibility study in Johannesburg's financial district. Site analysis, zoning review, and yield optimization for maximum ROI.</p>
+                <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">GrowthPoint</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Feasibility Complete</span></div>
+                    <div><span class="opacity-50">YIELD</span><br><span class="text-[--accent]">18.5% ROI</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">12,500 m²</span></div>
                 </div>
             </div>
+            <div class="visual-anchor order-1 md:order-2">
+                <div class="bim-overlay">ZONING: Mixed-Use<br>YIELD ANALYSIS: Complete</div>
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img" alt="Sandton Precinct">
+            </div>
+        </div>
+
+        <!-- Project 2: Architectural Design (Tier 2) -->
+        <div class="project-card reveal-card">
             <div class="visual-anchor">
-                <div class="bim-overlay">COORD: 40.7128° N<br>REVIT_V26_ID: 884-292</div>
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" class="project-img" alt="Skyline Nexus">
+                <div class="bim-overlay">DESIGN: Contemporary<br>APPROVALS: Municipal</div>
+                <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="project-img" alt="Clifton Residence">
             </div>
-        </div>
-
-        <!-- card 2: Tectonic Villa -->
-        <div class="project-card reveal-card">
             <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">02 // RESIDENTIAL</span>
-                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Tectonic<br>Villa</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Hillside residence in Los Angeles. Raw concrete and glass frame panoramic views. Full BIM coordination.</p>
-                <div class="grid grid-cols-2 gap-6 mono text-xs">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 2 // ARCHITECTURAL DESIGN</span>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Clifton<br>Residence</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Luxury coastal villa in Cape Town. Concept design through municipal approval, with full construction documentation and technical detailing.</p>
+                <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
                     <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Private</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Completed 2025</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">850 m²</span></div>
-                    <div><span class="opacity-50">MATERIAL</span><br><span class="text-[--accent]">Concrete + Glass</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction 2026</span></div>
+                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">950 m²</span></div>
+                    <div><span class="opacity-50">MATERIAL</span><br><span class="text-[--accent]">Concrete + Timber</span></div>
                 </div>
-            </div>
-            <div class="visual-anchor">
-                <div class="bim-overlay">COORD: 34.0522° N<br>LUX_VAL: 850_AVG</div>
-                <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="project-img" alt="Tectonic Villa">
             </div>
         </div>
 
-        <!-- card 3: Kinetic Pavilion -->
+        <!-- Project 3: BIM & Technical Coordination (Tier 3) -->
         <div class="project-card reveal-card">
-            <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">03 // CULTURAL</span>
-                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Kinetic<br>Pavilion</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Flexible performance space with kinetic facade adapting to solar conditions. Real-time environmental feedback.</p>
-                <div class="grid grid-cols-2 gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">City of Austin</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">In Design</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">2,400 m²</span></div>
-                    <div><span class="opacity-50">ENERGY</span><br><span class="text-[--accent]">+18% Eff.</span></div>
+            <div class="data-panel order-2 md:order-1">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 3 // BIM & TECHNICAL</span>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Umhlanga<br>Tower</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">24-story mixed-use tower with full BIM coordination. Clash detection reduced construction conflicts by 95%, saving R8.2M in potential rework.</p>
+                <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Devco Group</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">In Construction</span></div>
+                    <div><span class="opacity-50">BIM LOD</span><br><span class="text-[--accent]">400</span></div>
+                    <div><span class="opacity-50">CLASHES</span><br><span class="text-[--accent]">247 Resolved</span></div>
                 </div>
             </div>
-            <div class="visual-anchor">
-                <div class="bim-overlay">FACADE: Dynamic Shading<br>BIM_LOD: 400</div>
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="project-img" alt="Kinetic Pavilion">
+            <div class="visual-anchor order-1 md:order-2">
+                <div class="bim-overlay">COORD: Revit + Navisworks<br>CLASH DETECTION: 98%</div>
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070" class="project-img" alt="Umhlanga Tower">
             </div>
         </div>
 
-        <!-- card 4: Timber Loft -->
+        <!-- Project 4: Construction Advisory (Tier 4) -->
         <div class="project-card reveal-card">
-            <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">04 // WORKPLACE</span>
-                <h2 class="text-5xl md:text-7xl font-black uppercase mt-4 mb-6">Timber<br>Loft</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-8">Mass timber headquarters, exposed CLT, biophilic design within a 100-year adaptive reuse warehouse.</p>
-                <div class="grid grid-cols-2 gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">GreenCap Partners</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction Docs</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">3,200 m²</span></div>
-                    <div><span class="opacity-50">CARBON</span><br><span class="text-[--accent]">-40% vs Steel</span></div>
-                </div>
-            </div>
             <div class="visual-anchor">
-                <div class="bim-overlay">STRUCTURE: Mass Timber<br>WELL: Platinum Target</div>
-                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2070" class="project-img" alt="Timber Loft">
+                <div class="bim-overlay">ADVISORY: Site Monitoring<br>PROGRESS: 78%</div>
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2070" class="project-img" alt="Waterfall Estate">
+            </div>
+            <div class="data-panel">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 4 // CONSTRUCTION ADVISORY</span>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Waterfall<br>Estate</h2>
+                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Luxury estate development with 48 units. Construction monitoring, contractor coordination, and technical problem-solving throughout delivery.</p>
+                <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
+                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Eco Living</span></div>
+                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Phase 1 Complete</span></div>
+                    <div><span class="opacity-50">UNITS</span><br><span class="text-[--accent]">48</span></div>
+                    <div><span class="opacity-50">ON-TIME</span><br><span class="text-[--accent]">100%</span></div>
+                </div>
             </div>
         </div>
 
-        <!-- final CTA panel (light) -->
-        <div class="project-card !border-none !bg-[--light] !text-[--dark] py-32" style="background: var(--light);">
-            <div class="col-span-2 text-center max-w-3xl mx-auto">
-                <span class="mono text-[--accent] text-sm tracking-[0.3em]">/ NEXT /</span>
-                <h2 class="text-7xl md:text-9xl font-black uppercase my-8">Build<br>With Us.</h2>
-                <p class="text-2xl opacity-70 mb-12">Every project begins with a conversation.</p>
-                <a href="#contact" class="inline-block px-12 py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-[--light] transition-all text-xl">INITIATE PROJECT</a>
+        <!-- Market Context Section -->
+        <div class="project-card !border-none py-12 md:py-20">
+            <div class="col-span-1 md:col-span-2">
+                <div class="grid md:grid-cols-2 gap-6 md:gap-12">
+                    <div class="glass-panel p-6 md:p-8 tech-border">
+                        <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ MARKET CONTEXT /</span>
+                        <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4">South African Opportunity</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Growing property development & urban densification</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Sustained luxury residential demand in coastal markets</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Technical skills gap creating demand for BIM expertise</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-panel p-6 md:p-8 tech-border">
+                        <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PROJECT METRICS /</span>
+                        <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4">Performance Data</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">On-Time Delivery</span>
+                                <span class="text-[--accent] font-bold">98%</span>
+                            </div>
+                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:98%"></div></div>
+                            
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-sm">Defect Rate</span>
+                                <span class="text-[--accent] font-bold">0.4%</span>
+                            </div>
+                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:99.6%"></div></div>
+                            
+                            <div class="flex justify-between items-center mt-3">
+                                <span class="text-sm">Client Retention</span>
+                                <span class="text-[--accent] font-bold">92%</span>
+                            </div>
+                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:92%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- High-Value Niches Showcase -->
+        <div class="project-card !border-none py-12 md:py-20 bg-opacity-20 bg-[--primary]">
+            <div class="col-span-1 md:col-span-2">
+                <div class="text-center mb-8 md:mb-12">
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ HIGH-VALUE NICHES /</span>
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase mt-4">Specialized Expertise</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+                    <div class="metric-card p-4 text-center">
+                        <div class="text-[--accent] font-bold mb-1">Property Dev</div>
+                        <p class="text-xs opacity-70">Mixed-use · Residential</p>
+                    </div>
+                    <div class="metric-card p-4 text-center">
+                        <div class="text-[--accent] font-bold mb-1">Luxury Homes</div>
+                        <p class="text-xs opacity-70">Coastal · Urban</p>
+                    </div>
+                    <div class="metric-card p-4 text-center">
+                        <div class="text-[--accent] font-bold mb-1">Estate Dev</div>
+                        <p class="text-xs opacity-70">Clubhouses · Infrastructure</p>
+                    </div>
+                    <div class="metric-card p-4 text-center">
+                        <div class="text-[--accent] font-bold mb-1">Hospitality</div>
+                        <p class="text-xs opacity-70">Boutique · Lodges</p>
+                    </div>
+                    <div class="metric-card p-4 text-center">
+                        <div class="text-[--accent] font-bold mb-1">BIM Consulting</div>
+                        <p class="text-xs opacity-70">Technical Coordination</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- final CTA panel -->
+        <div class="project-card !border-none !bg-[--light] !text-[--dark] py-16 md:py-32" style="background: var(--light);">
+            <div class="col-span-1 md:col-span-2 text-center max-w-3xl mx-auto">
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.3em]">/ FULL-SPECTRUM CAPABILITY /</span>
+                <h2 class="text-4xl md:text-6xl lg:text-8xl font-black uppercase my-4 md:my-8">Build With<br>Certainty</h2>
+                <p class="text-lg md:text-2xl opacity-70 mb-6 md:mb-12 px-4">Architectural clarity, construction efficiency, and financial viability—engineered outcomes.</p>
+                <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-[--light] transition-all text-base md:text-xl">INITIATE PROJECT</a>
             </div>
         </div>
     </section>
 
-    <!-- contact section (same as main) -->
-    <section id="contact" class="h-screen flex items-center justify-center px-6">
+    <!-- contact section (South African context) -->
+    <section id="contact" class="h-screen flex items-center justify-center px-4 md:px-6">
         <div class="max-w-4xl mx-auto text-center">
-            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ INITIATE PROJECT /</span>
-            <h2 class="text-6xl md:text-8xl font-black uppercase my-8">Let's Build</h2>
-            <p class="text-xl opacity-70 mb-12">Ready to discuss your next project? Contact our team.</p>
-            <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
-                <a href="mailto:studio@artandfiends.com" class="text-2xl md:text-3xl font-light hover:text-[--accent] transition border-b border-[--accent] pb-1">studio@artandfiends.com</a>
-                <span class="mono text-[--accent] text-sm">+44 (0)20 7946 0138</span>
+            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ INITIATE DIALOGUE /</span>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl font-black uppercase my-4 md:my-8">Let's Build</h2>
+            <p class="text-base md:text-xl opacity-70 mb-6 md:mb-12 px-4">Ready to discuss your next project? Contact our team.</p>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-8 justify-center items-center">
+                <a href="mailto:studio@artandfiends.co.za" class="text-xl md:text-2xl lg:text-3xl font-light hover:text-[--accent] transition border-b border-[--accent] pb-1">studio@artandfiends.co.za</a>
+                <span class="mono text-[--accent] text-sm">+27 71 675 5906</span>
             </div>
-            <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
-                <div><span class="mono text-[--accent] text-xs">LONDON</span><div class="text-sm mt-1">EC2A 4PS</div></div>
-                <div><span class="mono text-[--accent] text-xs">NEW YORK</span><div class="text-sm mt-1">10005</div></div>
-                <div><span class="mono text-[--accent] text-xs">DUBAI</span><div class="text-sm mt-1">DIFC</div></div>
+            <div class="grid grid-cols-3 gap-4 md:gap-8 mt-12 md:mt-16 max-w-2xl mx-auto">
+                <div><span class="mono text-[--accent] text-xs">JOHANNESBURG</span><div class="text-xs md:text-sm mt-1">Sandton, 2196</div></div>
+                <div><span class="mono text-[--accent] text-xs">CAPE TOWN</span><div class="text-xs md:text-sm mt-1">V&A Waterfront</div></div>
+                <div><span class="mono text-[--accent] text-xs">DURBAN</span><div class="text-xs md:text-sm mt-1">Umhlanga Ridge</div></div>
             </div>
         </div>
     </section>
 </main>
 
 <!-- footer (identical to main) -->
-<footer class="relative z-[100] border-t border-white/5 bg-black px-6 pt-20 pb-12 overflow-hidden">
+<footer class="relative z-[100] border-t border-white/5 bg-black px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-20">
             
-            <div class="space-y-6">
+            <div class="space-y-4 md:space-y-6">
                 <div>
-                    <div class="text-2xl font-black tracking-tighter mb-1">ARTANDFIENDS</div>
+                    <div class="text-xl md:text-2xl font-black tracking-tighter mb-1">ART AND FIENDS</div>
                     <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
                 </div>
                 <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
-                    Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
+                    Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
                     <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
@@ -391,8 +477,8 @@
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
-                <ul class="space-y-4 text-sm">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
+                <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
                         <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
                         <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
@@ -409,8 +495,8 @@
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
-                <ul class="space-y-3 text-xs text-zinc-400">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
+                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-400">
                     <li class="flex items-center gap-2">
                         <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
                     </li>
@@ -424,14 +510,14 @@
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-900 border border-white/5 p-4 rounded-sm text-left min-w-[200px]">
-                    <div class="flex justify-between items-center gap-8 mb-2">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
+                <div class="inline-block bg-zinc-900 border border-white/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                    <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
                         <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
                     </div>
                     <div class="h-[1px] bg-white/5 w-full mb-2"></div>
-                    <div class="flex justify-between items-center gap-8">
+                    <div class="flex justify-between items-center gap-4 md:gap-8">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -442,15 +528,15 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
-                © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
+        <div class="pt-6 md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
+                © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
-            <div class="flex items-center gap-8">
+            <div class="flex items-center gap-4 md:gap-8">
                 <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
                 <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
                     ↑
                 </button>
             </div>
@@ -501,7 +587,7 @@
         gsap.from("#hero-main", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
         gsap.to("#hero-meta", { opacity: 1, duration: 1, delay: 0.5 });
 
-        // === STICKY NARRATIVE (exactly like about page) ===
+        // === STICKY NARRATIVE - The Industry Flaw ===
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: ".sticky-wrapper",
@@ -511,20 +597,22 @@
             }
         });
 
-        // layer swap + text change
+        // layer swap + text change - telling the ART AND FIENDS story
         tl.to("#img-overlay", { opacity: 1, scale: 1, duration: 1 })
-          .to("#sticky-headline", { textContent: "THE VISION", duration: 0.1 }, 0.5)
-          .to("#sticky-status", { textContent: "DESIGN INTENT // REALITY MAPPING" }, 0.5)
-          .to("#sticky-sub", { textContent: "From Concept to Constructible Reality" }, 0.5)
-          .to("#stickyTextBlock", { backgroundColor: "rgba(11,26,42,0.8)", borderColor: "var(--accent)" }, 0.5);
+          .to("#sticky-headline", { textContent: "THE GAP", duration: 0.1 }, 0.5)
+          .to("#sticky-status", { textContent: "DESIGN INTENT // CONSTRUCTION REALITY" }, 0.5)
+          .to("#sticky-sub", { textContent: "Bridging the gap to ensure projects are buildable & viable" }, 0.5)
+          .to("#stickyTextBlock", { backgroundColor: "rgba(11,26,42,0.8)", borderColor: "var(--accent)" }, 0.5)
+          .to("#sticky-headline", { textContent: "THE SOLUTION", duration: 0.1 }, 1.5)
+          .to("#sticky-sub", { textContent: "4-Tier Service Architecture · BIM Coordination · Construction Advisory" }, 1.5);
 
         // reveal project cards (individual cards)
         gsap.utils.toArray(".reveal-card").forEach((card, i) => {
             gsap.from(card, {
                 scrollTrigger: { trigger: card, start: "top 85%" },
                 opacity: 0,
-                y: 100,
-                duration: 1.2,
+                y: 50,
+                duration: 1,
                 delay: i * 0.15
             });
         });

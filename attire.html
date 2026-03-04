@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ARTANDFIENDS · Services — Distinct Motion & Layout</title>
+    <title>ART AND FIENDS · Services — Architectural Intelligence Studio</title>
 
     <!-- core stack: tailwind + gsap + three + fonts (Inter & Space Mono as main) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -57,10 +57,17 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 0 8vw;
+            padding: 2rem 4vw;
             position: relative;
             border-bottom: 1px solid rgba(195, 160, 96, 0.1);
             overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .service-panel {
+                min-height: auto;
+                padding: 4rem 1rem;
+            }
         }
         
         /* diagonal split background (motion overlay) */
@@ -81,7 +88,7 @@
         .service-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            gap: 2rem 4rem;
             width: 100%;
             position: relative;
             z-index: 20;
@@ -91,14 +98,20 @@
         }
 
         .service-title {
-            font-size: clamp(3rem, 12vw, 8rem);
+            font-size: clamp(2.5rem, 8vw, 6rem);
             font-weight: 900;
             text-transform: uppercase;
             line-height: 0.8;
             letter-spacing: -0.03em;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
+        }
+        
+        @media (max-width: 640px) {
+            .service-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
         }
         
         .service-title .outline {
@@ -111,31 +124,37 @@
             background: rgba(11, 26, 42, 0.6);
             backdrop-filter: blur(20px);
             border: 1px solid var(--accent);
-            padding: 3rem;
+            padding: 2.5rem;
             transform: translateY(30px) rotate(1deg);
             transition: transform 0.8s ease;
             max-width: 500px;
             margin-left: auto;
             box-shadow: 20px 20px 40px rgba(0,0,0,0.6);
         }
+        
+        @media (max-width: 1024px) {
+            .floating-card { 
+                margin-left: 0; 
+                padding: 1.5rem;
+                max-width: 100%;
+            }
+        }
+        
         .service-panel:hover .floating-card {
             transform: translateY(0) rotate(0);
-        }
-        @media (max-width: 1024px) {
-            .floating-card { margin-left: 0; padding: 2rem; }
         }
 
         /* service metrics with progress bar (custom) */
         .service-metric {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             border-top: 1px solid rgba(195,160,96,0.2);
-            padding-top: 1.5rem;
+            padding-top: 1rem;
         }
         .metric-bar {
             width: 100%;
             height: 2px;
             background: rgba(255,255,255,0.1);
-            margin: 0.75rem 0;
+            margin: 0.5rem 0;
             position: relative;
         }
         .metric-fill {
@@ -148,12 +167,19 @@
         .kinetic-number {
             position: absolute;
             font-family: 'Space Mono';
-            font-size: 20vw;
+            font-size: 15vw;
             font-weight: 900;
             color: rgba(195,160,96,0.03);
             pointer-events: none;
             z-index: 0;
             line-height: 1;
+        }
+
+        @media (max-width: 768px) {
+            .kinetic-number {
+                font-size: 25vw;
+                opacity: 0.1;
+            }
         }
 
         /* stacked bento grid (new for services overview) */
@@ -163,11 +189,11 @@
             gap: 1px;
             background: rgba(195,160,96,0.2);
             padding: 1px;
-            margin: 4rem 0;
+            margin: 2rem 0;
         }
         .bento-item {
             background: var(--dark);
-            padding: 2rem;
+            padding: 1.5rem;
             aspect-ratio: 1/1;
             display: flex;
             flex-direction: column;
@@ -180,8 +206,15 @@
             background: rgba(195,160,96,0.05);
         }
         @media (max-width: 768px) {
-            .bento-stack { grid-template-columns: 1fr; }
-            .bento-item { aspect-ratio: auto; min-height: 200px; }
+            .bento-stack { 
+                grid-template-columns: 1fr; 
+                gap: 1px;
+            }
+            .bento-item { 
+                aspect-ratio: auto; 
+                min-height: 150px;
+                padding: 1rem;
+            }
         }
 
         /* Mobile menu (same as main) */
@@ -196,12 +229,16 @@
         .mobile-menu a { font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light); text-decoration: none; transition: color 0.2s; }
         .mobile-menu a:hover { color: var(--accent); }
 
-        /* footer clock same */
+        /* Mobile nav adjustments */
+        @media (max-width: 1024px) {
+            nav .hidden { display: none; }
+        }
     </style>
 </head>
 <body>
 
-
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
 
 <!-- mobile menu -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
@@ -218,17 +255,17 @@
 </div>
 
 <!-- nav (exactly as main) -->
-<nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
+<nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-[2px] bg-[--accent]"></div>
-            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
-            <span class="mono text-[10px] text-[--accent] ml-4 hidden md:block">RIBA · AIA · LEED</span>
+        <div class="flex items-center gap-2 md:gap-3">
+            <div class="w-6 md:w-8 h-[2px] bg-[--accent]"></div>
+            <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block">ARCHITECTURAL INTELLIGENCE</span>
         </div>
-        <div class="hidden lg:flex items-center gap-8">
+        <div class="hidden lg:flex items-center gap-6 xl:gap-8">
             <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
             <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
-            <a href="services.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
             <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
             <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
         </div>
@@ -239,181 +276,319 @@
 
 <main class="content-layer">
 
-    <!-- Hero with kinetic number (different from other pages) -->
-    <section class="h-screen flex items-center px-6 md:px-20 relative overflow-hidden">
-        <div class="kinetic-number" style="top: 10%; left: 5%;">01</div>
-        <div class="kinetic-number" style="bottom: 10%; right: 5%;">SVC</div>
+    <!-- Hero with kinetic number - ART AND FIENDS positioning -->
+    <section class="h-screen flex items-center px-4 md:px-20 relative overflow-hidden">
+        <div class="kinetic-number" style="top: 10%; left: 5%;">4</div>
+        <div class="kinetic-number" style="bottom: 10%; right: 5%;">TIER</div>
         <div class="max-w-7xl mx-auto relative z-20">
-            <div class="flex items-center gap-4 mb-6">
-                <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
+            <div class="flex items-center gap-4 mb-4 md:mb-6">
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">ARCHITECTURAL INTELLIGENCE STUDIO</span>
             </div>
-            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8" id="hero-main">
-                SERVICES &<br><span class="text-[--accent]">CAPABILITIES</span>
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8" id="hero-main">
+                4-TIER SERVICE<br><span class="text-[--accent]">ARCHITECTURE</span>
             </h1>
-            <div class="grid md:grid-cols-2 gap-10 max-w-3xl">
-                <p class="text-xl opacity-70 leading-relaxed">Integrated design disciplines working in parallel — from strategic advisory to construction delivery.</p>
-                <div class="border-l border-[--accent] pl-6">
-                    <div class="mono text-sm text-[--accent] mb-2">FULL-SERVICE STUDIO</div>
-                    <div class="text-sm opacity-60">RIBA stages 0-7 · BIM LOD 400 · Passivhaus · LEED</div>
+            <div class="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl">
+                <p class="text-base md:text-xl opacity-70 leading-relaxed">Intervene at any stage of the project lifecycle — from feasibility studies to construction delivery.</p>
+                <div class="border-l border-[--accent] pl-4 md:pl-6">
+                    <div class="mono text-xs md:text-sm text-[--accent] mb-2">FULL-SPECTRUM CAPABILITY</div>
+                    <div class="text-xs md:text-sm opacity-60">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SERVICE PANEL 1: Architectural Design (distinct diagonal + floating card) -->
-    <section class="service-panel" id="service-arch">
+    <!-- SERVICE PANEL 1: Tier 1 - Development Feasibility -->
+    <section class="service-panel" id="service-tier1">
         <div class="diagonal-split"></div>
         <div class="service-content">
             <div class="relative z-30">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ 01 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 1 /</span>
                 <h2 class="service-title mt-2">
-                    <span class="outline">ARCHITECTURAL</span><br>DESIGN
+                    <span class="outline">DEVELOPMENT</span><br>FEASIBILITY
                 </h2>
-                <p class="text-lg opacity-70 leading-relaxed max-w-md">From concept to detailed technical design. We develop spatial strategies, material palettes, and construction documentation.</p>
+                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Evaluate opportunities before committing to full project design. Site analysis, zoning review, and financial viability studies.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>BIM LOD</span> <span class="text-[--accent]">400</span></div>
+                    <div class="flex justify-between mono text-xs"><span>YIELD ANALYSIS</span> <span class="text-[--accent]">ACCURATE</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 100%"></div></div>
-                    <div class="flex justify-between mono text-xs"><span>RIBA STAGES</span> <span class="text-[--accent]">0-7</span></div>
+                    <div class="flex justify-between mono text-xs"><span>PROJECT STAGE</span> <span class="text-[--accent]">INITIATION</span></div>
                 </div>
             </div>
             <div class="floating-card">
-                <h3 class="text-2xl font-bold mb-4">Scope</h3>
-                <ul class="space-y-2 mono text-sm opacity-80">
-                    <li>→ Feasibility & site analysis</li>
-                    <li>→ Schematic design & design development</li>
-                    <li>→ Planning & building regulations</li>
-                    <li>→ Tender & construction support</li>
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Feasibility Studies</h3>
+                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                    <li>→ Site analysis & zoning review</li>
+                    <li>→ Conceptual massing studies</li>
+                    <li>→ Development yield analysis</li>
+                    <li>→ Early financial feasibility design</li>
                 </ul>
-                <div class="mt-6 text-[--accent] mono text-xs">TYPICAL PROJECTS: Cultural, Workplace, Residential</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">TYPICAL: Property Developers, Investors</div>
             </div>
         </div>
     </section>
 
-    <!-- SERVICE PANEL 2: Interior Architecture (reversed diagonal) -->
-    <section class="service-panel" id="service-interior">
+    <!-- SERVICE PANEL 2: Tier 2 - Architectural Design -->
+    <section class="service-panel" id="service-tier2">
         <div class="diagonal-split" style="background: linear-gradient(75deg, var(--dark) 45%, rgba(195,160,96,0.08) 45%, rgba(195,160,96,0.03) 60%, var(--dark) 60%);"></div>
         <div class="service-content">
             <div class="floating-card order-2 md:order-1" style="margin-left: 0; margin-right: auto;">
-                <h3 class="text-2xl font-bold mb-4">Interior Architecture</h3>
-                <ul class="space-y-2 mono text-sm opacity-80">
-                    <li>→ Spatial planning & fit-out</li>
-                    <li>→ Material & finish selection</li>
-                    <li>→ Custom joinery & furniture</li>
-                    <li>→ Lighting design integration</li>
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Architectural Design</h3>
+                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                    <li>→ Concept design & spatial innovation</li>
+                    <li>→ Schematic development</li>
+                    <li>→ Municipal approval documentation</li>
+                    <li>→ Technical construction drawings</li>
                 </ul>
-                <div class="mt-6 text-[--accent] mono text-xs">SECTORS: Hospitality, Workplace, Residential</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">SECTORS: Residential, Commercial, Mixed-Use</div>
             </div>
             <div class="relative z-30 order-1 md:order-2">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ 02 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 2 /</span>
                 <h2 class="service-title mt-2">
-                    <span class="outline">INTERIOR</span><br>ARCHITECTURE
+                    <span class="outline">ARCHITECTURAL</span><br>DESIGN
                 </h2>
-                <p class="text-lg opacity-70 leading-relaxed max-w-md">We craft interior environments that resonate with the architectural concept — seamless integration of structure and finish.</p>
+                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Exceptional architectural creativity and spatial innovation. The core architectural scope and foundation of commissions.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>FF&E COORDINATION</span> <span class="text-[--accent]">LOD 350</span></div>
-                    <div class="metric-bar"><div class="metric-fill" style="width: 90%"></div></div>
+                    <div class="flex justify-between mono text-xs"><span>RIBA STAGES</span> <span class="text-[--accent]">0-4</span></div>
+                    <div class="metric-bar"><div class="metric-fill" style="width: 95%"></div></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SERVICE PANEL 3: Engineering & BIM -->
-    <section class="service-panel" id="service-eng">
+    <!-- SERVICE PANEL 3: Tier 3 - BIM & Technical Coordination -->
+    <section class="service-panel" id="service-tier3">
         <div class="diagonal-split" style="background: linear-gradient(135deg, var(--dark) 40%, rgba(195,160,96,0.1) 40%, rgba(195,160,96,0.02) 70%, var(--dark) 70%);"></div>
         <div class="service-content">
             <div class="relative z-30">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ 03 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 3 /</span>
                 <h2 class="service-title mt-2">
-                    <span class="outline">ENGINEERING</span><br>& BIM
+                    <span class="outline">BIM & TECHNICAL</span><br>COORDINATION
                 </h2>
-                <p class="text-lg opacity-70 leading-relaxed max-w-md">In‑house structural, MEP, and civil engineering. Fully coordinated BIM models for clash detection and construction sequencing.</p>
+                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">De-risking complex building systems and reducing construction errors through advanced BIM coordination.</p>
                 <div class="service-metric">
                     <div class="flex justify-between mono text-xs"><span>CLASH DETECTION</span> <span class="text-[--accent]">98%</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 98%"></div></div>
+                    <div class="flex justify-between mono text-xs"><span>BIM LEVEL</span> <span class="text-[--accent]">LOD 400</span></div>
                 </div>
             </div>
             <div class="floating-card">
-                <h3 class="text-2xl font-bold mb-4">Integrated Engineering</h3>
-                <ul class="space-y-2 mono text-sm opacity-80">
-                    <li>→ Structural (concrete/steel/timber)</li>
-                    <li>→ MEP & sustainable systems</li>
-                    <li>→ Civil & infrastructure</li>
-                    <li>→ BIM coordination (Revit/Navisworks)</li>
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Technical Excellence</h3>
+                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                    <li>→ BIM modelling & clash detection</li>
+                    <li>→ Consultant coordination</li>
+                    <li>→ Buildability analysis</li>
+                    <li>→ Technical detailing</li>
                 </ul>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">ISO 19650 · Revit · Navisworks</div>
             </div>
         </div>
     </section>
 
-    <!-- BENTO STACK: additional capabilities (distinct layout) -->
-    <section class="px-6 md:px-20 py-32">
+    <!-- SERVICE PANEL 4: Tier 4 - Construction Advisory -->
+    <section class="service-panel" id="service-tier4">
+        <div class="diagonal-split" style="background: linear-gradient(105deg, var(--dark) 45%, rgba(195,160,96,0.08) 45%, rgba(195,160,96,0.03) 60%, var(--dark) 60%);"></div>
+        <div class="service-content">
+            <div class="floating-card order-2 md:order-1" style="margin-left: 0; margin-right: auto;">
+                <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Construction Advisory</h3>
+                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                    <li>→ Contractor evaluation</li>
+                    <li>→ Construction monitoring</li>
+                    <li>→ Technical problem-solving</li>
+                    <li>→ Design clarification</li>
+                </ul>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">ON-TIME DELIVERY: 98%</div>
+            </div>
+            <div class="relative z-30 order-1 md:order-2">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 4 /</span>
+                <h2 class="service-title mt-2">
+                    <span class="outline">CONSTRUCTION</span><br>ADVISORY
+                </h2>
+                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Maintaining design quality and solving technical problems during implementation.</p>
+                <div class="service-metric">
+                    <div class="flex justify-between mono text-xs"><span>ON-TIME</span> <span class="text-[--accent]">98%</span></div>
+                    <div class="metric-bar"><div class="metric-fill" style="width: 98%"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENTO STACK: High-Value Market Niches -->
+    <section class="px-4 md:px-20 py-16 md:py-32">
         <div class="max-w-7xl mx-auto">
-            <div class="flex items-center gap-4 mb-12">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ SPECIALISMS /</span>
+            <div class="flex items-center gap-4 mb-8 md:mb-12">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ HIGH-VALUE NICHES /</span>
                 <div class="h-[1px] flex-grow bg-[--accent] opacity-20"></div>
             </div>
             <div class="bento-stack">
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">08</span>
-                    <h4 class="text-xl font-bold uppercase">Passivhaus</h4>
-                    <p class="text-xs opacity-60 mt-2">Certified designers · low-energy buildings</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">01</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">Property Development</h4>
+                    <p class="text-xs opacity-60 mt-2">Large-scale residential, mixed-use · High fees & repeat clients</p>
                 </div>
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">12</span>
-                    <h4 class="text-xl font-bold uppercase">LEED / BREEAM</h4>
-                    <p class="text-xs opacity-60 mt-2">Sustainability accredited · platinum target</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">02</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">Luxury Residential</h4>
+                    <p class="text-xs opacity-60 mt-2">High-end custom homes · Strong financial returns</p>
                 </div>
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">06</span>
-                    <h4 class="text-xl font-bold uppercase">Heritage</h4>
-                    <p class="text-xs opacity-60 mt-2">Conservation & adaptive reuse</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">03</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">Estate & Lifestyle</h4>
+                    <p class="text-xs opacity-60 mt-2">Clubhouses, infrastructure, repeated typologies</p>
                 </div>
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">24/7</span>
-                    <h4 class="text-xl font-bold uppercase">VR/AR</h4>
-                    <p class="text-xs opacity-60 mt-2">Immersive client reviews</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">04</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">Hospitality & Tourism</h4>
+                    <p class="text-xs opacity-60 mt-2">Boutique hotels, lodges, resorts</p>
                 </div>
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">400</span>
-                    <h4 class="text-xl font-bold uppercase">BIM LOD</h4>
-                    <p class="text-xs opacity-60 mt-2">Fully coordinated digital twins</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">05</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">BIM Consulting</h4>
+                    <p class="text-xs opacity-60 mt-2">High-margin technical services</p>
                 </div>
                 <div class="bento-item">
-                    <span class="mono text-[--accent] text-2xl font-black mb-2">0-7</span>
-                    <h4 class="text-xl font-bold uppercase">RIBA Stages</h4>
-                    <p class="text-xs opacity-60 mt-2">End-to-end service</p>
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2">06</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase">Development Advisory</h4>
+                    <p class="text-xs opacity-60 mt-2">Feasibility & financial viability</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA section with animated counter (new element) -->
-    <section class="h-screen flex items-center justify-center px-6 text-center" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover;">
-        <div>
-            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ READY TO ENGAGE /</span>
-            <h2 class="text-6xl md:text-8xl font-black uppercase my-8">Let's work<br>together</h2>
-            <div class="flex justify-center gap-16 mb-12">
-                <div><span class="text-5xl font-bold text-[--accent]" id="counter1">0</span><span class="mono text-xs block opacity-50">PROJECTS DELIVERED</span></div>
-                <div><span class="text-5xl font-bold text-[--accent]" id="counter2">0</span><span class="mono text-xs block opacity-50">SATISFIED CLIENTS</span></div>
+    <!-- Market Context & Revenue Model -->
+    <section class="px-4 md:px-20 py-16 md:py-24 border-t border-[--accent] border-opacity-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-6 md:gap-12">
+                <div class="glass-panel p-6 md:p-8 tech-border">
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ SOUTH AFRICAN CONTEXT /</span>
+                    <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4 md:mb-6">Market Opportunity</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Growing property development & urban densification</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Demand for luxury residential in urban/coastal markets</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Technical skills gap in BIM coordination</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Complex construction requiring advanced coordination</span></li>
+                    </ul>
+                </div>
+                
+                <div class="glass-panel p-6 md:p-8 tech-border">
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ REVENUE MODEL /</span>
+                    <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4 md:mb-6">Diversified Income</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                            <span class="text-sm">Development Projects</span>
+                            <span class="text-[--accent] text-sm">Primary</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                            <span class="text-sm">Feasibility Studies</span>
+                            <span class="text-[--accent] text-sm">Strategic</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                            <span class="text-sm">Residential Commissions</span>
+                            <span class="text-[--accent] text-sm">Core</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                            <span class="text-sm">BIM Consulting</span>
+                            <span class="text-[--accent] text-sm">High-Margin</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <a href="contact.html" class="inline-block px-12 py-5 border-2 border-[--accent] text-[--accent] mono font-bold hover:bg-[--accent] hover:text-black transition-all text-xl">START A CONVERSATION</a>
+        </div>
+    </section>
+
+    <!-- 90-Day Execution Plan -->
+    <section class="px-4 md:px-20 py-16 md:py-24" style="background: linear-gradient(rgba(0,0,0,0.95), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed;">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ 90-DAY EXECUTION PLAN /</span>
+            <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase my-4 md:my-8">Roadmap to Market</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12">
+                <div class="metric-card p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 1</div>
+                    <h3 class="font-bold text-sm md:text-base mb-2">Foundation</h3>
+                    <p class="text-xs opacity-70">Brand presence, website, company positioning</p>
+                </div>
+                <div class="metric-card p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 2</div>
+                    <h3 class="font-bold text-sm md:text-base mb-2">Content Engine</h3>
+                    <p class="text-xs opacity-70">LinkedIn insights, Instagram updates, educational content</p>
+                </div>
+                <div class="metric-card p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 3</div>
+                    <h3 class="font-bold text-sm md:text-base mb-2">Network Expansion</h3>
+                    <p class="text-xs opacity-70">Developer outreach, industry events, direct connections</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideal Client Profile -->
+    <section class="px-4 md:px-20 py-16 md:py-24">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
+                <div>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ IDEAL CLIENT PROFILE /</span>
+                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase mt-4 mb-6">Who We Serve</h2>
+                    <p class="text-base md:text-lg opacity-70 mb-6">Decision-makers focused on achieving high-quality outcomes rather than simply minimizing initial costs.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <span class="text-[--accent] font-bold">35-65</span>
+                            <span class="text-sm">Age range</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-[--accent] font-bold">Urban & Coastal</span>
+                            <span class="text-sm">Geographic focus</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-[--accent] font-bold">Developers, Investors</span>
+                            <span class="text-sm">Professions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-6 md:p-8">
+                    <h3 class="text-xl font-bold mb-4">Primary Segments</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">1.</span> <span><strong>Property Developers</strong> — Apartment buildings, townhouses, mixed-use</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">2.</span> <span><strong>Luxury Residential</strong> — High-net-worth homeowners</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent]">3.</span> <span><strong>Builder-Developers</strong> — Contractors developing own projects</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA section with long-term vision -->
+    <section class="h-screen flex items-center justify-center px-4 text-center" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;">
+        <div>
+            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ LONG-TERM VISION /</span>
+            <h2 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase my-4 md:my-8">Full-Spectrum<br>Capability</h2>
+            <p class="text-base md:text-xl opacity-80 mb-6 md:mb-8 max-w-3xl mx-auto px-4">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</p>
+            
+            <div class="flex justify-center gap-8 md:gap-16 mb-8 md:mb-12">
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter1">0</span><span class="mono text-xs block opacity-50">PROJECTS</span></div>
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter2">0</span><span class="mono text-xs block opacity-50">CLIENTS</span></div>
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter3">0</span><span class="mono text-xs block opacity-50">AWARDS</span></div>
+            </div>
+            
+            <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--accent] text-[--accent] mono font-bold hover:bg-[--accent] hover:text-black transition-all text-sm md:text-xl">INITIATE DIALOGUE</a>
         </div>
     </section>
 </main>
 
 <!-- footer (identical to main) -->
-<footer class="relative z-[100] border-t border-white/5 bg-black px-6 pt-20 pb-12 overflow-hidden">
+<footer class="relative z-[100] border-t border-white/5 bg-black px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-20">
             
-            <div class="space-y-6">
+            <div class="space-y-4 md:space-y-6">
                 <div>
-                    <div class="text-2xl font-black tracking-tighter mb-1">ARTANDFIENDS</div>
+                    <div class="text-xl md:text-2xl font-black tracking-tighter mb-1">ART AND FIENDS</div>
                     <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
                 </div>
                 <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
-                    Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
+                    Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
                     <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
@@ -429,8 +604,8 @@
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
-                <ul class="space-y-4 text-sm">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
+                <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
                         <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
                         <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
@@ -447,8 +622,8 @@
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
-                <ul class="space-y-3 text-xs text-zinc-400">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
+                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-400">
                     <li class="flex items-center gap-2">
                         <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
                     </li>
@@ -462,14 +637,14 @@
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-900 border border-white/5 p-4 rounded-sm text-left min-w-[200px]">
-                    <div class="flex justify-between items-center gap-8 mb-2">
+                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
+                <div class="inline-block bg-zinc-900 border border-white/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                    <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
                         <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
                     </div>
                     <div class="h-[1px] bg-white/5 w-full mb-2"></div>
-                    <div class="flex justify-between items-center gap-8">
+                    <div class="flex justify-between items-center gap-4 md:gap-8">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -480,15 +655,15 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
-                © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
+        <div class="pt-6 md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
+                © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
-            <div class="flex items-center gap-8">
+            <div class="flex items-center gap-4 md:gap-8">
                 <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
                 <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
                     ↑
                 </button>
             </div>
@@ -542,19 +717,21 @@
         gsap.utils.toArray(".service-panel").forEach((panel, i) => {
             // diagonal shift on scroll
             const diagonal = panel.querySelector(".diagonal-split");
-            gsap.fromTo(diagonal, 
-                { x: i % 2 === 0 ? '-20%' : '20%' },
-                { 
-                    x: '0%', 
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: panel,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: 1.5,
+            if (diagonal) {
+                gsap.fromTo(diagonal, 
+                    { x: i % 2 === 0 ? '-20%' : '20%' },
+                    { 
+                        x: '0%', 
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: panel,
+                            start: 'top bottom',
+                            end: 'bottom top',
+                            scrub: 1.5,
+                        }
                     }
-                }
-            );
+                );
+            }
 
             // floating card parallax (subtle)
             const card = panel.querySelector(".floating-card");
@@ -586,7 +763,7 @@
             }
         });
 
-        // counter animation (simple)
+        // counter animation
         gsap.to("#counter1", { 
             innerHTML: 48, 
             duration: 2, 
@@ -598,6 +775,12 @@
             duration: 2, 
             snap: { innerHTML: 1 },
             scrollTrigger: { trigger: "#counter2", start: "top 90%" } 
+        });
+        gsap.to("#counter3", { 
+            innerHTML: 24, 
+            duration: 2, 
+            snap: { innerHTML: 1 },
+            scrollTrigger: { trigger: "#counter3", start: "top 90%" } 
         });
 
         ScrollTrigger.refresh();
