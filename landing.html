@@ -4,248 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ART + FRIENDS · Architectural Intelligence Studio</title>
-
-    <!-- simple, professional fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --gold: #C3A060;
+            --white: #ffffff;
+            --bg: #070D14;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0B1A2A;
-            color: #F5F7FA;
-            line-height: 1.6;
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--white);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Hero Container */
+        .slider-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            padding: 0 10%;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(195, 160, 96, 0.15);
-            border-radius: 24px;
-            padding: 3.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* Dynamic Backgrounds */
+        .slide-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
         }
 
-        /* typography */
-        h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+        .slide-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(7,13,20,0.9) 0%, rgba(7,13,20,0.4) 50%, rgba(7,13,20,0.1) 100%);
         }
 
-        h1 span {
-            color: #C3A060;
-            font-weight: 500;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: #C3A060;
-            margin-bottom: 2.5rem;
-            font-weight: 500;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: #C3A060;
-            margin: 2rem 0;
-            opacity: 0.5;
-        }
-
-        .description {
-            font-size: 1.1rem;
-            color: rgba(245, 247, 250, 0.8);
+        /* Text Content Styling */
+        .slide-content {
             max-width: 600px;
-            margin-bottom: 2.5rem;
-            font-weight: 300;
-            line-height: 1.7;
+            transform: translateY(30px);
+            transition: transform 1.2s ease;
         }
 
-        /* three pillars - simple */
-        .pillars {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 2.5rem 0;
+        .slide.active .slide-content {
+            transform: translateY(0);
         }
 
-        .pillar {
-            border-left: 2px solid rgba(195, 160, 96, 0.3);
-            padding-left: 1.2rem;
-        }
-
-        .pillar h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
+        .label {
+            color: var(--gold);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #C3A060;
-            margin-bottom: 0.75rem;
+            letter-spacing: 0.4em;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            display: block;
         }
 
-        .pillar p {
-            font-size: 0.9rem;
-            color: rgba(245, 247, 250, 0.7);
+        h2 {
+            font-size: 3.5rem;
+            font-weight: 200;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
             font-weight: 300;
-            line-height: 1.6;
+            border-left: 2px solid var(--gold);
+            padding-left: 1.5rem;
         }
 
-        /* info grid */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin: 2.5rem 0;
+        /* Fixed Brand Elements */
+        .nav-header {
+            position: fixed;
+            top: 40px; left: 10%;
+            z-index: 100;
         }
 
-        .info-item {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 1.5rem;
+        .nav-header h1 {
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            font-size: 1.2rem;
         }
 
-        .info-item .label {
+        .nav-header span { color: var(--gold); }
+
+        .footer-info {
+            position: fixed;
+            bottom: 40px; left: 10%;
+            z-index: 100;
             font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #C3A060;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
         }
 
-        .info-item .title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: white;
+        /* Slider Controls */
+        .controls {
+            position: fixed;
+            bottom: 40px; right: 10%;
+            z-index: 100;
+            display: flex;
+            gap: 15px;
         }
 
-        .info-item .text {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 300;
-            line-height: 1.5;
+        .dot {
+            width: 40px; height: 2px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        /* coming soon */
-        .coming-soon {
-            display: inline-block;
-            border: 1px solid #C3A060;
-            color: #C3A060;
-            padding: 0.75rem 2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-top: 1rem;
+        .dot.active {
+            background: var(--gold);
         }
 
-        /* footer */
-        .footer {
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.3);
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 2rem;
-        }
-
-        /* responsive */
         @media (max-width: 768px) {
-            .card { padding: 2rem; }
-            h1 { font-size: 2.2rem; }
-            .pillars { grid-template-columns: 1fr; gap: 1.5rem; }
-            .info-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 2.2rem; }
+            .slide-content { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <!-- header -->
-            <h1>ART <span>+</span> FRIENDS</h1>
-            <div class="subtitle">Architectural Intelligence Studio</div>
-            
-            <div class="divider"></div>
-            
-            <!-- description -->
-            <div class="description">
-                Bridging the gap between design intent and construction reality. 
-                Strategic architectural advisory for the built environment.
-            </div>
 
-            <!-- three pillars -->
-            <div class="pillars">
-                <div class="pillar">
-                    <h3>Design Vision</h3>
-                    <p>Exceptional architectural creativity and spatial innovation.</p>
-                </div>
-                <div class="pillar">
-                    <h3>Technical Precision</h3>
-                    <p>Advanced BIM coordination and technical detailing.</p>
-                </div>
-                <div class="pillar">
-                    <h3>Construction Strategy</h3>
-                    <p>Practical understanding of how buildings are constructed.</p>
-                </div>
-            </div>
+    <div class="nav-header">
+        <h1>ART <span>+</span> FRIENDS</h1>
+    </div>
 
-            <!-- key focus areas -->
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="label">Property Development</div>
-                    <div class="title">Urban & Mixed-Use</div>
-                    <div class="text">Feasibility-driven design for densification projects.</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Luxury Residential</div>
-                    <div class="title">Coastal & Urban</div>
-                    <div class="text">Premium residences for discerning clients.</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Technical Excellence</div>
-                    <div class="title">BIM Coordination</div>
-                    <div class="text">Advanced digital workflows and detailing.</div>
-                </div>
-                <div class="info-item">
-                    <div class="label">Integrated Delivery</div>
-                    <div class="title">Design-Build Alignment</div>
-                    <div class="text">Seamless coordination across all disciplines.</div>
-                </div>
+    <div class="slider-container">
+        <!-- Slide 1 (unchanged) -->
+        <div class="slide active">
+            <div class="slide-bg" style="background-image: url('images/house5.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Property Development</span>
+                <h2>Urban & <br>Mixed-Use</h2>
+                <p class="desc">Feasibility-driven design for densification projects. We bridge the gap between architectural intent and investment reality.</p>
             </div>
+        </div>
 
-            <!-- coming soon -->
-            <div style="text-align: center;">
-                <div class="coming-soon">Launching 2026</div>
+        <!-- Slide 2 (unchanged) -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house1.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Luxury Residential</span>
+                <h2>Coastal & <br>Urban Living</h2>
+                <p class="desc">Premium residences for discerning clients. Creating bespoke living spaces that harmonize with South Africa's unique landscapes.</p>
             </div>
+        </div>
 
-            <!-- footer -->
-            <div class="footer">
-                Cape Town · South Africa
+        <!-- Slide 3: Changed to "Design-to-Delivery Alignment" / remove Integrated Delivery -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house2.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Design‑to‑Delivery Alignment</span>
+                <h2>Architectural <br>Development</h2>
+                <p class="desc">Accurate Project Integration from creative conceptualization through construction.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Replaced with Installation/Furniture/Set + Client-Centered text -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house3.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Custom Creative Design</span>
+                <h2>Set, Stage <br>& Furniture</h2>
+                <p class="desc">Installation, Furniture, set and stage designs. Research-based creative concept development pertaining to custom creative design requirements. Client-Centered Design to Construction Processes.</p>
             </div>
         </div>
     </div>
+
+    <div class="footer-info">
+        Johannesburg · South Africa — Launching 2026
+    </div>
+
+    <div class="controls">
+        <div class="dot active" onclick="setSlide(0)"></div>
+        <div class="dot" onclick="setSlide(1)"></div>
+        <div class="dot" onclick="setSlide(2)"></div>
+        <div class="dot" onclick="setSlide(3)"></div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function setSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Auto-play
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            setSlide(next);
+        }, 6000);
+    </script>
 </body>
 </html>
