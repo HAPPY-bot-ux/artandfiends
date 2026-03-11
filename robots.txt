@@ -1,1 +1,16 @@
+# Robots.txt for ARTANDFIENDS
+# Optimized for AEC Industry SEO
 
+User-agent: *
+Allow: /
+
+# Allow indexing of high-quality project images
+Allow: /images/
+
+# Disallow sensitive folders or system files
+Disallow: /cgi-bin/
+Disallow: /private/
+Disallow: /temp/
+
+# Sitemaps help search engines find your projects faster
+Sitemap: https://yourdomain.com/sitemap.xml
