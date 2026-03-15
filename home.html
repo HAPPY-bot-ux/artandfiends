@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ARTANDFIENDS | Architecture · Engineering · Construction</title>
+    <title>ARTANDFIENDS | Creative Intelligence Studio</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -475,48 +475,49 @@
 
 
     <!-- Projects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <style>
     :root {
-        --accent: #00ffaa; /* Neon Construction Green/Cyan */
+        --accent: #00ffaa;
         --dark: #0a0a0a;
         --glass: rgba(255, 255, 255, 0.03);
         --border: rgba(255, 255, 255, 0.1);
     }
 
-    .horizontal-section {
+    .vertical-section {
         width: 100%;
-        overflow: hidden;
         background: var(--dark);
-        /* Blueprint grid effect */
+        /* Blueprint grid effect - stays fixed while scrolling */
         background-image: linear-gradient(var(--border) 1px, transparent 1px),
                           linear-gradient(90deg, var(--border) 1px, transparent 1px);
         background-size: 50px 50px;
-    }
-
-    .horizontal-container {
-        display: flex;
-        width: 400vw; /* 4 panels = 400% width */
-        height: 100vh;
-        will-change: transform;
+        background-attachment: fixed;
     }
 
     .panel {
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 5vw;
-        flex-shrink: 0;
+        padding: 5vh 5vw;
         position: relative;
+        border-bottom: 1px solid var(--border);
+        box-sizing: border-box;
     }
 
-    /* Square Preview Styling */
+    /* Project Cards */
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+    }
+
     .project-card {
-        aspect-ratio: 1/1;
+        aspect-ratio: 16/9;
         position: relative;
         overflow: hidden;
         border: 1px solid var(--border);
@@ -525,247 +526,162 @@
 
     .project-card:hover {
         border-color: var(--accent);
-        transform: translateY(-10px);
+        transform: translateY(-5px);
     }
 
     .project-card img {
-        filter: grayscale(100%) brightness(0.7);
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%) brightness(0.6);
         transition: 0.6s ease;
     }
 
     .project-card:hover img {
         filter: grayscale(0%) brightness(1);
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
-    .project-info-overlay {
-        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: 0.4s ease;
-    }
-
-    .project-card:hover .project-info-overlay {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Progress bar for BIM section */
+    /* BIM Progress Bars */
     .bim-track {
         height: 2px;
         background: var(--border);
         width: 100%;
-        margin-top: 8px;
+        margin-top: 12px;
         position: relative;
+        overflow: hidden;
     }
 
     .bim-fill {
         height: 100%;
         background: var(--accent);
-        box-shadow: 0 0 10px var(--accent);
+        box-shadow: 0 0 15px var(--accent);
+        transform: translateX(-100%); /* Animated via GSAP */
     }
 
     .mono { font-family: 'Space Mono', monospace; }
+    .text-outline { -webkit-text-stroke: 1px white; }
+
+    /* Mobile Overrides */
+    @media (max-width: 768px) {
+        .panel { height: auto; padding: 80px 20px; }
+        .text-8xl { font-size: 4rem; }
+        .project-grid { grid-template-columns: 1fr; }
+    }
 </style>
-<section class="horizontal-section" 
-    style="background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.85)), url('./images/projects.jpg') center/cover no-repeat;">
-    <div class="horizontal-container" id="scrollContainer">
+
+<section class="vertical-section">
+    <div id="v-container">
         
-        <div class="panel border-r border-white/10">
-            <div class="max-w-6xl w-full grid md:grid-cols-2 gap-20">
+        <div class="panel">
+            <div class="max-w-6xl w-full grid md:grid-cols-2 gap-12">
                 <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="h-[1px] w-12 bg-[--accent]"></div>
-                        <span class="mono text-[--accent] text-sm tracking-widest">PORTFOLIO.V2</span>
+                        <span class="mono text-[--accent] text-sm tracking-widest">EST. 2024 // CAPABILITY</span>
                     </div>
-                    <h2 class="text-8xl font-black text-white leading-none mb-8">CORE<br><span class="text-outline text-transparent" style="-webkit-text-stroke: 1px white;">PROJECTS</span></h2>
-                    <p class="text-gray-400 text-lg max-w-md leading-relaxed">
-                        Precision-engineered developments. From structural integrity to BIM-integrated workflows.
+                    <h2 class="text-7xl md:text-8xl font-black text-white leading-none mb-8">CORE<br><span class="text-outline text-transparent">DELIVERY</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-8">
+                        Art & Fiends Construction combines structural precision with modern BIM-integrated workflows. We deliver high-stakes commercial and residential infrastructure with a zero-harm philosophy.
                     </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="px-4 py-2 border border-white/20 mono text-[10px] text-white">ISO 9001</div>
+                        <div class="px-4 py-2 border border-white/20 mono text-[10px] text-white">CIDB 9GB/9CE</div>
+                        <div class="px-4 py-2 border border-white/20 mono text-[10px] text-white">NHBRC</div>
+                    </div>
                 </div>
-                    <div class="grid grid-cols-1 gap-6 self-end">
-    <div class="p-8 bg-white/5 border-l-4 border-[--accent]">
-        <div class="text-5xl font-bold text-white mb-2">3</div>
-        <div class="mono text-xs text-gray-500 uppercase tracking-tighter">Core Specialisms: Security, Print, Branding</div>
-    </div>
-    
-    <div class="p-8 bg-white/5 border-l-4 border-white/20">
-        <div class="text-5xl font-bold text-white mb-2">24h</div>
-        <div class="mono text-xs text-gray-500 uppercase tracking-tighter">Rapid Response & Support Availability</div>
-    </div>
-    
-    <div class="p-8 bg-white/5 border-l-4 border-[--accent]">
-        <div class="text-5xl font-bold text-white mb-2">98%</div>
-        <div class="mono text-xs text-gray-500 uppercase tracking-tighter">Positive Client Feedback Rating</div>
-    </div>
-</div>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="p-8 bg-white/5 border-l-4 border-[--accent]">
+                        <div class="text-5xl font-bold text-white mb-2">98%</div>
+                        <div class="mono text-xs text-gray-500 uppercase">Clash Detection Accuracy</div>
+                    </div>
+                    <div class="p-8 bg-white/5 border-l-4 border-white/20">
+                        <div class="text-5xl font-bold text-white mb-2">B-BBEE</div>
+                        <div class="mono text-xs text-gray-500 uppercase">Level 1 Contributor Status</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+        <div class="panel bg-white/[0.03]">
+            <div class="max-w-7xl w-full grid md:grid-cols-2 gap-16">
+                <div>
+                    <h3 class="text-5xl font-bold text-white mb-6">TECHNICAL<br>GOVERNANCE</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between border-b border-white/10 pb-3">
+                            <span class="text-gray-500 mono text-sm uppercase">Contracting</span>
+                            <span class="text-white text-sm">NEC3 / FIDIC / JBCC</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-3">
+                            <span class="text-gray-500 mono text-sm uppercase">Safety Standard</span>
+                            <span class="text-white text-sm">NOSA 5-Star / OHSAS 18001</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-3">
+                            <span class="text-gray-500 mono text-sm uppercase">Planning</span>
+                            <span class="text-white text-sm">Primavera P6 / Procore</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-3">
+                            <span class="text-gray-500 mono text-sm uppercase">Insurance</span>
+                            <span class="text-[--accent] text-sm">R100M Professional Indemnity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10 border border-white/10 bg-black/40 backdrop-blur-xl">
+                    <h4 class="mono text-[--accent] text-xs mb-10 tracking-[0.4em]">DIGITAL WORKFLOW (LOD 400)</h4>
+                    <div class="space-y-12">
+                        <div class="bim-stat">
+                            <div class="flex justify-between text-xs text-white mono mb-2">
+                                <span>BIM CLASH RESOLUTION</span>
+                                <span>98%</span>
+                            </div>
+                            <div class="bim-track"><div class="bim-fill" data-percent="98%"></div></div>
+                        </div>
+                        <div class="bim-stat">
+                            <div class="flex justify-between text-xs text-white mono mb-2">
+                                <span>4D SEQUENCING</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="bim-track"><div class="bim-fill" data-percent="85%"></div></div>
+                        </div>
+                        <div class="bim-stat">
+                            <div class="flex justify-between text-xs text-white mono mb-2">
+                                <span>SUSTAINABILITY (GBCSA)</span>
+                                <span>6-STAR</span>
+                            </div>
+                            <div class="bim-track"><div class="bim-fill" data-percent="100%"></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="panel">
-            <div class="w-full max-w-7xl">
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">COMMERCIAL</span>
-                            <h4 class="text-xl font-bold text-white">THE MONOLITH</h4>
-                        </div>
+            <div class="max-w-5xl w-full text-center">
+                <div class="mb-12 inline-flex items-center gap-3 bg-white/5 px-6 py-2 rounded-full border border-white/10">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[--accent] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[--accent]"></span>
+                    </span>
+                    <span class="mono text-[--accent] text-[10px] tracking-widest uppercase">Accepting New Tenders 2026</span>
+                </div>
+                <h2 class="text-6xl md:text-9xl font-black text-white mb-10">BUILDING<br><span class="text-outline text-transparent">BEYOND.</span></h2>
+                <div class="grid md:grid-cols-2 gap-8 text-left max-w-3xl mx-auto">
+                    <div class="p-8 border border-white/10 hover:border-[--accent] transition-colors group">
+                        <p class="mono text-[--accent] text-xs mb-4">// TENDER OFFICE</p>
+                        <p class="text-xl text-white">mulweli@artandfiends.co.za</p>
+                        <p class="text-gray-500 mt-2">+27 (0) 11 460 0000</p>
                     </div>
-                    <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">RESIDENTIAL</span>
-                            <h4 class="text-xl font-bold text-white">HILLTOP RES</h4>
-                        </div>
-                    </div>
-                    <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">OFFICE</span>
-                            <h4 class="text-xl font-bold text-white">HARBOR VIEW</h4>
-                        </div>
-                    </div>
-                     <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">MIXED-USE</span>
-                            <h4 class="text-xl font-bold text-white">RIVERSIDE</h4>
-                        </div>
-                        
-                    </div>
-                      <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">MIXED-USE</span>
-                            <h4 class="text-xl font-bold text-white">RIVERSIDE</h4>
-                        </div>
-                        
-                    </div>
-                      <div class="project-card group">
-                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800" class="w-full h-full object-cover">
-                        <div class="project-info-overlay absolute inset-0 p-6 flex flex-col justify-end">
-                            <span class="mono text-[--accent] text-xs">MIXED-USE</span>
-                            <h4 class="text-xl font-bold text-white">RIVERSIDE</h4>
-                        </div>
-                        
+                    <div class="p-8 border border-white/10 hover:border-[--accent] transition-colors group">
+                        <p class="mono text-[--accent] text-xs mb-4">// HEADQUARTERS</p>
+                        <p class="text-xl text-white">Sandton, Johannesburg</p>
+                        <p class="text-gray-500 mt-2">Gauteng, South Africa</p>
                     </div>
                 </div>
             </div>
         </div>
-
-       <div class="panel bg-white/[0.02]">
-    <div class="max-w-7xl w-full grid md:grid-cols-2 gap-16">
-        
-        <div class="relative">
-            <div class="absolute -top-10 -left-10 text-[200px] font-black opacity-[0.03] select-none">01</div>
-            <h3 class="text-4xl font-bold text-white mb-2 tracking-tighter">TECHNICAL<br>COMPLIANCE</h3>
-            <p class="mono text-[--accent] text-xs mb-8 tracking-widest">ISO 9001:2015 CERTIFIED</p>
-            
-            <div class="space-y-6">
-                <div class="flex justify-between border-b border-white/10 pb-2">
-                    <span class="text-gray-500 mono text-sm uppercase">CIDB Rating</span>
-                    <span class="text-white">9GB / 9CE (Unlimited)</span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-2">
-                    <span class="text-gray-500 mono text-sm uppercase">Sustainability</span>
-                    <span class="text-[--accent]">GBCSA 6-Star Rated</span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-2">
-                    <span class="text-gray-500 mono text-sm uppercase">OHS Compliance</span>
-                    <span class="text-white">Zero Harm / NOSA 5-Star</span>
-                </div>
-                <div class="flex justify-between border-b border-white/10 pb-2">
-                    <span class="text-gray-500 mono text-sm uppercase">PI Insurance</span>
-                    <span class="text-white">R100M+ Underwritten</span>
-                </div>
-            </div>
-
-            <div class="flex gap-6 mt-10 opacity-40 grayscale">
-                <div class="text-[10px] mono border border-white/20 px-2 py-1 text-white">SAICE</div>
-                <div class="text-[10px] mono border border-white/20 px-2 py-1 text-white">SACPCMP</div>
-                <div class="text-[10px] mono border border-white/20 px-2 py-1 text-white">JBCC</div>
-            </div>
-        </div>
-        
-        <div class="p-10 border border-white/10 bg-black/40 backdrop-blur-xl flex flex-col justify-between">
-            <div>
-                <h4 class="mono text-[--accent] text-xs mb-10 tracking-[0.5em]">DIGITAL DELIVERY (LOD 400)</h4>
-                <div class="space-y-10">
-                    <div>
-                        <div class="flex justify-between text-xs text-white mono mb-2">
-                            <span>AUTOMATED CLASH DETECTION</span>
-                            <span>98%</span>
-                        </div>
-                        <div class="bim-track"><div class="bim-fill" style="width: 98%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs text-white mono mb-2">
-                            <span>4D CONSTRUCTION SEQUENCING</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="bim-track"><div class="bim-fill" style="width: 85%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-12 pt-8 border-t border-white/10">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-[10px] text-gray-500 mono uppercase mb-1">Contract Framework</p>
-                        <p class="text-sm text-white font-bold">NEC3 / FIDIC / JBCC</p>
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-500 mono uppercase mb-1">Project Control</p>
-                        <p class="text-sm text-white font-bold">Primavera P6 / Procore</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-      <div class="panel">
-    <div class="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0 items-stretch">
-        
-        <div class="md:col-span-7 flex flex-col justify-center border-l border-white/10 pl-8 md:pl-16">
-            <div class="mb-4 flex items-center gap-3">
-                <span class="relative flex h-3 w-3">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[--accent] opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-[--accent]"></span>
-                </span>
-                <span class="mono text-[--accent] text-xs tracking-widest uppercase">Level 1 B-BBEE Contributor</span>
-            </div>
-            <h2 class="text-6xl md:text-8xl font-black text-white mb-8 leading-tight">
-                READY TO <br><span class="text-outline text-transparent" style="-webkit-text-stroke: 1px white;">CONSTRUCT?</span>
-            </h2>
-            <div>
-                <a href="#contact" class="inline-block px-12 py-5 border-2 border-[--accent] text-[--accent] mono font-bold hover:bg-[--accent] hover:text-black transition-all transform hover:-translate-y-1">
-                    DOWNLOAD CAPABILITY STATEMENT
-                </a>
-            </div>
-        </div>
-
-        <div class="md:col-span-5 grid grid-cols-1 gap-1 border-l border-white/10">
-            
-        
-
-            <div class="p-8 bg-white/5 border-b border-white/10 group hover:bg-white/[0.08] transition-colors">
-                <p class="mono text-[--accent] text-xs mb-4 uppercase tracking-widest">// Tenders & Projects</p>
-                <p class="text-xl text-white font-medium">mulweli@artandfiends.co.za</p>
-                <p class="text-gray-500 text-sm mt-1">+27 (0) 11 460 0000</p>
-            </div>
-            
-            <div class="p-8 bg-white/5 border-b border-white/10 group hover:bg-white/[0.08] transition-colors">
-                <p class="mono text-[--accent] text-xs mb-4 uppercase tracking-widest">// Regional Office</p>
-                <p class="text-xl text-white font-medium">Sandton, Johannesburg</p>
-                <p class="text-gray-500 text-sm mt-1">Gauteng, South Africa</p>
-            </div>
-        
-        </div>
-
-    </div>
-</div>
 
     </div>
 </section>
@@ -773,18 +689,47 @@
 <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    const container = document.getElementById("scrollContainer");
-
-    gsap.to(container, {
-        xPercent: -75, // Move left (3 panels out of 4)
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".horizontal-section",
-            pin: true,
-            scrub: 1, // Smoothness of scroll (1 second delay for buttery feel)
-            snap: 1 / 3, // Snaps to each panel
-            end: () => "+=" + container.offsetWidth
+    // 1. Snapping Logic
+    // Forces the scroll to land exactly on a panel for a premium feel
+    ScrollTrigger.create({
+        trigger: "#v-container",
+        start: "top top",
+        end: "bottom bottom",
+        snap: {
+            snapTo: "panel",
+            duration: { min: 0.2, max: 0.5 },
+            delay: 0.1,
+            ease: "power1.inOut"
         }
+    });
+
+    // 2. Animate BIM bars when they come into view
+    gsap.utils.toArray('.bim-fill').forEach(fill => {
+        gsap.to(fill, {
+            x: "0%",
+            duration: 1.5,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: fill,
+                start: "top 90%",
+            }
+        });
+        // Set the width based on the data attribute
+        fill.style.width = fill.getAttribute('data-percent');
+    });
+
+    // 3. Fade in panels
+    gsap.utils.toArray('.panel').forEach(panel => {
+        gsap.from(panel.children, {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: panel,
+                start: "top 70%",
+            }
+        });
     });
 </script>
 
