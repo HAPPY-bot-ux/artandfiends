@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ART AND FIENDS | Creative Intelligence Studio</title>
+    <title>ART AND FIENDS | About – Architectural Intelligence</title>
 
-    <!-- Tailwind, GSAP, Three.js (same stack as main) -->
+    <!-- Tailwind, GSAP, Three.js (same stack) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -13,20 +13,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* === EXACT DESIGN STYLING FROM MAIN SITE (index) — adapted for about page === */
+        /* === EXACT DESIGN STYLING FROM MAIN SITE – adapted for about page (slick white professional) === */
         :root { 
-            --primary: #1E3A5F;      /* Deep navy - professionalism */
-            --secondary: #4A6FA5;    /* Slate blue - technical */
-            --accent: #C3A060;        /* Brass - premium construction */
-            --light: #F5F7FA;         /* Clean white */
-            --dark: #0B1A2A;          /* Dark navy */
-            --success: #2E7D32;       /* Green for project status */
-            --grid: rgba(74, 111, 165, 0.1);
+            --primary: #1E3A5F;      
+            --secondary: #4A6FA5;    
+            --accent: #C3A060;        
+            --light: #F5F7FA;         
+            --dark: #0B1A2A;          
+            --success: #2E7D32;       
+            --grid: rgba(74, 111, 165, 0.05);
         }
         
         body { 
-            background: var(--dark); 
-            color: var(--light); 
+            background: #ffffff;       /* pure white background */
+            color: var(--dark); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -61,15 +61,17 @@
         }
 
         .glass-panel { 
-            background: rgba(11, 26, 42, 0.7);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(195, 160, 96, 0.15);
+            border: 1px solid rgba(195, 160, 96, 0.2);
             border-radius: 4px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            color: var(--dark);
         }
         
         .tech-border {
             position: relative;
-            border: 1px solid rgba(195, 160, 96, 0.3);
+            border: 1px solid rgba(195, 160, 96, 0.2);
         }
         
         .tech-border::before {
@@ -95,15 +97,18 @@
         }
 
         .metric-card {
-            background: rgba(245, 247, 250, 0.02);
-            border: 1px solid rgba(195, 160, 96, 0.1);
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.05);
             padding: 1.5rem;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            color: var(--dark);
         }
         
         .metric-card:hover {
             border-color: var(--accent);
-            background: rgba(195, 160, 96, 0.05);
+            background: #ffffff;
+            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.08);
         }
 
         #bg3d { 
@@ -112,7 +117,7 @@
             left: 0; 
             z-index: 0; 
             pointer-events: none; 
-            opacity: 0.15;
+            opacity: 0.2;
         }
         
         .content-layer { 
@@ -120,7 +125,7 @@
             z-index: 10; 
         }
 
-        /* Mobile menu (copy from main) */
+        /* mobile menu (light version for white bg) */
         .mobile-menu { 
             position: fixed; 
             top: 0; 
@@ -128,7 +133,7 @@
             width: 75%; 
             max-width: 320px; 
             height: 100vh; 
-            background: var(--dark);
+            background: white; 
             backdrop-filter: blur(40px); 
             border-left: 1px solid rgba(195, 160, 96, 0.2); 
             z-index: 10001; 
@@ -139,9 +144,12 @@
             gap: 2rem; 
             transition: right 0.5s cubic-bezier(0.77,0,0.18,1); 
             padding: 2rem; 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
         }
         
         .mobile-menu.open { right: 0; }
+        .mobile-menu a { color: var(--dark); }
+        .mobile-menu a:hover { color: var(--accent); }
         
         .menu-toggle { 
             display: none; 
@@ -155,15 +163,13 @@
             z-index: 10002; 
             position: relative; 
         }
-        
         .menu-toggle span { 
             width: 100%; 
             height: 2px; 
-            background: var(--light); 
+            background: var(--dark); 
             transition: 0.3s; 
             transform-origin: left; 
         }
-        
         .menu-toggle.open span:nth-child(1) { 
             transform: rotate(45deg) translate(2px, -2px); 
             background: var(--accent); 
@@ -177,39 +183,49 @@
         @media (max-width: 1024px) { 
             .menu-toggle { display: flex; } 
         }
-        
-        .mobile-menu a { 
-            font-size: 1.5rem; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em; 
-            color: var(--light); 
-            text-decoration: none; 
-            transition: color 0.2s; 
-        }
-        .mobile-menu a:hover { color: var(--accent); }
 
-        /* BIM progress bar (used in about metrics) */
-        .bim-progress {
+        /* navigation light */
+        nav.glass-panel {
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+        }
+        nav a { color: var(--dark); }
+        nav a:hover { color: var(--accent); }
+
+        /* about specific cards */
+        .team-card {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(195, 160, 96, 0.15);
+            backdrop-filter: blur(8px);
+            transition: 0.2s;
+            color: var(--dark);
+        }
+        .team-card:hover {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.9);
+        }
+
+        /* progress bar (light) */
+        .simple-progress {
             width: 100%;
             height: 2px;
-            background: rgba(245, 247, 250, 0.1);
+            background: rgba(0,0,0,0.05);
             position: relative;
         }
-        .bim-progress-fill {
+        .simple-progress-fill {
             height: 100%;
             background: var(--accent);
             width: 0%;
             transition: width 1s ease;
         }
 
-        /* spec table from main site */
+        /* spec table */
         .spec-table {
             width: 100%;
             border-collapse: collapse;
         }
         .spec-table tr {
-            border-bottom: 1px solid rgba(195, 160, 96, 0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .spec-table td {
             padding: 1rem 0;
@@ -224,31 +240,43 @@
             width: 40%;
         }
 
-        /* about specific: team grid */
-        .team-card {
-            background: rgba(11, 26, 42, 0.5);
-            border: 1px solid rgba(195, 160, 96, 0.1);
-            backdrop-filter: blur(8px);
-            transition: 0.2s;
-        }
-        .team-card:hover {
-            border-color: var(--accent);
-            background: rgba(195, 160, 96, 0.08);
-        }
-
-        /* utility */
+        /* text stroke */
         .text-stroke {
             -webkit-text-stroke: 1px rgba(195, 160, 96, 0.3);
             color: transparent;
         }
 
-        /* Mobile responsive adjustments */
-        @media (max-width: 640px) {
-            h1 { font-size: 3rem !important; }
-            h2 { font-size: 2rem !important; }
-            .metric-card { padding: 1rem; }
-            .grid { gap: 1rem; }
+        /* images with light overlay (clear, vibrant) */
+        .hero-about {
+            background: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)), url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070') center/cover no-repeat;
         }
+        .vision-bg {
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed;
+        }
+        .contact-bg {
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;
+        }
+        /* ensure dark text on light overlays */
+        .hero-about h1, .hero-about p, .hero-about span, .hero-about .text-white {
+            color: var(--dark);
+            text-shadow: 0 2px 6px rgba(255,255,255,0.5);
+        }
+        .hero-about .text-[--accent] {
+            color: var(--accent);
+        }
+        .vision-bg, .vision-bg h2, .vision-bg p, .vision-bg span { color: var(--dark); }
+        .contact-bg, .contact-bg h2, .contact-bg p, .contact-bg a { color: var(--dark); }
+
+        /* footer light */
+        footer {
+            background: white;
+            color: var(--dark);
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        footer .text-zinc-300 { color: #1f2937 !important; }
+        footer .text-zinc-500 { color: #6b7280 !important; }
+        footer .border-white\/10 { border-color: rgba(0,0,0,0.05); }
+        footer .bg-zinc-900 { background: #f9f9f9; }
     </style>
 </head>
 <body>
@@ -271,7 +299,7 @@
     <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
 </div>
 
-<!-- Navigation (identical to main) -->
+<!-- Navigation (light) -->
 <nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2 md:gap-3">
@@ -284,87 +312,85 @@
             <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
             <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
             <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
-            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-medium">CONTACT</a>
         </div>
     </div>
 </nav>
 
-<!-- 3D Canvas background (same as main) -->
+<!-- 3D Canvas background (light, matches main) -->
 <canvas id="bg3d"></canvas>
 
-<!-- MAIN CONTENT (about page with main styling) -->
+<!-- MAIN CONTENT (about page with white/professional styling, images clear) -->
 <main class="content-layer">
 
-    <!-- === HERO / ABOUT INTRO - ART AND FIENDS POSITIONING === -->
-<!-- About Hero - Distinct from Home -->
-<section class="h-screen flex items-center justify-center px-4 md:px-6 relative overflow-hidden" 
-    style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070') center/cover no-repeat;">
+    <!-- === HERO / ABOUT INTRO – clear image with light overlay === -->
+<section class="h-screen flex items-center justify-center px-4 md:px-6 relative overflow-hidden hero-about">
     
-    <!-- Architectural grid overlay (distinctive element) -->
-    <div class="absolute inset-0 opacity-20" 
+    <!-- Architectural grid overlay (very subtle) -->
+    <div class="absolute inset-0 opacity-10" 
          style="background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 50px 50px;">
     </div>
     
-    <!-- Diagonal accent line (different from home) -->
+    <!-- Diagonal accent line -->
     <div class="absolute top-0 left-0 w-1/3 h-1 bg-[--accent]"></div>
     <div class="absolute bottom-0 right-0 w-1/3 h-1 bg-[--accent]"></div>
     
     <div class="max-w-7xl mx-auto text-center relative z-10">
-        <!-- Different top badge -->
-        <div class="mb-4 md:mb-6 inline-flex items-center gap-3 px-4 py-2 border border-[--accent] bg-black/30 backdrop-blur-sm">
+        <!-- top badge -->
+        <div class="mb-4 md:mb-6 inline-flex items-center gap-3 px-4 py-2 border border-[--accent] bg-white/30 backdrop-blur-sm">
             <span class="w-2 h-2 bg-[--accent] animate-pulse"></span>
             <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">EST. 2025 · STUDIO PROFILE</span>
         </div>
         
-        <!-- Different headline structure -->
-        <h1 class="text-5xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter mb-4 text-white drop-shadow-2xl" id="hero-main">
+        <!-- headline -->
+        <h1 class="text-5xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter mb-4 text-[--dark]" id="hero-main">
             PRACTICE<br>PROFILE
         </h1>
         
-        <!-- Animated underline (different from home) -->
+        <!-- underline -->
         <div class="w-24 h-1 bg-[--accent] mx-auto mb-6 md:mb-8"></div>
         
-        <!-- Different descriptive text -->
+        <!-- descriptive text -->
         <p class="text-lg md:text-xl opacity-90 max-w-3xl mx-auto mb-8 md:mb-12 px-4 font-light leading-relaxed">
             <span class="text-[--accent] font-bold">Architectural Intelligence</span> · We integrate design vision, technical precision, and construction strategy to deliver projects that are both compelling and buildable.
         </p>
         
-        <!-- Different meta information with stats -->
+        <!-- meta information with stats -->
         <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-12 items-center opacity-0" id="hero-meta">
             <div class="flex items-center gap-4">
                 <div class="w-12 md:w-16 h-[1px] bg-[--accent]"></div>
-                <span class="mono text-xs tracking-widest text-white">SOUTH AFRICA · GLOBAL REACH</span>
+                <span class="mono text-xs tracking-widest text-[--dark]">SOUTH AFRICA · GLOBAL REACH</span>
             </div>
             
-            <!-- Stats row (different from home) -->
+            <!-- stats row -->
             <div class="flex gap-6 md:gap-8">
                 <div class="text-left border-l border-[--accent] pl-3">
                     <div class="text-xl md:text-2xl font-bold text-[--accent]">3</div>
-                    <div class="text-xs text-white opacity-80">PILLARS</div>
+                    <div class="text-xs text-[--dark] opacity-80">PILLARS</div>
                 </div>
                 <div class="text-left border-l border-[--accent] pl-3">
                     <div class="text-xl md:text-2xl font-bold text-[--accent]">4</div>
-                    <div class="text-xs text-white opacity-80">TIERS</div>
+                    <div class="text-xs text-[--dark] opacity-80">TIERS</div>
                 </div>
                 <div class="text-left border-l border-[--accent] pl-3">
                     <div class="text-xl md:text-2xl font-bold text-[--accent]">5</div>
-                    <div class="text-xs text-white opacity-80">NICHES</div>
+                    <div class="text-xs text-[--dark] opacity-80">NICHES</div>
                 </div>
             </div>
         </div>
         
-        <!-- Scroll indicator (new element) -->
+        <!-- scroll indicator -->
         <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2">
-            <span class="mono text-[10px] text-white/50 tracking-widest">DISCOVER</span>
-            <div class="w-5 h-10 border border-white/20 rounded-full flex justify-center">
+            <span class="mono text-[10px] text-[--dark]/50 tracking-widest">DISCOVER</span>
+            <div class="w-5 h-10 border border-[--dark]/20 rounded-full flex justify-center">
                 <div class="w-1 h-2 bg-[--accent] rounded-full mt-2 animate-bounce"></div>
             </div>
         </div>
     </div>
 </section>
 
-    <!-- === THE INDUSTRY FLAW & FINANCIAL IMPACT (from strategy doc) === -->
-    <section class="py-16 md:py-24 px-4 md:px-6">
+    <!-- === THE INDUSTRY FLAW & FINANCIAL IMPACT (white cards) === -->
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                 <div class="glass-panel p-6 md:p-8 tech-border">
@@ -416,7 +442,7 @@
     </section>
 
     <!-- === SOUTH AFRICAN MARKET OPPORTUNITY === -->
-    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10">
+    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-8 md:mb-12">
                 <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ MARKET CONTEXT /</span>
@@ -449,7 +475,7 @@
     </section>
 
     <!-- === THREE PILLARS + INTERSECTION === -->
-    <section class="py-16 md:py-24 px-4 md:px-6">
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-8 md:mb-12">
                 <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ THE ART AND FIENDS INTERSECTION /</span>
@@ -485,7 +511,7 @@
     </section>
 
     <!-- === 4-TIER SERVICE ARCHITECTURE === -->
-    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10">
+    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-8 md:mb-12">
                 <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ SERVICE ARCHITECTURE /</span>
@@ -524,7 +550,7 @@
     </section>
 
     <!-- === TARGET SEGMENTS & IDEAL CLIENT PROFILE === -->
-    <section class="py-16 md:py-24 px-4 md:px-6">
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                 <div class="glass-panel p-6 md:p-8">
@@ -532,21 +558,21 @@
                     <h2 class="text-2xl md:text-3xl font-bold mt-4 mb-6">Target Audience</h2>
                     
                     <div class="space-y-4">
-                        <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                        <div class="flex items-start gap-3 p-3 bg-black/5 rounded">
                             <span class="text-[--accent] font-bold">1.</span>
                             <div>
                                 <h3 class="font-bold">Property Developers</h3>
                                 <p class="text-xs opacity-70">Apartment buildings, townhouses, mixed-use. Priority: ROI</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                        <div class="flex items-start gap-3 p-3 bg-black/5 rounded">
                             <span class="text-[--accent] font-bold">2.</span>
                             <div>
                                 <h3 class="font-bold">Luxury Residential</h3>
                                 <p class="text-xs opacity-70">High-net-worth homeowners. Priority: Unique identity</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 p-3 bg-white/5 rounded">
+                        <div class="flex items-start gap-3 p-3 bg-black/5 rounded">
                             <span class="text-[--accent] font-bold">3.</span>
                             <div>
                                 <h3 class="font-bold">Builder-Developers</h3>
@@ -580,7 +606,7 @@
     </section>
 
     <!-- === FIVE HIGH-VALUE NICHES === -->
-    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10">
+    <section class="py-16 md:py-24 px-4 md:px-6 border-t border-[--accent] border-opacity-10 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-8 md:mb-12">
                 <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ MARKET NICHES /</span>
@@ -613,7 +639,7 @@
     </section>
 
     <!-- === REVENUE MODEL & 90-DAY PLAN === -->
-    <section class="py-16 md:py-24 px-4 md:px-6">
+    <section class="py-16 md:py-24 px-4 md:px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-6 md:gap-8">
                 <div class="glass-panel p-6 md:p-8">
@@ -621,19 +647,19 @@
                     <h2 class="text-2xl md:text-3xl font-bold mt-4 mb-6">Diversified Income</h2>
                     
                     <div class="space-y-3">
-                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                        <div class="flex justify-between items-center p-2 border-b border-black/10">
                             <span>Development Projects</span>
                             <span class="text-[--accent]">Primary</span>
                         </div>
-                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                        <div class="flex justify-between items-center p-2 border-b border-black/10">
                             <span>Feasibility Studies</span>
                             <span class="text-[--accent]">Strategic</span>
                         </div>
-                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                        <div class="flex justify-between items-center p-2 border-b border-black/10">
                             <span>Residential Commissions</span>
                             <span class="text-[--accent]">Core</span>
                         </div>
-                        <div class="flex justify-between items-center p-2 border-b border-white/10">
+                        <div class="flex justify-between items-center p-2 border-b border-black/10">
                             <span>BIM Consulting</span>
                             <span class="text-[--accent]">High-Margin</span>
                         </div>
@@ -663,20 +689,20 @@
         </div>
     </section>
 
-    <!-- === LONG-TERM VISION === -->
-    <section class="py-16 md:py-24 px-4 md:px-6" style="background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed;">
+    <!-- === LONG-TERM VISION (clear image with light overlay) === -->
+    <section class="py-16 md:py-24 px-4 md:px-6 vision-bg">
         <div class="max-w-4xl mx-auto text-center">
             <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ LONG-TERM VISION /</span>
             <h2 class="text-3xl md:text-5xl font-black uppercase my-6 md:my-8">Full-Spectrum Capability</h2>
             <p class="text-lg md:text-xl opacity-80 mb-8">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</p>
-            <div class="tech-border inline-block p-4 md:p-6 mx-auto">
+            <div class="tech-border inline-block p-4 md:p-6 mx-auto bg-white/30 backdrop-blur-sm">
                 <p class="text-sm md:text-base">Evolving into a highly respected, specialized architectural development consultancy</p>
             </div>
         </div>
     </section>
 
-    <!-- === CONTACT PROMPT (from main contact but shorter) === -->
-    <section class="h-screen flex items-center justify-center px-4 md:px-6" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;">
+    <!-- === CONTACT PROMPT (clear image) === -->
+    <section class="h-screen flex items-center justify-center px-4 md:px-6 contact-bg">
         <div class="max-w-4xl mx-auto text-center">
             <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ INITIATE DIALOGUE /</span>
             <h2 class="text-4xl sm:text-5xl md:text-8xl font-black uppercase my-6 md:my-8">Build with<br>certainty</h2>
@@ -696,8 +722,8 @@
     </section>
 </main>
 
-<!-- Footer (identical to main site) -->
-<footer class="relative z-[100] border-t border-white/5 bg-black px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
+<!-- Footer (light version) -->
+<footer class="relative z-[100] border-t border-black/5 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
@@ -712,13 +738,13 @@
                     Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
@@ -728,23 +754,23 @@
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
                 <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
+                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
                         <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
                     </li>
                     <li class="pt-2">
                         <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-300 text-xs">+27 71 675 5906</span>
+                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
                         <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-300 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
                     </li> 
                 </ul>
             </div>
 
             <div>
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
-                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-400">
+                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-600">
                     <li class="flex items-center gap-2">
                         <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
                     </li>
@@ -759,12 +785,12 @@
 
             <div class="lg:text-right">
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-900 border border-white/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                <div class="inline-block bg-zinc-50 border border-black/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
                     <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-white/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-4 md:gap-8">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
                         <span class="flex items-center gap-1.5">
@@ -776,15 +802,15 @@
             </div>
         </div>
 
-        <div class="pt-6 md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+        <div class="pt-6 md:pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
                 © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
             <div class="flex items-center gap-4 md:gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
                     ↑
                 </button>
             </div>
@@ -860,7 +886,6 @@
             });
         });
 
-        // team cards
         gsap.utils.toArray(".team-card").forEach((el, i) => {
             gsap.from(el, {
                 scrollTrigger: { trigger: el, start: "top 90%" },

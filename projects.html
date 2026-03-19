@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ART AND FIENDS · Creative Intelligence Studio</title>
+    <title>ART AND FIENDS · Project Archive</title>
 
     <!-- same stack: tailwind + gsap + three + fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,20 +13,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        
-        /* === design styling from main index (same look) === */
+        /* === design styling – now slick white professional (adapted from main) === */
         :root { 
-            --primary: #1E3A5F;      /* Deep navy */
-            --secondary: #4A6FA5;    /* Slate blue */
-            --accent: #C3A060;        /* Brass */
+            --primary: #1E3A5F;      
+            --secondary: #4A6FA5;    
+            --accent: #C3A060;        
             --light: #F5F7FA;         
             --dark: #0B1A2A;          
             --success: #2E7D32;       
         }
         
         body { 
-            background: var(--dark); 
-            color: var(--light); 
+            background: #ffffff;       /* pure white */
+            color: var(--dark); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -42,83 +41,27 @@
         #cursor { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
         #cursor-follower { width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease-out; }
 
-        .glass-panel { background: rgba(11, 26, 42, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(195, 160, 96, 0.15); border-radius: 4px; }
+        /* light glass */
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(195, 160, 96, 0.2);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            color: var(--dark);
+        }
         
-        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.3); }
+        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.2); }
         .tech-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
         .tech-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
 
-        .metric-card { background: rgba(245, 247, 250, 0.02); border: 1px solid rgba(195, 160, 96, 0.1); padding: 1.5rem; transition: all 0.3s ease; }
-        .metric-card:hover { border-color: var(--accent); background: rgba(195, 160, 96, 0.05); }
+        .metric-card { background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,0,0,0.02); color: var(--dark); }
+        .metric-card:hover { border-color: var(--accent); background: #ffffff; box-shadow: 0 15px 30px rgba(195, 160, 96, 0.08); }
 
         #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.15; }
         .content-layer { position: relative; z-index: 10; }
 
-        /* === NEW: Sticky-wrapper + kinetic layers (like about page) === */
-        .sticky-wrapper { position: relative; height: 400vh; }   /* creates scroll space */
-        .sticky-content { 
-            position: sticky; 
-            top: 0; 
-            height: 100vh; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-
-        /* project layer images (two overlapping for transition) */
-        .layer-img { 
-            position: absolute; 
-            inset: 0; 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: filter 0.8s ease; 
-            filter: brightness(0.5) grayscale(0.8);
-        }
-        .wireframe-overlay { 
-            filter: brightness(0.3) contrast(1.3) sepia(0.3) hue-rotate(200deg); 
-        }
-
-        /* text overlay inside sticky */
-        .sticky-text-container {
-            position: relative;
-            z-index: 20;
-            text-align: center;
-            background: rgba(11, 26, 42, 0.5);
-            backdrop-filter: blur(12px);
-            padding: 2rem 3rem;
-            border: 1px solid var(--accent);
-            transform: translateY(20px);
-            opacity: 0;
-            max-width: 90%;
-        }
-
-        @media (min-width: 768px) {
-            .sticky-text-container {
-                padding: 3rem 5rem;
-            }
-        }
-
-        .project-tag {
-            writing-mode: vertical-rl;
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            letter-spacing: 0.5em;
-            color: var(--accent);
-            z-index: 25;
-        }
-
-        @media (min-width: 768px) {
-            .project-tag {
-                left: 2rem;
-            }
-        }
-
-        /* project cards for the rest of the page (after sticky narrative) */
+        /* === PROJECT CARDS (adapted for white background) === */
         .project-card {
             display: grid;
             grid-template-columns: 1fr;
@@ -126,6 +69,8 @@
             align-items: center;
             padding: 3rem 1rem;
             border-bottom: 1px solid rgba(195,160,96,0.1);
+            background: #ffffff;
+            color: var(--dark);
         }
 
         @media (min-width: 1024px) {
@@ -145,53 +90,89 @@
         
         .project-img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(100%) brightness(0.7);
+            filter: grayscale(100%) brightness(1.1);
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .project-card:hover .project-img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
 
         .bim-overlay {
             position: absolute; top: 0.5rem; right: 0.5rem;
-            background: rgba(11, 26, 42, 0.8); backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
             padding: 0.75rem; border: 1px solid var(--accent);
             font-family: 'Space Mono', monospace; font-size: 0.7rem; line-height: 1.4;
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;
+            color: var(--dark);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         @media (min-width: 768px) {
-            .bim-overlay {
-                top: 1rem; right: 1rem;
-                padding: 1rem;
-                font-size: 0.75rem;
-            }
+            .bim-overlay { top: 1rem; right: 1rem; padding: 1rem; font-size: 0.75rem; }
         }
 
         .visual-anchor:hover .bim-overlay { opacity: 1; }
 
-        /* scroll progress (decorative) */
-        .scroll-progress {
-            position: fixed; bottom: 2rem; left: 2rem; z-index: 100;
-            background: rgba(11,26,42,0.6); backdrop-filter: blur(8px);
-            padding: 0.75rem 1.5rem; border: 1px solid var(--accent);
-            display: flex; align-items: center; gap: 1rem;
+        /* data panel text */
+        .data-panel {
+            color: var(--dark);
         }
-        @media (max-width: 1024px) { .scroll-progress { display: none; } }
+        .data-panel .text-white, .data-panel .text-zinc-300 { color: var(--dark) !important; }
 
-        /* mobile menu (from main) */
-        .mobile-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: var(--dark); backdrop-filter: blur(40px); border-left: 1px solid rgba(195, 160, 96, 0.2); z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; }
+        /* hero with clear image */
+        .hero-projects {
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('./images/building.png') center/cover no-repeat;
+        }
+
+        /* mobile menu light */
+        .mobile-menu { 
+            position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; 
+            background: white; backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.2); 
+            z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
+        }
         .mobile-menu.open { right: 0; }
-        .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; }
-        .menu-toggle span { width: 100%; height: 2px; background: var(--light); transition: 0.3s; transform-origin: left; }
+        .mobile-menu a { color: var(--dark); font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a:hover { color: var(--accent); }
+        
+        .menu-toggle { 
+            display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; 
+            background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; 
+        }
+        .menu-toggle span { width: 100%; height: 2px; background: var(--dark); transition: 0.3s; transform-origin: left; }
         .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--accent); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--accent); }
         @media (max-width: 1024px) { .menu-toggle { display: flex; } }
-        .mobile-menu a { font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--light); text-decoration: none; transition: color 0.2s; }
-        .mobile-menu a:hover { color: var(--accent); }
 
-        /* responsive nav */
-        @media (max-width: 1024px) {
-            nav .hidden { display: none; }
+        /* navigation light */
+        nav.glass-panel {
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+        }
+        nav a { color: var(--dark); }
+        nav a:hover { color: var(--accent); }
+
+        /* footer light */
+        footer {
+            background: white;
+            color: var(--dark);
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        footer .text-zinc-300 { color: #1f2937 !important; }
+        footer .text-zinc-500 { color: #6b7280 !important; }
+        footer .border-white\/10 { border-color: rgba(0,0,0,0.05); }
+        footer .bg-zinc-900 { background: #f9f9f9; }
+        footer .text-white { color: var(--dark) !important; }
+
+        /* progress bars light */
+        .progress-light {
+            background: rgba(0,0,0,0.05);
+            height: 4px;
+        }
+        .progress-fill {
+            background: var(--accent);
+            height: 100%;
+            width: 0%;
         }
     </style>
 </head>
@@ -213,7 +194,7 @@
     <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
 </div>
 
-<!-- nav -->
+<!-- nav light -->
 <nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-2 md:gap-3">
@@ -226,7 +207,7 @@
             <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
             <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
             <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
-            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-[--dark] transition text-xs font-medium">CONTACT</a>
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-medium">CONTACT</a>
         </div>
     </div>
 </nav>
@@ -235,39 +216,36 @@
 
 <main class="content-layer">
 
-    <!-- hero intro - ART AND FIENDS positioning -->
-    <section class="h-screen flex items-center justify-center px-4 md:px-6 relative" 
-        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover no-repeat;">
+    <!-- hero intro - PROJECT ARCHIVE (clear image) -->
+    <section class="h-screen flex items-center justify-center px-4 md:px-6 relative hero-projects">
         <div class="max-w-7xl mx-auto text-center relative z-10">
             <div class="mb-4 md:mb-6">
                 <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">ARCHITECTURAL INTELLIGENCE STUDIO</span>
             </div>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-white drop-shadow-2xl" id="hero-main">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-[--dark]" id="hero-main">
                 PROJECT<br>ARCHIVE
             </h1>
             <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8 items-center opacity-0" id="hero-meta">
                 <div class="flex items-center gap-4">
                     <div class="w-12 md:w-16 h-[1px] bg-[--accent]"></div>
-                    <span class="mono text-xs tracking-widest text-white">DEVELOPMENT · RESIDENTIAL · MIXED-USE</span>
+                    <span class="mono text-xs tracking-widest text-[--dark]">DEVELOPMENT · RESIDENTIAL · MIXED-USE</span>
                 </div>
                 <div class="flex gap-4 md:gap-8">
                     <div class="text-left">
                         <div class="text-xl md:text-2xl font-bold text-[--accent]">450+</div>
-                        <div class="text-xs text-white opacity-80">PROJECTS</div>
+                        <div class="text-xs text-[--dark] opacity-80">PROJECTS</div>
                     </div>
                     <div class="text-left">
                         <div class="text-xl md:text-2xl font-bold text-[--accent]">98%</div>
-                        <div class="text-xs text-white opacity-80">ON-TIME</div>
+                        <div class="text-xs text-[--dark] opacity-80">ON-TIME</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-  
-
-    <!-- === PROJECT CARDS SHOWCASING THE 4-TIER APPROACH === -->
-    <section class="py-12 md:py-20 bg-[--dark] relative z-10">
+    <!-- PROJECT CARDS SHOWCASING THE 4-TIER APPROACH (light background) -->
+    <section class="py-12 md:py-20 bg-white relative z-10">
         
         <!-- Project 1: Development Feasibility (Tier 1) -->
         <div class="project-card reveal-card">
@@ -345,7 +323,7 @@
             </div>
         </div>
 
-        <!-- Market Context Section -->
+        <!-- Market Context Section (light cards) -->
         <div class="project-card !border-none py-12 md:py-20">
             <div class="col-span-1 md:col-span-2">
                 <div class="grid md:grid-cols-2 gap-6 md:gap-12">
@@ -367,27 +345,27 @@
                                 <span class="text-sm">On-Time Delivery</span>
                                 <span class="text-[--accent] font-bold">98%</span>
                             </div>
-                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:98%"></div></div>
+                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:98%"></div></div>
                             
                             <div class="flex justify-between items-center mt-3">
                                 <span class="text-sm">Defect Rate</span>
                                 <span class="text-[--accent] font-bold">0.4%</span>
                             </div>
-                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:99.6%"></div></div>
+                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:99.6%"></div></div>
                             
                             <div class="flex justify-between items-center mt-3">
                                 <span class="text-sm">Client Retention</span>
                                 <span class="text-[--accent] font-bold">92%</span>
                             </div>
-                            <div class="w-full h-1 bg-white/10"><div class="h-full bg-[--accent]" style="width:92%"></div></div>
+                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:92%"></div></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- High-Value Niches Showcase -->
-        <div class="project-card !border-none py-12 md:py-20 bg-opacity-20 bg-[--primary]">
+        <!-- High-Value Niches Showcase (light) -->
+        <div class="project-card !border-none py-12 md:py-20 bg-white bg-opacity-20">
             <div class="col-span-1 md:col-span-2">
                 <div class="text-center mb-8 md:mb-12">
                     <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ HIGH-VALUE NICHES /</span>
@@ -419,13 +397,13 @@
             </div>
         </div>
 
-        <!-- final CTA panel -->
-        <div class="project-card !border-none !bg-[--light] !text-[--dark] py-16 md:py-32" style="background: var(--light);">
+        <!-- final CTA panel (light with dark text) -->
+        <div class="project-card !border-none py-16 md:py-32 bg-white" style="background: url('./images/color.jpeg');">
             <div class="col-span-1 md:col-span-2 text-center max-w-3xl mx-auto">
                 <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.3em]">/ FULL-SPECTRUM CAPABILITY /</span>
                 <h2 class="text-4xl md:text-6xl lg:text-8xl font-black uppercase my-4 md:my-8">Build With<br>Certainty</h2>
                 <p class="text-lg md:text-2xl opacity-70 mb-6 md:mb-12 px-4">Architectural clarity, construction efficiency, and financial viability—engineered outcomes.</p>
-                <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-[--light] transition-all text-base md:text-xl">INITIATE PROJECT</a>
+                <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-white transition-all text-base md:text-xl">INITIATE PROJECT</a>
             </div>
         </div>
     </section>
@@ -433,8 +411,8 @@
     
 </main>
 
-<!-- footer (identical to main) -->
-<footer class="relative z-[100] border-t border-white/5 bg-black px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
+<!-- footer (light version) -->
+<footer class="relative z-[100] border-t border-black/5 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
@@ -449,13 +427,13 @@
                     Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
@@ -465,23 +443,23 @@
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
                 <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-300 font-bold uppercase">Johannesburg</span>
+                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
                         <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
                     </li>
                       <li class="pt-2">
                         <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-300 text-xs">+27 71 675 5906</span>
+                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
                         <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-300 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
                     </li> 
                 </ul>
             </div>
 
             <div>
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
-                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-400">
+                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-600">
                     <li class="flex items-center gap-2">
                         <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
                     </li>
@@ -496,12 +474,12 @@
 
             <div class="lg:text-right">
                 <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-900 border border-white/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                <div class="inline-block bg-zinc-50 border border-black/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
                     <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-white tracking-widest">00:00:00</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-white/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-4 md:gap-8">
                         <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
                         <span class="flex items-center gap-1.5">
@@ -513,15 +491,15 @@
             </div>
         </div>
 
-        <div class="pt-6 md:pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+        <div class="pt-6 md:pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
                 © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
             <div class="flex items-center gap-4 md:gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-white transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-white/10 flex items-center justify-center hover:bg-[--accent] hover:text-black transition-all">
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
+                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
                     ↑
                 </button>
             </div>
@@ -572,25 +550,6 @@
         gsap.from("#hero-main", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
         gsap.to("#hero-meta", { opacity: 1, duration: 1, delay: 0.5 });
 
-        // === STICKY NARRATIVE - The Industry Flaw ===
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".sticky-wrapper",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1.2,
-            }
-        });
-
-        // layer swap + text change - telling the ART AND FIENDS story
-        tl.to("#img-overlay", { opacity: 1, scale: 1, duration: 1 })
-          .to("#sticky-headline", { textContent: "THE GAP", duration: 0.1 }, 0.5)
-          .to("#sticky-status", { textContent: "DESIGN INTENT // CONSTRUCTION REALITY" }, 0.5)
-          .to("#sticky-sub", { textContent: "Bridging the gap to ensure projects are buildable & viable" }, 0.5)
-          .to("#stickyTextBlock", { backgroundColor: "rgba(11,26,42,0.8)", borderColor: "var(--accent)" }, 0.5)
-          .to("#sticky-headline", { textContent: "THE SOLUTION", duration: 0.1 }, 1.5)
-          .to("#sticky-sub", { textContent: "4-Tier Service Architecture · BIM Coordination · Construction Advisory" }, 1.5);
-
         // reveal project cards (individual cards)
         gsap.utils.toArray(".reveal-card").forEach((card, i) => {
             gsap.from(card, {
@@ -605,7 +564,7 @@
         ScrollTrigger.refresh();
     };
 
-    // three.js grid (same as main)
+    // three.js grid (light, subtle)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("bg3d"), alpha: true });
