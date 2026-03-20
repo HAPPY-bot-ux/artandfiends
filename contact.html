@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* === base styling – now slick white professional (adapted from main) === */
+        /* === base styling – now slick white professional with improved contrast === */
         :root { 
             --primary: #1E3A5F;      
             --secondary: #4A6FA5;    
@@ -21,11 +21,13 @@
             --light: #F5F7FA;         
             --dark: #0B1A2A;          
             --success: #2E7D32;       
+            --text-primary: #1a1a1a;     /* Darker text for better contrast */
+            --text-secondary: #4a4a4a;    /* Secondary text color */
         }
         
         body { 
             background: #ffffff;       /* pure white */
-            color: var(--dark); 
+            color: var(--text-primary); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -41,20 +43,20 @@
         #cursor { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
         #cursor-follower { width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease-out; }
 
-        /* light glass */
+        /* light glass with improved contrast */
         .glass-panel { 
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(195, 160, 96, 0.2);
+            border: 1px solid rgba(195, 160, 96, 0.25);
             border-radius: 4px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-            color: var(--dark);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            color: var(--text-primary);
         }
         
         #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.15; }
         .content-layer { position: relative; z-index: 10; }
 
-        /* === CONTACT PAGE LAYOUT (light version) === */
+        /* === CONTACT PAGE LAYOUT (light version) with improved contrast === */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -66,19 +68,19 @@
             .contact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
         }
 
-        /* left column: light terminal */
+        /* left column: light terminal with improved contrast */
         .timeline-terminal {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(195,160,96,0.2);
+            border: 1px solid rgba(195,160,96,0.3);
             padding: 2rem;
             display: flex;
             flex-direction: column;
             gap: 2rem;
             position: relative;
             overflow: hidden;
-            color: var(--dark);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            color: var(--text-primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         .timeline-terminal::before {
             content: '';
@@ -100,11 +102,11 @@
             align-items: center;
             gap: 1.5rem;
             padding: 1rem;
-            border: 1px solid rgba(195,160,96,0.1);
+            border: 1px solid rgba(195,160,96,0.2);
             transform: translateX(-20px);
             opacity: 0;
             transition: all 0.6s ease;
-            background: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.9);
         }
         .timeline-node.visible {
             transform: translateX(0);
@@ -119,38 +121,48 @@
             animation: pulse 2s infinite;
         }
         @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        
+        .timeline-node .node-content h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .timeline-node .node-content p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
-        /* right panel: form (light) */
+        /* right panel: form (light) with improved contrast */
         .form-terminal {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(16px);
             border: 1px solid var(--accent);
             padding: 2.5rem;
             position: relative;
             overflow-y: auto;
             max-height: 80vh;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
         .form-terminal::-webkit-scrollbar { width: 2px; }
         .form-terminal::-webkit-scrollbar-thumb { background: var(--accent); }
 
-        /* input styling light */
+        /* input styling light with improved contrast */
         input, textarea, select {
             background: rgba(0,0,0,0.02);
-            border: 1px solid rgba(195,160,96,0.2);
+            border: 1px solid rgba(195,160,96,0.25);
             width: 100%;
             padding: 0.8rem 1rem;
             font-family: 'Space Mono', monospace;
             font-size: 0.9rem;
             outline: none;
             transition: 0.3s;
-            color: var(--dark);
+            color: var(--text-primary);
         }
         input:focus, textarea:focus, select:focus {
             border-color: var(--accent);
-            background: rgba(195,160,96,0.05);
+            background: rgba(195,160,96,0.08);
         }
-        select option { background: white; color: var(--dark); }
+        select option { background: white; color: var(--text-primary); }
 
         .btn-uplink {
             background: transparent;
@@ -163,6 +175,7 @@
             cursor: pointer;
             transition: all 0.3s;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+            font-weight: 700;
         }
         .btn-uplink:hover {
             background: var(--accent);
@@ -174,7 +187,7 @@
         .telemetry-bar {
             width: 100%;
             height: 2px;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0,0,0,0.1);
             margin: 1rem 0;
             position: relative;
         }
@@ -191,58 +204,167 @@
             bottom: 2rem;
             right: 2rem;
             font-size: 0.6rem;
-            color: rgba(195,160,96,0.3);
+            color: rgba(195,160,96,0.4);
             pointer-events: none;
             font-family: 'Space Mono';
+            font-weight: 600;
         }
 
-        /* mobile menu light */
+        /* mobile menu light with improved contrast */
         .mobile-menu { 
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; 
-            background: white; backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.2); 
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.3); 
             z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; 
             gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
         .mobile-menu.open { right: 0; }
-        .mobile-menu a { color: var(--dark); font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a { 
+            color: var(--text-primary); 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            text-decoration: none; 
+            transition: color 0.2s; 
+        }
         .mobile-menu a:hover { color: var(--accent); }
         
         .menu-toggle { 
             display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; 
             background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; 
         }
-        .menu-toggle span { width: 100%; height: 2px; background: var(--dark); transition: 0.3s; transform-origin: left; }
+        .menu-toggle span { 
+            width: 100%; height: 2px; background: var(--text-primary); 
+            transition: 0.3s; transform-origin: left; 
+        }
         .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--accent); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--accent); }
         @media (max-width: 1024px) { .menu-toggle { display: flex; } }
 
-        /* navigation light */
+        /* navigation light with improved contrast */
         nav.glass-panel {
-            background: rgba(255,255,255,0.9);
-            color: var(--dark);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        nav a { color: var(--dark); }
+        nav a { 
+            color: var(--text-primary);
+            font-weight: 600;
+        }
         nav a:hover { color: var(--accent); }
 
-        /* footer light */
+        /* footer light with improved contrast */
         footer {
             background: white;
-            color: var(--dark);
-            border-top: 1px solid rgba(0,0,0,0.05);
+            color: var(--text-primary);
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
-        footer .text-zinc-300 { color: #1f2937 !important; }
-        footer .text-zinc-500 { color: #6b7280 !important; }
-        footer .border-white\/10 { border-color: rgba(0,0,0,0.05); }
-        footer .bg-zinc-900 { background: #f9f9f9; }
-        footer .text-white { color: var(--dark) !important; }
+        footer .text-zinc-300 { color: var(--text-primary) !important; }
+        footer .text-zinc-500 { color: var(--text-secondary) !important; font-weight: 500; }
+        footer .text-zinc-800 { color: var(--text-primary) !important; font-weight: 600; }
+        footer .border-white\/10 { border-color: rgba(0,0,0,0.08); }
+        footer .bg-zinc-50 { background: #fafafa; }
+        footer .text-white { color: var(--text-primary) !important; }
         footer .text-emerald-500 { color: #10b981 !important; }
 
         /* text outline */
         .text-outline {
-            -webkit-text-stroke: 2px currentColor;
+            -webkit-text-stroke: 2px var(--accent);
             color: transparent;
+        }
+        
+        /* General text improvements */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .text-sm, .text-xs, .text-base {
+            color: var(--text-secondary);
+        }
+        
+        .font-bold, .font-black {
+            color: var(--text-primary);
+        }
+        
+        .opacity-70, .opacity-60, .opacity-50 {
+            color: var(--text-secondary);
+        }
+        
+        a:not([class*="text-white"]):not([class*="text-[--accent]"]) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        /* Form labels */
+        label {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        /* Success overlay */
+        #success-overlay {
+            background: rgba(255, 255, 255, 0.98);
+        }
+        
+        #success-overlay h3 {
+            color: var(--text-primary);
+        }
+        
+        #success-overlay p {
+            color: var(--accent);
+        }
+        
+        /* Stats section */
+        .border-t.border-black\/10 {
+            border-color: rgba(0,0,0,0.1);
+        }
+        
+        .text-zinc-500 {
+            color: var(--text-secondary) !important;
+        }
+        
+        .text-zinc-600 {
+            color: var(--text-secondary) !important;
+        }
+        
+        .text-zinc-800 {
+            color: var(--text-primary) !important;
+        }
+        
+        .bg-white\/80 {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Button styling */
+        .bg-\[--dark\] {
+            background-color: var(--text-primary);
+        }
+        
+        .bg-\[--dark\]:hover {
+            background-color: var(--accent);
+        }
+        
+        .text-white {
+            color: white !important;
+        }
+        
+        .hover\:text-\[--dark\]:hover {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Badge styling */
+        .mono.text-\[--accent\] {
+            color: var(--accent);
+            font-weight: 700;
         }
     </style>
 </head>
@@ -257,28 +379,305 @@
     <span></span>
     <span></span>
 </button>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="home.html">HOME</a>
-    <a href="about.html">ABOUT</a>
-    <a href="attire.html">SERVICES</a>
-    <a href="projects.html">PROJECTS</a>    
-    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
+
+
+
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Decorative elements for visual interest -->
+    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[--accent]/5 to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[--accent]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+    
+    <!-- Close indicator (optional subtle element) -->
+    <div class="absolute top-6 right-6 opacity-30">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </div>
+    
+    <!-- Logo/Studio mark at top -->
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 mb-3">
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+        </div>
+        <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio</div>
+        <div class="text-xs text-[--text-secondary] mt-1 font-light">Architectural Intelligence</div>
+    </div>
+    
+    <!-- Navigation links with improved styling - SERVICES page active state -->
+    <nav class="flex flex-col items-center gap-6 w-full">
+        <a href="home.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">HOME</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="about.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">ABOUT</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="attire.html" class="nav-link group relative ">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider ">SERVICES</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-[1px] bg-[--accent]"></span>
+        </a>
+        
+        <a href="projects.html" class="nav-link group">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider ">PROJECTS</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="contact.html" class="mt-4 group relative active overflow-hidden">
+            <div class="relative px-8 py-3 border border-[--accent] text-[--accent] hover:text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase overflow-hidden">
+                <span class="relative z-10">CONTACT STUDIO</span>
+                <div class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            </div>
+        </a>
+    </nav>
+    
+    <!-- Contact info at bottom -->
+    <div class="absolute bottom-8 left-0 right-0 text-center space-y-3 px-6">
+        <div class="flex justify-center gap-6 text-[10px] text-[--text-secondary] mono">
+            <span>+27 71 675 5906</span>
+            <span class="w-px h-3 bg-[--text-secondary]/30"></span>
+            <span>mulweli@artandfiends.co.za</span>
+        </div>
+        <div class="flex justify-center gap-4 pt-2">
+            <a href="https://www.instagram.com/art_f_iends" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+        <div class="mono text-[8px] text-[--text-secondary]/40 tracking-widest uppercase pt-2">
+            EST. 2025
+        </div>
+    </div>
 </div>
 
+<style>
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 400px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(195, 160, 96, 0.3);
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        padding: 2rem 1.5rem;
+        box-shadow: -5px 0 50px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+    
+    .mobile-menu.open {
+        right: 0;
+    }
+    
+    /* Custom scrollbar */
+    .mobile-menu::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    .mobile-menu::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .mobile-menu::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
+    
+    /* Navigation link styles */
+    .nav-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        color: var(--accent);
+    }
+    
+    /* Active link styling - for SERVICES page */
+    .nav-link.active span {
+        color: var(--accent);
+    }
+    
+    /* Social icon hover effect */
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+        box-shadow: 0 5px 15px rgba(195, 160, 96, 0.2);
+    }
+    
+    /* Animation for menu items on open */
+    .mobile-menu.open .nav-link {
+        animation: slideIn 0.5s ease forwards;
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    
+    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.2s; }
+    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.3s; }
+    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.4s; }
+    .mobile-menu.open .nav-link:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Animate contact info */
+    .mobile-menu.open .absolute.bottom-8 {
+        animation: fadeInUp 0.6s ease forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Animate logo section */
+    .mobile-menu.open .text-center {
+        animation: fadeIn 0.5s ease forwards;
+        opacity: 0;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+    
+    /* Decorative line animation */
+    .mobile-menu.open .inline-flex {
+        animation: expandLine 0.6s ease forwards;
+    }
+    
+    @keyframes expandLine {
+        from {
+            width: 0;
+            opacity: 0;
+        }
+        to {
+            width: auto;
+            opacity: 1;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .mobile-menu {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0 !important;
+        }
+        
+        .mobile-menu a span {
+            font-size: 1.75rem;
+        }
+        
+        .absolute.bottom-8 {
+            bottom: 1.5rem;
+        }
+    }
+    
+    /* Optional: Add subtle texture */
+    .mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 20% 80%, rgba(195, 160, 96, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    // Active link highlighting for SERVICES page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+        
+        // Map of page names to link hrefs
+        const pageMap = {
+            'home.html': 'home.html',
+            'about.html': 'about.html',
+            'attire.html': 'attire.html',  // Services page
+            'services.html': 'attire.html', // Alternative name
+            'projects.html': 'projects.html',
+            'contact.html': 'contact.html'
+        };
+        
+        // Find all navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const href = link.getAttribute('href');
+            
+            // Check if this link matches the current page
+            if (href === currentPage || 
+                (currentPage === '' && href === 'home.html') ||
+                (currentPage === 'attire.html' && href === 'attire.html') ||
+                (currentPage === 'services.html' && href === 'attire.html')) {
+                
+                // Add active class
+                link.classList.add('active');
+                
+                // Update the span text color
+                const span = link.querySelector('span');
+                if (span) {
+                    span.classList.add('text-[--accent]');
+                }
+                
+                // Show the underline
+                const underline = link.querySelector('span + span');
+                if (underline) {
+                    underline.style.width = '2rem';
+                }
+            }
+        });
+    });
+</script>
 <!-- nav light -->
 <nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div class="w-8 h-[2px] bg-[--accent]"></div>
-            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
-            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block">ARCHITECTURAL</span>
+              <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block font-bold">ARCHITECTURAL</span>
         </div>
         <div class="hidden lg:flex items-center gap-8">
-            <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
-            <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
-            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
-            <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
-            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-medium">CONTACT</a>
+            <a href="home.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">HOME</a>
+            <a href="about.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">ABOUT</a>
+            <a href="attire.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="projects.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-bold">CONTACT</a>
         </div>
     </div>
 </nav>
@@ -290,7 +689,7 @@
 <div class="max-w-7xl w-full mx-auto px-4 py-8 md:py-20">
     <div class="grid lg:grid-cols-2 gap-12 items-stretch">
         
-      <!-- left column: timeline & intro (light) -->
+      <!-- left column: timeline & intro (light) with improved contrast -->
       <div class="flex flex-col justify-between space-y-12">
     <div>
         <div class="inline-flex items-center gap-3 mb-6">
@@ -298,16 +697,16 @@
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[--accent] opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-[--accent]"></span>
             </span>
-            <span class="mono text-[--accent] text-xs tracking-[0.3em] uppercase">System: Online</span>
+            <span class="mono text-[--accent] text-xs tracking-[0.3em] uppercase font-bold bg-white/80 px-2 py-1">System: Online</span>
         </div>
         
         <!-- Updated heading for Contact Us -->
-        <h2 class="text-5xl md:text-7xl font-black uppercase leading-[0.9] tracking-tighter mb-8 text-[--dark]">
+        <h2 class="text-5xl md:text-7xl font-black uppercase leading-[0.9] tracking-tighter mb-8 text-[--text-primary]">
             Get in<br><span class="text-outline">Touch.</span>
         </h2>
         
         <!-- Updated description for Contact Us -->
-        <p class="text-zinc-600 text-lg md:text-xl max-w-md leading-relaxed">
+        <p class="text-[--text-secondary] text-lg md:text-xl max-w-md leading-relaxed font-medium">
             Ready to bring your vision to life? Reach out to our team of expert architects. 
             We respond to every inquiry within 24 hours.
         </p>
@@ -316,18 +715,18 @@
     <!-- Contact stats remain but with updated context -->
     <div class="grid grid-cols-2 gap-4 border-t border-black/10 pt-8">
         <div>
-            <div class="mono text-[10px] text-zinc-500 uppercase mb-1">Response Time</div>
-            <div class="font-bold uppercase tracking-tight text-[--dark]">&lt; 24 Hours</div>
+            <div class="mono text-[10px] text-[--text-secondary] uppercase mb-1 font-bold">Response Time</div>
+            <div class="font-bold uppercase tracking-tight text-[--text-primary]">&lt; 24 Hours</div>
         </div>
         <div>
-            <div class="mono text-[10px] text-zinc-500 uppercase mb-1">Secure Channel</div>
-            <div class="font-bold uppercase tracking-tight text-[--dark]">End-to-End Encrypted</div>
+            <div class="mono text-[10px] text-[--text-secondary] uppercase mb-1 font-bold">Secure Channel</div>
+            <div class="font-bold uppercase tracking-tight text-[--text-primary]">End-to-End Encrypted</div>
         </div>
     </div>
 </div>
 
         
-        <!-- right column: form (light) -->
+        <!-- right column: form (light) with improved contrast -->
         <div class="relative group">
             <div class="absolute -inset-1 bg-gradient-to-tr from-[--accent] to-transparent opacity-10 blur transition duration-1000 group-hover:opacity-20"></div>
             
@@ -336,36 +735,36 @@
                     
                     <div class="grid md:grid-cols-2 gap-10">
                         <div class="relative">
-                            <input type="text" id="name" name="name" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--dark]">
-                            <label for="name" class="absolute left-0 -top-3.5 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs">Full Name</label>
+                            <input type="text" id="name" name="name" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--text-primary] font-medium">
+                            <label for="name" class="absolute left-0 -top-3.5 text-[--text-secondary] text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[--text-secondary] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs font-bold">Full Name</label>
                         </div>
                         <div class="relative">
-                            <input type="email" id="email" name="email" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--dark]">
-                            <label for="email" class="absolute left-0 -top-3.5 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs">Email Address</label>
+                            <input type="email" id="email" name="email" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--text-primary] font-medium">
+                            <label for="email" class="absolute left-0 -top-3.5 text-[--text-secondary] text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[--text-secondary] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs font-bold">Email Address</label>
                         </div>
                     </div>
 
                     <!-- Phone Number Field -->
                     <div class="relative">
-                        <input type="tel" id="phone" name="phone" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--dark]" placeholder="+1 234 567 8900">
-                        <label for="phone" class="absolute left-0 -top-3.5 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent text-[--text-primary] font-medium" placeholder="+1 234 567 8900">
+                        <label for="phone" class="absolute left-0 -top-3.5 text-[--text-secondary] text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[--text-secondary] peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-[--accent] peer-focus:text-xs font-bold">Phone Number</label>
                         <!-- Optional helper text -->
-                        <div class="text-[8px] text-zinc-400 mono uppercase mt-1 tracking-wider">INCLUDE COUNTRY CODE</div>
+                        <div class="text-[8px] text-[--text-secondary] mono uppercase mt-1 tracking-wider font-semibold">INCLUDE COUNTRY CODE</div>
                     </div>
 
                     <div class="relative pt-4">
-                        <textarea id="vision" name="vision" required rows="4" class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent resize-none text-[--dark]"></textarea>
-                        <label for="vision" class="absolute left-0 top-0 text-zinc-500 text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-zinc-400 peer-placeholder-shown:top-6 peer-focus:top-0 peer-focus:text-[--accent] peer-focus:text-xs">Project Vision / Description</label>
+                        <textarea id="vision" name="vision" required rows="4" class="peer w-full bg-transparent border-b border-black/20 py-2 outline-none focus:border-[--accent] transition-colors placeholder-transparent resize-none text-[--text-primary] font-medium"></textarea>
+                        <label for="vision" class="absolute left-0 top-0 text-[--text-secondary] text-xs mono uppercase transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-[--text-secondary] peer-placeholder-shown:top-6 peer-focus:top-0 peer-focus:text-[--accent] peer-focus:text-xs font-bold">Project Vision / Description</label>
                     </div>
 
                     <div class="pt-4">
-                        <button type="submit" id="submit-btn" class="w-full bg-[--dark] text-white py-5 font-black uppercase tracking-widest hover:bg-[--accent] hover:text-[--dark] transition-all flex items-center justify-center gap-3 group/btn">
+                        <button type="submit" id="submit-btn" class="w-full bg-[--text-primary] text-white py-5 font-black uppercase tracking-widest hover:bg-[--accent] hover:text-[--text-primary] transition-all flex items-center justify-center gap-3 group/btn">
                             <span>Establish Uplink</span>
                             <svg class="w-5 h-5 transition-transform group-hover/btn:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
                     </div>
 
-                    <p class="text-[9px] text-zinc-500 mono uppercase text-center tracking-widest">
+                    <p class="text-[9px] text-[--text-secondary] mono uppercase text-center tracking-widest font-bold">
                         Data transmitted via secure studio protocol.
                     </p>
                 </form>
@@ -374,8 +773,8 @@
                     <div class="w-20 h-20 border border-[--accent] flex items-center justify-center mb-6">
                         <div class="w-12 h-12 bg-[--accent] animate-pulse"></div>
                     </div>
-                    <h3 class="text-3xl font-black uppercase mb-2 text-[--dark]">Transmission<br>Complete</h3>
-                    <p class="mono text-xs text-[--accent]">Check your inbox for confirmation.</p>
+                    <h3 class="text-3xl font-black uppercase mb-2 text-[--text-primary]">Transmission<br>Complete</h3>
+                    <p class="mono text-xs text-[--accent] font-bold">Check your inbox for confirmation.</p>
                 </div>
             </div>
         </div>
@@ -462,10 +861,12 @@
 <style>
     :root {
         --accent: #C3A060; /* brass from main */
+        --text-primary: #1a1a1a;
+        --text-secondary: #4a4a4a;
     }
     
     .text-outline {
-        -webkit-text-stroke: 2px currentColor;
+        -webkit-text-stroke: 2px var(--accent);
         color: transparent;
     }
     
@@ -477,11 +878,28 @@
         font-family: 'Space Mono', monospace;
         letter-spacing: 0.5px;
     }
+    
+    /* Additional text improvements */
+    .text-zinc-500, .text-zinc-600, .text-zinc-700 {
+        color: var(--text-secondary) !important;
+    }
+    
+    .text-zinc-800, .text-zinc-900 {
+        color: var(--text-primary) !important;
+    }
+    
+    .border-black\/10 {
+        border-color: rgba(0,0,0,0.1);
+    }
+    
+    .border-black\/20 {
+        border-color: rgba(0,0,0,0.15);
+    }
 </style>
     
 </main>
-<!-- footer (light) -->
-<footer class="relative z-[100] border-t border-black/5 bg-white px-6 pt-20 pb-12 overflow-hidden">
+<!-- footer (light) with improved contrast -->
+<footer class="relative z-[100] border-t border-black/10 bg-white px-6 pt-20 pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
@@ -490,67 +908,67 @@
             <div class="space-y-6">
                 <div>
                     <div class="text-2xl font-black tracking-tighter mb-1">ARTANDFIENDS</div>
-                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio — Johannesburg</div>
                 </div>
-                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                <p class="text-[--text-secondary] text-xs leading-relaxed max-w-[240px] font-medium">
                     Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// Studio Hub</h4>
                 <ul class="space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
-                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                        <span class="block text-[--text-primary] font-bold uppercase">Johannesburg</span>
+                        <span class="text-[--text-secondary] text-xs font-medium">Sandton, Gauteng, 2196</span>
                     </li>
                      <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Direct Line</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Email</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">mulweli@artandfiends.co.za</span>
                     </li> 
                 </ul>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
-                <ul class="space-y-3 text-xs text-zinc-600">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// Credentials</h4>
+                <ul class="space-y-3 text-xs">
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SACAP Registered</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SAIA Member</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">GBCSA Accredited</span>
                     </li>
                 </ul>
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-50 border border-black/5 p-4 rounded-sm text-left min-w-[200px]">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// System Status</h4>
+                <div class="inline-block bg-zinc-50 border border-black/10 p-4 rounded-sm text-left min-w-[200px]">
                     <div class="flex justify-between items-center gap-8 mb-2">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--text-primary] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/10 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-8">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
@@ -560,15 +978,15 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
+        <div class="pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[9px] text-[--text-secondary] uppercase tracking-[0.2em] font-bold">
                 © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
             </div>
             
             <div class="flex items-center gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Legal</a>
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-black/20 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all font-bold">
                     ↑
                 </button>
             </div>

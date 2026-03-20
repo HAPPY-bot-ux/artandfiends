@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* === design styling – now slick white professional (adapted from main) === */
+        /* === design styling – now slick white professional with improved contrast === */
         :root { 
             --primary: #1E3A5F;      
             --secondary: #4A6FA5;    
@@ -21,11 +21,13 @@
             --light: #F5F7FA;         
             --dark: #0B1A2A;          
             --success: #2E7D32;       
+            --text-primary: #1a1a1a;     /* Darker text for better contrast */
+            --text-secondary: #4a4a4a;    /* Secondary text color */
         }
         
         body { 
             background: #ffffff;       /* pure white */
-            color: var(--dark); 
+            color: var(--text-primary); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -41,36 +43,47 @@
         #cursor { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
         #cursor-follower { width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease-out; }
 
-        /* light glass */
+        /* light glass with improved contrast */
         .glass-panel { 
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(195, 160, 96, 0.2);
+            border: 1px solid rgba(195, 160, 96, 0.25);
             border-radius: 4px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-            color: var(--dark);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            color: var(--text-primary);
         }
         
-        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.2); }
+        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.3); }
         .tech-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
         .tech-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
 
-        .metric-card { background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(0,0,0,0.02); color: var(--dark); }
-        .metric-card:hover { border-color: var(--accent); background: #ffffff; box-shadow: 0 15px 30px rgba(195, 160, 96, 0.08); }
+        .metric-card { 
+            background: rgba(255, 255, 255, 0.98); 
+            border: 1px solid rgba(0,0,0,0.08); 
+            padding: 1.5rem; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
+            color: var(--text-primary); 
+        }
+        .metric-card:hover { 
+            border-color: var(--accent); 
+            background: #ffffff; 
+            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.12); 
+        }
 
         #bg3d { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.15; }
         .content-layer { position: relative; z-index: 10; }
 
-        /* === PROJECT CARDS (adapted for white background) === */
+        /* === PROJECT CARDS (adapted for white background) with improved contrast === */
         .project-card {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
             align-items: center;
             padding: 3rem 1rem;
-            border-bottom: 1px solid rgba(195,160,96,0.1);
+            border-bottom: 1px solid rgba(195,160,96,0.15);
             background: #ffffff;
-            color: var(--dark);
+            color: var(--text-primary);
         }
 
         @media (min-width: 1024px) {
@@ -85,7 +98,7 @@
             position: relative;
             aspect-ratio: 16/9;
             overflow: hidden;
-            border: 1px solid rgba(195, 160, 96, 0.2);
+            border: 1px solid rgba(195, 160, 96, 0.25);
         }
         
         .project-img {
@@ -97,12 +110,13 @@
 
         .bim-overlay {
             position: absolute; top: 0.5rem; right: 0.5rem;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px);
             padding: 0.75rem; border: 1px solid var(--accent);
             font-family: 'Space Mono', monospace; font-size: 0.7rem; line-height: 1.4;
             opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 10;
-            color: var(--dark);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: var(--text-primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-weight: 500;
         }
 
         @media (min-width: 768px) {
@@ -111,68 +125,186 @@
 
         .visual-anchor:hover .bim-overlay { opacity: 1; }
 
-        /* data panel text */
+        /* data panel text with improved contrast */
         .data-panel {
-            color: var(--dark);
+            color: var(--text-primary);
         }
-        .data-panel .text-white, .data-panel .text-zinc-300 { color: var(--dark) !important; }
+        .data-panel .text-white, .data-panel .text-zinc-300 { color: var(--text-primary) !important; }
+        .data-panel h2 {
+            color: var(--text-primary);
+            font-weight: 900;
+        }
+        .data-panel p {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .data-panel .grid span:first-child {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .data-panel .grid span:last-child {
+            color: var(--accent);
+            font-weight: 700;
+        }
 
-        /* hero with clear image */
+        /* hero with clear image - improved overlay for readability */
         .hero-projects {
-            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('./images/building.png') center/cover no-repeat;
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/house2.jpg') center/cover no-repeat;
+        }
+        
+        .hero-projects h1 {
+            color: var(--text-primary);
+            text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+        }
+        
+        .hero-projects .mono {
+            color: var(--accent);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,255,255,0.9);
+        }
+        
+        .hero-projects .text-\[--dark\] {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
-        /* mobile menu light */
+        /* mobile menu light with improved contrast */
         .mobile-menu { 
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; 
-            background: white; backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.2); 
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.3); 
             z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; 
             gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
         .mobile-menu.open { right: 0; }
-        .mobile-menu a { color: var(--dark); font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a { 
+            color: var(--text-primary); 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            text-decoration: none; 
+            transition: color 0.2s; 
+        }
         .mobile-menu a:hover { color: var(--accent); }
         
         .menu-toggle { 
             display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; 
             background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; 
         }
-        .menu-toggle span { width: 100%; height: 2px; background: var(--dark); transition: 0.3s; transform-origin: left; }
+        .menu-toggle span { 
+            width: 100%; height: 2px; background: var(--text-primary); 
+            transition: 0.3s; transform-origin: left; 
+        }
         .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--accent); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--accent); }
         @media (max-width: 1024px) { .menu-toggle { display: flex; } }
 
-        /* navigation light */
+        /* navigation light with improved contrast */
         nav.glass-panel {
-            background: rgba(255,255,255,0.9);
-            color: var(--dark);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        nav a { color: var(--dark); }
+        nav a { 
+            color: var(--text-primary);
+            font-weight: 600;
+        }
         nav a:hover { color: var(--accent); }
 
-        /* footer light */
+        /* footer light with improved contrast */
         footer {
             background: white;
-            color: var(--dark);
-            border-top: 1px solid rgba(0,0,0,0.05);
+            color: var(--text-primary);
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
-        footer .text-zinc-300 { color: #1f2937 !important; }
-        footer .text-zinc-500 { color: #6b7280 !important; }
-        footer .border-white\/10 { border-color: rgba(0,0,0,0.05); }
-        footer .bg-zinc-900 { background: #f9f9f9; }
-        footer .text-white { color: var(--dark) !important; }
+        footer .text-zinc-300 { color: var(--text-primary) !important; }
+        footer .text-zinc-500 { color: var(--text-secondary) !important; font-weight: 500; }
+        footer .text-zinc-800 { color: var(--text-primary) !important; font-weight: 600; }
+        footer .border-white\/10 { border-color: rgba(0,0,0,0.08); }
+        footer .bg-zinc-50 { background: #fafafa; }
+        footer .text-white { color: var(--text-primary) !important; }
 
         /* progress bars light */
         .progress-light {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0,0,0,0.1);
             height: 4px;
         }
         .progress-fill {
             background: var(--accent);
             height: 100%;
             width: 0%;
+        }
+        
+        /* General text improvements */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .text-sm, .text-xs, .text-base {
+            color: var(--text-secondary);
+        }
+        
+        .font-bold, .font-black {
+            color: var(--text-primary);
+        }
+        
+        .opacity-70, .opacity-60, .opacity-50 {
+            color: var(--text-secondary);
+        }
+        
+        a:not([class*="text-white"]):not([class*="text-[--accent]"]) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        /* Badge styles */
+        .bg-white\/80 {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Metric card improvements */
+        .metric-card .text-\[--accent\] {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .metric-card p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Final CTA section */
+        .project-card[style*="color.jpeg"] {
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/color.jpeg') center/cover !important;
+        }
+        
+        .project-card[style*="color.jpeg"] h2,
+        .project-card[style*="color.jpeg"] p,
+        .project-card[style*="color.jpeg"] span {
+            color: var(--text-primary);
+            text-shadow: 0 2px 6px rgba(255,255,255,0.7);
+        }
+        
+        .project-card[style*="color.jpeg"] .border-\[--dark\] {
+            border-color: var(--text-primary);
+        }
+        
+        .project-card[style*="color.jpeg"] a {
+            color: var(--text-primary);
+        }
+        
+        .project-card[style*="color.jpeg"] a:hover {
+            background: var(--text-primary);
+            color: white;
         }
     </style>
 </head>
@@ -186,13 +318,291 @@
     <span></span>
     <span></span>
 </button>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="home.html">HOME</a>
-    <a href="about.html">ABOUT</a>
-    <a href="attire.html">SERVICES</a>
-    <a href="projects.html">PROJECTS</a>    
-    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
+
+
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Decorative elements for visual interest -->
+    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[--accent]/5 to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[--accent]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+    
+    <!-- Close indicator (optional subtle element) -->
+    <div class="absolute top-6 right-6 opacity-30">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </div>
+    
+    <!-- Logo/Studio mark at top -->
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 mb-3">
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+        </div>
+        <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio</div>
+        <div class="text-xs text-[--text-secondary] mt-1 font-light">Architectural Intelligence</div>
+    </div>
+    
+    <!-- Navigation links with improved styling - SERVICES page active state -->
+    <nav class="flex flex-col items-center gap-6 w-full">
+        <a href="home.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">HOME</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="about.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">ABOUT</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="attire.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider ">SERVICES</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-[1px] bg-[--accent]"></span>
+        </a>
+        
+        <a href="projects.html" class="nav-link group relative active">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">PROJECTS</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="contact.html" class="mt-4 group relative overflow-hidden">
+            <div class="relative px-8 py-3 border border-[--accent] text-[--accent] hover:text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase overflow-hidden">
+                <span class="relative z-10">CONTACT STUDIO</span>
+                <div class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            </div>
+        </a>
+    </nav>
+    
+    <!-- Contact info at bottom -->
+    <div class="absolute bottom-8 left-0 right-0 text-center space-y-3 px-6">
+        <div class="flex justify-center gap-6 text-[10px] text-[--text-secondary] mono">
+            <span>+27 71 675 5906</span>
+            <span class="w-px h-3 bg-[--text-secondary]/30"></span>
+            <span>mulweli@artandfiends.co.za</span>
+        </div>
+        <div class="flex justify-center gap-4 pt-2">
+            <a href="https://www.instagram.com/art_f_iends" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+        <div class="mono text-[8px] text-[--text-secondary]/40 tracking-widest uppercase pt-2">
+            EST. 2025
+        </div>
+    </div>
 </div>
+
+<style>
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 400px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(195, 160, 96, 0.3);
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        padding: 2rem 1.5rem;
+        box-shadow: -5px 0 50px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+    
+    .mobile-menu.open {
+        right: 0;
+    }
+    
+    /* Custom scrollbar */
+    .mobile-menu::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    .mobile-menu::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .mobile-menu::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
+    
+    /* Navigation link styles */
+    .nav-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        color: var(--accent);
+    }
+    
+    /* Active link styling - for SERVICES page */
+    .nav-link.active span {
+        color: var(--accent);
+    }
+    
+    /* Social icon hover effect */
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+        box-shadow: 0 5px 15px rgba(195, 160, 96, 0.2);
+    }
+    
+    /* Animation for menu items on open */
+    .mobile-menu.open .nav-link {
+        animation: slideIn 0.5s ease forwards;
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    
+    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.2s; }
+    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.3s; }
+    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.4s; }
+    .mobile-menu.open .nav-link:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Animate contact info */
+    .mobile-menu.open .absolute.bottom-8 {
+        animation: fadeInUp 0.6s ease forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Animate logo section */
+    .mobile-menu.open .text-center {
+        animation: fadeIn 0.5s ease forwards;
+        opacity: 0;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+    
+    /* Decorative line animation */
+    .mobile-menu.open .inline-flex {
+        animation: expandLine 0.6s ease forwards;
+    }
+    
+    @keyframes expandLine {
+        from {
+            width: 0;
+            opacity: 0;
+        }
+        to {
+            width: auto;
+            opacity: 1;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .mobile-menu {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0 !important;
+        }
+        
+        .mobile-menu a span {
+            font-size: 1.75rem;
+        }
+        
+        .absolute.bottom-8 {
+            bottom: 1.5rem;
+        }
+    }
+    
+    /* Optional: Add subtle texture */
+    .mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 20% 80%, rgba(195, 160, 96, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    // Active link highlighting for SERVICES page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+        
+        // Map of page names to link hrefs
+        const pageMap = {
+            'home.html': 'home.html',
+            'about.html': 'about.html',
+            'attire.html': 'attire.html',  // Services page
+            'services.html': 'attire.html', // Alternative name
+            'projects.html': 'projects.html',
+            'contact.html': 'contact.html'
+        };
+        
+        // Find all navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const href = link.getAttribute('href');
+            
+            // Check if this link matches the current page
+            if (href === currentPage || 
+                (currentPage === '' && href === 'home.html') ||
+                (currentPage === 'attire.html' && href === 'attire.html') ||
+                (currentPage === 'services.html' && href === 'attire.html')) {
+                
+                // Add active class
+                link.classList.add('active');
+                
+                // Update the span text color
+                const span = link.querySelector('span');
+                if (span) {
+                    span.classList.add('text-[--accent]');
+                }
+                
+                // Show the underline
+                const underline = link.querySelector('span + span');
+                if (underline) {
+                    underline.style.width = '2rem';
+                }
+            }
+        });
+    });
+</script>
+
 
 <!-- nav light -->
 <nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
@@ -200,14 +610,14 @@
         <div class="flex items-center gap-2 md:gap-3">
             <div class="w-6 md:w-8 h-[2px] bg-[--accent]"></div>
             <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
-            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block">ARCHITECTURAL</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block font-bold">ARCHITECTURAL</span>
         </div>
         <div class="hidden lg:flex items-center gap-6 xl:gap-8">
-            <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
-            <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
-            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
-            <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
-            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-medium">CONTACT</a>
+            <a href="home.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">HOME</a>
+            <a href="about.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">ABOUT</a>
+            <a href="attire.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="projects.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-bold">CONTACT</a>
         </div>
     </div>
 </nav>
@@ -216,48 +626,48 @@
 
 <main class="content-layer">
 
-    <!-- hero intro - PROJECT ARCHIVE (clear image) -->
+    <!-- hero intro - PROJECT ARCHIVE (clear image) with improved contrast -->
     <section class="h-screen flex items-center justify-center px-4 md:px-6 relative hero-projects">
         <div class="max-w-7xl mx-auto text-center relative z-10">
             <div class="mb-4 md:mb-6">
-                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">ARCHITECTURAL INTELLIGENCE STUDIO</span>
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold bg-white/30 px-3 py-1 inline-block">ARCHITECTURAL INTELLIGENCE STUDIO</span>
             </div>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-[--dark]" id="hero-main">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-[--text-primary]" id="hero-main">
                 PROJECT<br>ARCHIVE
             </h1>
             <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8 items-center opacity-0" id="hero-meta">
                 <div class="flex items-center gap-4">
                     <div class="w-12 md:w-16 h-[1px] bg-[--accent]"></div>
-                    <span class="mono text-xs tracking-widest text-[--dark]">DEVELOPMENT · RESIDENTIAL · MIXED-USE</span>
+                    <span class="mono text-xs tracking-widest text-[--text-primary] font-bold bg-white/30 px-2 py-1">DEVELOPMENT · RESIDENTIAL · MIXED-USE</span>
                 </div>
                 <div class="flex gap-4 md:gap-8">
                     <div class="text-left">
                         <div class="text-xl md:text-2xl font-bold text-[--accent]">450+</div>
-                        <div class="text-xs text-[--dark] opacity-80">PROJECTS</div>
+                        <div class="text-xs text-[--text-primary] font-semibold">PROJECTS</div>
                     </div>
                     <div class="text-left">
                         <div class="text-xl md:text-2xl font-bold text-[--accent]">98%</div>
-                        <div class="text-xs text-[--dark] opacity-80">ON-TIME</div>
+                        <div class="text-xs text-[--text-primary] font-semibold">ON-TIME</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROJECT CARDS SHOWCASING THE 4-TIER APPROACH (light background) -->
+    <!-- PROJECT CARDS SHOWCASING THE 4-TIER APPROACH (light background) with improved contrast -->
     <section class="py-12 md:py-20 bg-white relative z-10">
         
         <!-- Project 1: Development Feasibility (Tier 1) -->
         <div class="project-card reveal-card">
             <div class="data-panel order-2 md:order-1">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 1 // DEVELOPMENT FEASIBILITY</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 1 // DEVELOPMENT FEASIBILITY</span>
                 <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Sandton<br>Precinct</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Mixed-use development feasibility study in Johannesburg's financial district. Site analysis, zoning review, and yield optimization for maximum ROI.</p>
+                <p class="text-sm md:text-base font-medium text-[--text-secondary] leading-relaxed mb-4 md:mb-8">Mixed-use development feasibility study in Johannesburg's financial district. Site analysis, zoning review, and yield optimization for maximum ROI.</p>
                 <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">GrowthPoint</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Feasibility Complete</span></div>
-                    <div><span class="opacity-50">YIELD</span><br><span class="text-[--accent]">18.5% ROI</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">12,500 m²</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">CLIENT</span><br><span class="text-[--accent] font-bold">GrowthPoint</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">STATUS</span><br><span class="text-[--accent] font-bold">Feasibility Complete</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">YIELD</span><br><span class="text-[--accent] font-bold">18.5% ROI</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">AREA</span><br><span class="text-[--accent] font-bold">12,500 m²</span></div>
                 </div>
             </div>
             <div class="visual-anchor order-1 md:order-2">
@@ -273,14 +683,14 @@
                 <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=2070" class="project-img" alt="Clifton Residence">
             </div>
             <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 2 // ARCHITECTURAL DESIGN</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 2 // ARCHITECTURAL DESIGN</span>
                 <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Clifton<br>Residence</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Luxury coastal villa in Cape Town. Concept design through municipal approval, with full construction documentation and technical detailing.</p>
+                <p class="text-sm md:text-base font-medium text-[--text-secondary] leading-relaxed mb-4 md:mb-8">Luxury coastal villa in Cape Town. Concept design through municipal approval, with full construction documentation and technical detailing.</p>
                 <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Private</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Construction 2026</span></div>
-                    <div><span class="opacity-50">AREA</span><br><span class="text-[--accent]">950 m²</span></div>
-                    <div><span class="opacity-50">MATERIAL</span><br><span class="text-[--accent]">Concrete + Timber</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">CLIENT</span><br><span class="text-[--accent] font-bold">Private</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">STATUS</span><br><span class="text-[--accent] font-bold">Construction 2026</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">AREA</span><br><span class="text-[--accent] font-bold">950 m²</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">MATERIAL</span><br><span class="text-[--accent] font-bold">Concrete + Timber</span></div>
                 </div>
             </div>
         </div>
@@ -288,14 +698,14 @@
         <!-- Project 3: BIM & Technical Coordination (Tier 3) -->
         <div class="project-card reveal-card">
             <div class="data-panel order-2 md:order-1">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 3 // BIM & TECHNICAL</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 3 // BIM & TECHNICAL</span>
                 <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Umhlanga<br>Tower</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">24-story mixed-use tower with full BIM coordination. Clash detection reduced construction conflicts by 95%, saving R8.2M in potential rework.</p>
+                <p class="text-sm md:text-base font-medium text-[--text-secondary] leading-relaxed mb-4 md:mb-8">24-story mixed-use tower with full BIM coordination. Clash detection reduced construction conflicts by 95%, saving R8.2M in potential rework.</p>
                 <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Devco Group</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">In Construction</span></div>
-                    <div><span class="opacity-50">BIM LOD</span><br><span class="text-[--accent]">400</span></div>
-                    <div><span class="opacity-50">CLASHES</span><br><span class="text-[--accent]">247 Resolved</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">CLIENT</span><br><span class="text-[--accent] font-bold">Devco Group</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">STATUS</span><br><span class="text-[--accent] font-bold">In Construction</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">BIM LOD</span><br><span class="text-[--accent] font-bold">400</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">CLASHES</span><br><span class="text-[--accent] font-bold">247 Resolved</span></div>
                 </div>
             </div>
             <div class="visual-anchor order-1 md:order-2">
@@ -311,99 +721,99 @@
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2070" class="project-img" alt="Waterfall Estate">
             </div>
             <div class="data-panel">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">TIER 4 // CONSTRUCTION ADVISORY</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 4 // CONSTRUCTION ADVISORY</span>
                 <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Waterfall<br>Estate</h2>
-                <p class="text-sm md:text-base opacity-70 leading-relaxed mb-4 md:mb-8">Luxury estate development with 48 units. Construction monitoring, contractor coordination, and technical problem-solving throughout delivery.</p>
+                <p class="text-sm md:text-base font-medium text-[--text-secondary] leading-relaxed mb-4 md:mb-8">Luxury estate development with 48 units. Construction monitoring, contractor coordination, and technical problem-solving throughout delivery.</p>
                 <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
-                    <div><span class="opacity-50">CLIENT</span><br><span class="text-[--accent]">Eco Living</span></div>
-                    <div><span class="opacity-50">STATUS</span><br><span class="text-[--accent]">Phase 1 Complete</span></div>
-                    <div><span class="opacity-50">UNITS</span><br><span class="text-[--accent]">48</span></div>
-                    <div><span class="opacity-50">ON-TIME</span><br><span class="text-[--accent]">100%</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">CLIENT</span><br><span class="text-[--accent] font-bold">Eco Living</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">STATUS</span><br><span class="text-[--accent] font-bold">Phase 1 Complete</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">UNITS</span><br><span class="text-[--accent] font-bold">48</span></div>
+                    <div><span class="text-[--text-secondary] font-semibold">ON-TIME</span><br><span class="text-[--accent] font-bold">100%</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- Market Context Section (light cards) -->
+        <!-- Market Context Section (light cards) with improved contrast -->
         <div class="project-card !border-none py-12 md:py-20">
             <div class="col-span-1 md:col-span-2">
                 <div class="grid md:grid-cols-2 gap-6 md:gap-12">
                     <div class="glass-panel p-6 md:p-8 tech-border">
-                        <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ MARKET CONTEXT /</span>
+                        <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ MARKET CONTEXT /</span>
                         <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4">South African Opportunity</h3>
                         <ul class="space-y-3">
-                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Growing property development & urban densification</span></li>
-                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Sustained luxury residential demand in coastal markets</span></li>
-                            <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Technical skills gap creating demand for BIM expertise</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Growing property development & urban densification</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Sustained luxury residential demand in coastal markets</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Technical skills gap creating demand for BIM expertise</span></li>
                         </ul>
                     </div>
                     
                     <div class="glass-panel p-6 md:p-8 tech-border">
-                        <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PROJECT METRICS /</span>
+                        <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ PROJECT METRICS /</span>
                         <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4">Performance Data</h3>
                         <div class="space-y-3">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm">On-Time Delivery</span>
+                                <span class="text-sm font-medium">On-Time Delivery</span>
                                 <span class="text-[--accent] font-bold">98%</span>
                             </div>
-                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:98%"></div></div>
+                            <div class="w-full h-1 bg-black/10"><div class="h-full bg-[--accent]" style="width:98%"></div></div>
                             
                             <div class="flex justify-between items-center mt-3">
-                                <span class="text-sm">Defect Rate</span>
+                                <span class="text-sm font-medium">Defect Rate</span>
                                 <span class="text-[--accent] font-bold">0.4%</span>
                             </div>
-                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:99.6%"></div></div>
+                            <div class="w-full h-1 bg-black/10"><div class="h-full bg-[--accent]" style="width:99.6%"></div></div>
                             
                             <div class="flex justify-between items-center mt-3">
-                                <span class="text-sm">Client Retention</span>
+                                <span class="text-sm font-medium">Client Retention</span>
                                 <span class="text-[--accent] font-bold">92%</span>
                             </div>
-                            <div class="w-full h-1 bg-black/5"><div class="h-full bg-[--accent]" style="width:92%"></div></div>
+                            <div class="w-full h-1 bg-black/10"><div class="h-full bg-[--accent]" style="width:92%"></div></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- High-Value Niches Showcase (light) -->
+        <!-- High-Value Niches Showcase (light) with improved contrast -->
         <div class="project-card !border-none py-12 md:py-20 bg-white bg-opacity-20">
             <div class="col-span-1 md:col-span-2">
                 <div class="text-center mb-8 md:mb-12">
-                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ HIGH-VALUE NICHES /</span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ HIGH-VALUE NICHES /</span>
                     <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase mt-4">Specialized Expertise</h2>
                 </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
                     <div class="metric-card p-4 text-center">
                         <div class="text-[--accent] font-bold mb-1">Property Dev</div>
-                        <p class="text-xs opacity-70">Mixed-use · Residential</p>
+                        <p class="text-xs font-medium text-[--text-secondary]">Mixed-use · Residential</p>
                     </div>
                     <div class="metric-card p-4 text-center">
                         <div class="text-[--accent] font-bold mb-1">Luxury Homes</div>
-                        <p class="text-xs opacity-70">Coastal · Urban</p>
+                        <p class="text-xs font-medium text-[--text-secondary]">Coastal · Urban</p>
                     </div>
                     <div class="metric-card p-4 text-center">
                         <div class="text-[--accent] font-bold mb-1">Estate Dev</div>
-                        <p class="text-xs opacity-70">Clubhouses · Infrastructure</p>
+                        <p class="text-xs font-medium text-[--text-secondary]">Clubhouses · Infrastructure</p>
                     </div>
                     <div class="metric-card p-4 text-center">
                         <div class="text-[--accent] font-bold mb-1">Hospitality</div>
-                        <p class="text-xs opacity-70">Boutique · Lodges</p>
+                        <p class="text-xs font-medium text-[--text-secondary]">Boutique · Lodges</p>
                     </div>
                     <div class="metric-card p-4 text-center">
                         <div class="text-[--accent] font-bold mb-1">BIM Consulting</div>
-                        <p class="text-xs opacity-70">Technical Coordination</p>
+                        <p class="text-xs font-medium text-[--text-secondary]">Technical Coordination</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- final CTA panel (light with dark text) -->
-        <div class="project-card !border-none py-16 md:py-32 bg-white" style="background: url('./images/color.jpeg');">
+        <!-- final CTA panel (light with dark text) with improved contrast -->
+        <div class="project-card !border-none py-16 md:py-32 bg-white" style="background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/color.jpeg'); background-size: cover; background-position: center;">
             <div class="col-span-1 md:col-span-2 text-center max-w-3xl mx-auto">
-                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.3em]">/ FULL-SPECTRUM CAPABILITY /</span>
-                <h2 class="text-4xl md:text-6xl lg:text-8xl font-black uppercase my-4 md:my-8">Build With<br>Certainty</h2>
-                <p class="text-lg md:text-2xl opacity-70 mb-6 md:mb-12 px-4">Architectural clarity, construction efficiency, and financial viability—engineered outcomes.</p>
-                <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--dark] text-[--dark] mono font-bold hover:bg-[--dark] hover:text-white transition-all text-base md:text-xl">INITIATE PROJECT</a>
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.3em] font-bold bg-white/30 px-3 py-1 inline-block">/ FULL-SPECTRUM CAPABILITY /</span>
+                <h2 class="text-4xl md:text-6xl lg:text-8xl font-black uppercase my-4 md:my-8 text-[--text-primary]">Build With<br>Certainty</h2>
+                <p class="text-lg md:text-2xl font-medium text-[--text-secondary] mb-6 md:mb-12 px-4">Architectural clarity, construction efficiency, and financial viability—engineered outcomes.</p>
+                <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--text-primary] text-[--text-primary] mono font-bold hover:bg-[--text-primary] hover:text-white transition-all text-base md:text-xl">INITIATE PROJECT</a>
             </div>
         </div>
     </section>
@@ -411,8 +821,8 @@
     
 </main>
 
-<!-- footer (light version) -->
-<footer class="relative z-[100] border-t border-black/5 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
+<!-- footer (light version) with improved contrast -->
+<footer class="relative z-[100] border-t border-black/10 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
@@ -421,67 +831,67 @@
             <div class="space-y-4 md:space-y-6">
                 <div>
                     <div class="text-xl md:text-2xl font-black tracking-tighter mb-1">ART AND FIENDS</div>
-                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio — Johannesburg</div>
                 </div>
-                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                <p class="text-[--text-secondary] text-xs leading-relaxed max-w-[240px] font-medium">
                     Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// Studio Hub</h4>
                 <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
-                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                        <span class="block text-[--text-primary] font-bold uppercase">Johannesburg</span>
+                        <span class="text-[--text-secondary] text-xs font-medium">Sandton, Gauteng, 2196</span>
                     </li>
                       <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Direct Line</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Email</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">mulweli@artandfiends.co.za</span>
                     </li> 
                 </ul>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
-                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-600">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// Credentials</h4>
+                <ul class="space-y-2 md:space-y-3 text-xs">
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SACAP Registered</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SAIA Member</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">GBCSA Accredited</span>
                     </li>
                 </ul>
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-50 border border-black/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// System Status</h4>
+                <div class="inline-block bg-zinc-50 border border-black/10 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
                     <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--text-primary] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/10 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-4 md:gap-8">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
@@ -491,15 +901,15 @@
             </div>
         </div>
 
-        <div class="pt-6 md:pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
+        <div class="pt-6 md:pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <div class="mono text-[9px] text-[--text-secondary] uppercase tracking-[0.2em] text-center md:text-left font-bold">
                 © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
             <div class="flex items-center gap-4 md:gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Legal</a>
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/20 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all font-bold">
                     ↑
                 </button>
             </div>

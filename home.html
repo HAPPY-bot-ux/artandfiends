@@ -20,11 +20,13 @@
             --dark: #0B1A2A;          
             --success: #2E7D32;       
             --grid: rgba(74, 111, 165, 0.05);
+            --text-primary: #1a1a1a;     /* Darker text for better contrast */
+            --text-secondary: #4a4a4a;    /* Secondary text color */
         }
         
         body { 
             background: #ffffff; 
-            color: var(--dark); 
+            color: var(--text-primary); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -59,16 +61,16 @@
         }
 
         .glass-panel { 
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(195, 160, 96, 0.2);
             border-radius: 4px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
         }
         
         .tech-border {
             position: relative;
-            border: 1px solid rgba(195, 160, 96, 0.2);
+            border: 1px solid rgba(195, 160, 96, 0.3);
         }
         
         .tech-border::before {
@@ -94,17 +96,17 @@
         }
 
         .metric-card {
-            background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0,0,0,0.08);
             padding: 1.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
         
         .metric-card:hover {
             border-color: var(--accent);
             background: #ffffff;
-            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.08);
+            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.12);
         }
 
         #bg3d { 
@@ -113,7 +115,7 @@
             left: 0; 
             z-index: 0; 
             pointer-events: none; 
-            opacity: 0.2;
+            opacity: 0.15;
         }
         
         .content-layer { 
@@ -149,7 +151,7 @@
         .preview-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.9), transparent);
+            background: linear-gradient(45deg, rgba(255,255,255,0.95), transparent);
             display: flex;
             align-items: flex-end;
             padding: 1rem;
@@ -167,12 +169,13 @@
         }
         
         .spec-table tr {
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
         }
         
         .spec-table td {
             padding: 1rem 0;
             font-size: 0.875rem;
+            color: var(--text-primary);
         }
         
         .spec-table td:first-child {
@@ -182,12 +185,13 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             width: 40%;
+            font-weight: 600;
         }
 
         .simple-progress {
             width: 100%;
             height: 2px;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0,0,0,0.1);
             position: relative;
         }
         
@@ -205,9 +209,9 @@
             width: 75%; 
             max-width: 320px; 
             height: 100vh; 
-            background: white; 
+            background: rgba(255, 255, 255, 0.98); 
             backdrop-filter: blur(40px); 
-            border-left: 1px solid rgba(195, 160, 96, 0.2); 
+            border-left: 1px solid rgba(195, 160, 96, 0.3); 
             z-index: 10001; 
             display: flex; 
             flex-direction: column; 
@@ -216,7 +220,7 @@
             gap: 2rem; 
             transition: right 0.5s cubic-bezier(0.77,0,0.18,1); 
             padding: 2rem; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
         
         .mobile-menu.open { right: 0; }
@@ -237,7 +241,7 @@
         .menu-toggle span { 
             width: 100%; 
             height: 2px; 
-            background: var(--dark); 
+            background: var(--text-primary); 
             transition: 0.3s; 
             transform-origin: left; 
         }
@@ -261,54 +265,135 @@
             font-weight: 600; 
             text-transform: uppercase; 
             letter-spacing: 0.1em; 
-            color: var(--dark); 
+            color: var(--text-primary); 
             text-decoration: none; 
             transition: color 0.2s; 
         }
         .mobile-menu a:hover { color: var(--accent); }
 
-        /* updated styles: text on images now visible */
+        /* Enhanced text visibility styles */
         .hero-image-clear {
             position: relative;
-            background-blend-mode: normal; /* remove white overlay */
+            background-blend-mode: normal;
         }
+        
         #home {
-            /* reduced white overlay significantly: now only 20% white for slight softness, but image pops */
-            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('./images/image3.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/image3.jpg') center/cover no-repeat;
         }
+        
         #metrics {
-            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('./images/image5.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/image5.jpg') center/cover no-repeat;
+            background-size: cover;
         }
-        /* ensure text is readable against brighter images */
+        
+        /* Enhanced text contrast */
         #home h1, #home span, #home .text-\[--dark\] {
-            color: #0B1A2A; /* keep dark text */
-            text-shadow: 0 2px 6px rgba(255,255,255,0.5); /* subtle white glow for readability */
+            color: var(--text-primary);
+            text-shadow: 0 2px 8px rgba(255,255,255,0.8);
+            font-weight: 700;
         }
-        #home .text-[--accent] {
+        
+        #home .text-\[--accent\] {
             color: var(--accent);
-            text-shadow: 0 0 8px rgba(255,255,255,0.7);
+            text-shadow: 0 0 10px rgba(255,255,255,0.9);
+            font-weight: 600;
         }
+        
         #metrics h2, #metrics span, #metrics .text-\[--dark\] {
-            color: #0B1A2A;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.6);
+            color: var(--text-primary);
+            text-shadow: 0 2px 6px rgba(255,255,255,0.8);
+            font-weight: 600;
         }
+        
+        #metrics .mono.text-\[--accent\] {
+            color: var(--accent);
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,255,255,0.9);
+        }
+        
         .metric-card {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
-        /* nav and other elements remain unchanged */
+        
+        .metric-card .text-5xl {
+            color: var(--accent);
+            font-weight: 800;
+        }
+        
+        .metric-card .mono {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
         nav.glass-panel {
-            background: rgba(255,255,255,0.9);
-            color: var(--dark);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
+        
+        nav a {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
         footer .text-white, footer .text-zinc-300, footer .text-zinc-400 {
-            color: var(--dark) !important;
+            color: var(--text-primary) !important;
         }
+        
+        footer .text-zinc-500 {
+            color: var(--text-secondary) !important;
+        }
+        
         footer .border-white\/10 {
-            border-color: rgba(0,0,0,0.05);
+            border-color: rgba(0,0,0,0.1);
         }
+        
         .text-outline {
-            -webkit-text-stroke: 1px var(--dark);
+            -webkit-text-stroke: 1px var(--text-primary);
+        }
+        
+        /* Improved link visibility */
+        a:not([class*="text-white"]) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        /* Better section headers */
+        h2, h3, h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        /* Paragraph text */
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Glass panel text */
+        .glass-panel {
+            color: var(--text-primary);
+        }
+        
+        .glass-panel p {
+            color: var(--text-secondary);
+        }
+        
+        /* Button text */
+        .border-\[--accent\] {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .bg-\[--accent\] {
+            color: white;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -325,20 +410,258 @@
 </button>
 
 <div class="mobile-menu" id="mobileMenu">
-    <a href="home.html">HOME</a>
-    <a href="about.html">ABOUT</a>
-    <a href="attire.html">Services</a>
-    <a href="#projects">PROJECTS</a>    
-    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
+    <!-- Decorative elements for visual interest -->
+    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[--accent]/5 to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[--accent]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+    
+    <!-- Close indicator (optional subtle element) -->
+    <div class="absolute top-6 right-6 opacity-30">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </div>
+    
+    <!-- Logo/Studio mark at top -->
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 mb-3">
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+        </div>
+        <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio</div>
+        <div class="text-xs text-[--text-secondary] mt-1 font-light">Architectural Intelligence</div>
+    </div>
+    
+    <!-- Navigation links with improved styling -->
+    <nav class="flex flex-col items-center gap-6 w-full">
+        <a href="home.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">HOME</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="about.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">ABOUT</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="attire.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">SERVICES</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="projects.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">PROJECTS</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="contact.html" class="mt-4 group relative overflow-hidden">
+            <div class="relative px-8 py-3 border border-[--accent] text-[--accent] hover:text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase overflow-hidden">
+                <span class="relative z-10">CONTACT STUDIO</span>
+                <div class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            </div>
+        </a>
+    </nav>
+    
+    <!-- Contact info at bottom -->
+    <div class="absolute bottom-8 left-0 right-0 text-center space-y-3 px-6">
+        <div class="flex justify-center gap-6 text-[10px] text-[--text-secondary] mono">
+            <span>+27 71 675 5906</span>
+            <span class="w-px h-3 bg-[--text-secondary]/30"></span>
+            <span>mulweli@artandfiends.co.za</span>
+        </div>
+        <div class="flex justify-center gap-4 pt-2">
+            <a href="https://www.instagram.com/art_f_iends" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+        <div class="mono text-[8px] text-[--text-secondary]/40 tracking-widest uppercase pt-2">
+            EST. 2025
+        </div>
+    </div>
 </div>
+
+<style>
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 400px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(195, 160, 96, 0.3);
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        padding: 2rem 1.5rem;
+        box-shadow: -5px 0 50px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+    
+    .mobile-menu.open {
+        right: 0;
+    }
+    
+    /* Custom scrollbar */
+    .mobile-menu::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    .mobile-menu::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .mobile-menu::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
+    
+    /* Navigation link styles */
+    .nav-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        color: var(--accent);
+    }
+    
+    /* Social icon hover effect */
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+        box-shadow: 0 5px 15px rgba(195, 160, 96, 0.2);
+    }
+    
+    /* Animation for menu items on open */
+    .mobile-menu.open .nav-link {
+        animation: slideIn 0.5s ease forwards;
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    
+    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.2s; }
+    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.3s; }
+    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.4s; }
+    .mobile-menu.open .nav-link:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Animate contact info */
+    .mobile-menu.open .absolute.bottom-8 {
+        animation: fadeInUp 0.6s ease forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Animate logo section */
+    .mobile-menu.open .text-center {
+        animation: fadeIn 0.5s ease forwards;
+        opacity: 0;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+    
+    /* Decorative line animation */
+    .mobile-menu.open .inline-flex {
+        animation: expandLine 0.6s ease forwards;
+    }
+    
+    @keyframes expandLine {
+        from {
+            width: 0;
+            opacity: 0;
+        }
+        to {
+            width: auto;
+            opacity: 1;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .mobile-menu {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0 !important;
+        }
+        
+        .mobile-menu a span {
+            font-size: 1.75rem;
+        }
+        
+        .absolute.bottom-8 {
+            bottom: 1.5rem;
+        }
+    }
+    
+    /* Optional: Add subtle texture */
+    .mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 20% 80%, rgba(195, 160, 96, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    // Optional: Add active link highlighting
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (window.location.pathname.includes(href)) {
+            link.classList.add('active');
+            link.querySelector('span').classList.add('text-[--accent]');
+            const underline = link.querySelector('span + span');
+            if (underline) underline.style.width = '2rem';
+        }
+    });
+</script>
 
 <!-- Navigation -->
 <nav class="fixed w-full z-[100] px-8 py-4 glass-panel">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-3">
             <div class="w-8 h-[2px] bg-[--accent]"></div>
-            <span class="text-lg font-bold tracking-[0.2em] uppercase">ARTANDFIENDS</span>
-            <span class="mono text-[10px] text-[--accent] ml-4 hidden md:block">RIBA · AIA · LEED</span>
+               <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block font-bold">ARCHITECTURAL</span>
         </div>
         <div class="hidden lg:flex items-center gap-8">
             <a href="#home" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
@@ -354,80 +677,80 @@
 
 <main class="content-layer">
 
-    <!-- Home Section with CLEAR background image (overlay reduced to 20%) -->
-<section id="home" class="h-screen flex items-center justify-center px-6 relative" 
-    style="background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('./images/image3.jpg') center/cover no-repeat;">
-    
-    <div class="max-w-7xl mx-auto text-center relative z-10">
-        <div class="mb-6">
-            <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
-        </div>
-        <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-[--dark] drop-shadow-none" id="hero-main">
-            BUILDING<br>THE FUTURE
-        </h1>
-        <div class="flex flex-col md:flex-row justify-center gap-8 items-center opacity-0" id="hero-meta">
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-[1px] bg-[--accent]"></div>
-                <span class="mono text-xs tracking-widest text-[--dark]">SINCE 2025</span>
-            </div>
-            <div class="flex gap-8">
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[--accent]">10+</div>
-                    <div class="text-xs text-[--dark] opacity-80">PROJECTS</div>
-                </div>
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[--accent]">3</div>
-                    <div class="text-xs text-[--dark] opacity-80">PARTNERS</div>
-                </div>
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[--accent]">1</div>
-                    <div class="text-xs text-[--dark] opacity-80">OFFICE</div>
-                </div>
-            </div>
-        </div>
+    <!-- Home Section with improved text visibility -->
+    <section id="home" class="h-screen flex items-center justify-center px-6 relative" 
+        style="background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/image3.jpg') center/cover no-repeat;">
         
-        <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12 md:mt-16">
-            <a href="https://wa.me/27716755906?text=Hi%20ART%20AND%20FIENDS%2C%20I'm%20interested%20in%20discussing%20a%20project." 
-               target="_blank"
-               class="group relative px-8 py-4 bg-[--accent] text-white font-bold uppercase tracking-widest text-sm overflow-hidden border-2 border-[--accent] hover:bg-transparent hover:text-[--dark] transition-all duration-300 flex items-center justify-center gap-3">
-                <span class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-                <span class="relative z-10 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.127 1.523 5.875L.055 23.1l5.357-1.42A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.62-.516-5.147-1.478l-.368-.22-3.176.84.854-3.1-.239-.386A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
-                    </svg>
-                    <span>WhatsApp Us</span>
-                </span>
-            </a>
-            <a href="contact.html" 
-               class="group relative px-8 py-4 border-2 border-[--accent] text-[--dark] font-bold uppercase tracking-widest text-sm overflow-hidden hover:text-white transition-all duration-300 flex items-center justify-center gap-3">
-                <span class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
-                <span class="relative z-10 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-                    </svg>
-                    <span>Contact Form</span>
-                </span>
-            </a>
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <div class="mb-6">
+                <span class="mono text-[--accent] text-sm tracking-[0.3em] font-bold bg-white/30 px-4 py-2 inline-block">ARCHITECTURE · ENGINEERING · CONSTRUCTION</span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-[--text-primary] drop-shadow-lg" id="hero-main">
+                BUILDING<br>THE FUTURE
+            </h1>
+            <div class="flex flex-col md:flex-row justify-center gap-8 items-center opacity-0" id="hero-meta">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-[1px] bg-[--accent]"></div>
+                    <span class="mono text-xs tracking-widest text-[--text-primary] font-bold bg-white/20 px-3 py-1">SINCE 2025</span>
+                </div>
+                <div class="flex gap-8">
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">10+</div>
+                        <div class="text-xs text-[--text-primary] font-semibold">PROJECTS</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">3</div>
+                        <div class="text-xs text-[--text-primary] font-semibold">PARTNERS</div>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-2xl font-bold text-[--accent]">1</div>
+                        <div class="text-xs text-[--text-primary] font-semibold">OFFICE</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12 md:mt-16">
+                <a href="https://wa.me/27716755906?text=Hi%20ART%20AND%20FIENDS%2C%20I'm%20interested%20in%20discussing%20a%20project." 
+                   target="_blank"
+                   class="group relative px-8 py-4 bg-[--accent] text-white font-bold uppercase tracking-widest text-sm overflow-hidden border-2 border-[--accent] hover:bg-transparent hover:text-[--text-primary] transition-all duration-300 flex items-center justify-center gap-3">
+                    <span class="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                    <span class="relative z-10 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.127 1.523 5.875L.055 23.1l5.357-1.42A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.844 0-3.62-.516-5.147-1.478l-.368-.22-3.176.84.854-3.1-.239-.386A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/>
+                        </svg>
+                        <span>WhatsApp Us</span>
+                    </span>
+                </a>
+                <a href="contact.html" 
+                   class="group relative px-8 py-4 border-2 border-[--accent] text-[--text-primary] font-bold uppercase tracking-widest text-sm overflow-hidden hover:text-white transition-all duration-300 flex items-center justify-center gap-3 bg-white/30 backdrop-blur-sm">
+                    <span class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                    <span class="relative z-10 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                        <span>Contact Form</span>
+                    </span>
+                </a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- About/Practice Section -->
     <section id="about" class="py-32 px-6 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-12 gap-8">
                 <div class="md:col-span-5">
-                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PRACTICE /</span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ PRACTICE /</span>
                     <h2 class="text-4xl md:text-6xl font-black uppercase mt-4 mb-8">Integrated<br>Design-Build</h2>
-                    <p class="text-lg opacity-70 leading-relaxed">Full-service architectural practice combining technical precision with construction expertise. We deliver complex projects across commercial, residential, and infrastructure sectors.</p>
+                    <p class="text-lg opacity-80 leading-relaxed">Full-service architectural practice combining technical precision with construction expertise. We deliver complex projects across commercial, residential, and infrastructure sectors.</p>
                     
                     <div class="mt-12 space-y-6">
                         <div class="metric-card">
                             <div class="flex justify-between mb-2">
-                                <span class="mono text-xs">PROJECT COMPLEXITY</span>
-                                <span class="text-[--accent]">HIGH</span>
+                                <span class="mono text-xs font-bold">PROJECT COMPLEXITY</span>
+                                <span class="text-[--accent] font-bold">HIGH</span>
                             </div>
                             <div class="simple-progress">
                                 <div class="simple-progress-fill" style="width: 100%"></div>
@@ -435,8 +758,8 @@
                         </div>
                         <div class="metric-card">
                             <div class="flex justify-between mb-2">
-                                <span class="mono text-xs">SUSTAINABILITY</span>
-                                <span class="text-[--accent]">LEED TARGET</span>
+                                <span class="mono text-xs font-bold">SUSTAINABILITY</span>
+                                <span class="text-[--accent] font-bold">LEED TARGET</span>
                             </div>
                             <div class="simple-progress">
                                 <div class="simple-progress-fill" style="width: 95%"></div>
@@ -444,8 +767,8 @@
                         </div>
                         <div class="metric-card">
                             <div class="flex justify-between mb-2">
-                                <span class="mono text-xs">DELIVERY</span>
-                                <span class="text-[--accent]">ON TIME 98%</span>
+                                <span class="mono text-xs font-bold">DELIVERY</span>
+                                <span class="text-[--accent] font-bold">ON TIME 98%</span>
                             </div>
                             <div class="simple-progress">
                                 <div class="simple-progress-fill" style="width: 98%"></div>
@@ -458,14 +781,13 @@
                     <div class="tech-border p-6 bg-white">
                         <h3 class="text-xl font-bold mb-6">CORE CAPABILITIES</h3>
                         <table class="spec-table">
-                            <tr><td>ARCHITECTURAL DESIGN</td><td>RIBA Stages 0-7</td></tr>
-                            <tr><td>STRUCTURAL ENGINEERING</td><td>In-house team</td></tr>
-                            <tr><td>MEP ENGINEERING</td><td>Fully coordinated</td></tr>
-                            <tr><td>PROJECT MANAGEMENT</td><td>APM accredited</td></tr>
-                            <tr><td>SUSTAINABILITY</td><td>Passivhaus · BREEAM</td></tr>
-                            <tr><td>CONSTRUCTION</td><td>Direct delivery</td></tr>
+                            <tr><td>ARCHITECTURAL DESIGN</td><td class="font-semibold">RIBA Stages 0-7</td></tr>
+                            <tr><td>STRUCTURAL ENGINEERING</td><td class="font-semibold">In-house team</td></tr>
+                            <tr><td>MEP ENGINEERING</td><td class="font-semibold">Fully coordinated</td></tr>
+                            <tr><td>PROJECT MANAGEMENT</td><td class="font-semibold">APM accredited</td></tr>
+                            <tr><td>SUSTAINABILITY</td><td class="font-semibold">Passivhaus · BREEAM</td></tr>
+                            <tr><td>CONSTRUCTION</td><td class="font-semibold">Direct delivery</td></tr>
                         </table>
-                        
                     </div>
                 </div>
             </div>
@@ -564,27 +886,27 @@
                 <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="h-[1px] w-12 bg-[--accent]"></div>
-                        <span class="mono text-[--accent] text-sm tracking-widest">EST. 2024 // CAPABILITY</span>
+                        <span class="mono text-[--accent] text-sm tracking-widest font-bold">EST. 2024 // CAPABILITY</span>
                     </div>
-                    <h2 class="text-7xl md:text-8xl font-black text-[--dark] leading-none mb-8">CORE<br><span class="text-outline text-transparent">DELIVERY</span></h2>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                    <h2 class="text-7xl md:text-8xl font-black text-[--text-primary] leading-none mb-8">CORE<br><span class="text-outline text-transparent">DELIVERY</span></h2>
+                    <p class="text-[--text-secondary] text-lg leading-relaxed mb-8">
                         Art & Fiends Construction combines structural precision with modern integrated workflows. We deliver high-stakes commercial and residential infrastructure with a zero-harm philosophy.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--dark]">ISO 9001</div>
-                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--dark]">CIDB 9GB/9CE</div>
-                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--dark]">NHBRC</div>
+                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--text-primary] font-semibold">ISO 9001</div>
+                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--text-primary] font-semibold">CIDB 9GB/9CE</div>
+                        <div class="px-4 py-2 border border-black/20 mono text-[10px] text-[--text-primary] font-semibold">NHBRC</div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     <div class="p-8 bg-black/5 border-l-4 border-[--accent]">
-                        <div class="text-5xl font-bold text-[--dark] mb-2">98%</div>
-                        <div class="mono text-xs text-gray-600 uppercase">Design Accuracy</div>
+                        <div class="text-5xl font-bold text-[--accent] mb-2">98%</div>
+                        <div class="mono text-xs text-[--text-secondary] font-bold uppercase">Design Accuracy</div>
                     </div>
                     <div class="p-8 bg-black/5 border-l-4 border-black/10">
-                        <div class="text-5xl font-bold text-[--dark] mb-2">B-BBEE</div>
-                        <div class="mono text-xs text-gray-600 uppercase">Level 1 Contributor</div>
+                        <div class="text-5xl font-bold text-[--text-primary] mb-2">B-BBEE</div>
+                        <div class="mono text-xs text-[--text-secondary] font-bold uppercase">Level 1 Contributor</div>
                     </div>
                 </div>
             </div>
@@ -594,46 +916,46 @@
         <div class="panel bg-white/80">
             <div class="max-w-7xl w-full grid md:grid-cols-2 gap-16">
                 <div>
-                    <h3 class="text-5xl font-bold text-[--dark] mb-6">TECHNICAL<br>GOVERNANCE</h3>
+                    <h3 class="text-5xl font-bold text-[--text-primary] mb-6">TECHNICAL<br>GOVERNANCE</h3>
                     <div class="space-y-6">
                         <div class="flex justify-between border-b border-black/10 pb-3">
-                            <span class="text-gray-600 mono text-sm uppercase">Contracting</span>
-                            <span class="text-[--dark] text-sm">NEC3 / FIDIC / JBCC</span>
+                            <span class="text-[--text-secondary] mono text-sm font-bold uppercase">Contracting</span>
+                            <span class="text-[--text-primary] text-sm font-semibold">NEC3 / FIDIC / JBCC</span>
                         </div>
                         <div class="flex justify-between border-b border-black/10 pb-3">
-                            <span class="text-gray-600 mono text-sm uppercase">Safety Standard</span>
-                            <span class="text-[--dark] text-sm">NOSA 5-Star / OHSAS 18001</span>
+                            <span class="text-[--text-secondary] mono text-sm font-bold uppercase">Safety Standard</span>
+                            <span class="text-[--text-primary] text-sm font-semibold">NOSA 5-Star / OHSAS 18001</span>
                         </div>
                         <div class="flex justify-between border-b border-black/10 pb-3">
-                            <span class="text-gray-600 mono text-sm uppercase">Planning</span>
-                            <span class="text-[--dark] text-sm">Primavera P6 / Procore</span>
+                            <span class="text-[--text-secondary] mono text-sm font-bold uppercase">Planning</span>
+                            <span class="text-[--text-primary] text-sm font-semibold">Primavera P6 / Procore</span>
                         </div>
                         <div class="flex justify-between border-b border-black/10 pb-3">
-                            <span class="text-gray-600 mono text-sm uppercase">Insurance</span>
-                            <span class="text-[--accent] text-sm">R100M Professional Indemnity</span>
+                            <span class="text-[--text-secondary] mono text-sm font-bold uppercase">Insurance</span>
+                            <span class="text-[--accent] text-sm font-bold">R100M Professional Indemnity</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="p-10 border border-black/10 bg-white/80 backdrop-blur-xl">
-                    <h4 class="mono text-[--accent] text-xs mb-10 tracking-[0.4em]">DIGITAL WORKFLOW (LOD 400)</h4>
+                    <h4 class="mono text-[--accent] text-xs mb-10 tracking-[0.4em] font-bold">DIGITAL WORKFLOW (LOD 400)</h4>
                     <div class="space-y-12">
                         <div class="stat">
-                            <div class="flex justify-between text-xs text-[--dark] mono mb-2">
+                            <div class="flex justify-between text-xs text-[--text-primary] mono mb-2 font-bold">
                                 <span>CLASH RESOLUTION</span>
                                 <span>98%</span>
                             </div>
                             <div class="simple-track"><div class="simple-fill" data-percent="98%"></div></div>
                         </div>
                         <div class="stat">
-                            <div class="flex justify-between text-xs text-[--dark] mono mb-2">
+                            <div class="flex justify-between text-xs text-[--text-primary] mono mb-2 font-bold">
                                 <span>4D SEQUENCING</span>
                                 <span>85%</span>
                             </div>
                             <div class="simple-track"><div class="simple-fill" data-percent="85%"></div></div>
                         </div>
                         <div class="stat">
-                            <div class="flex justify-between text-xs text-[--dark] mono mb-2">
+                            <div class="flex justify-between text-xs text-[--text-primary] mono mb-2 font-bold">
                                 <span>SUSTAINABILITY (GBCSA)</span>
                                 <span>6-STAR</span>
                             </div>
@@ -651,19 +973,19 @@
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[--accent] opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-[--accent]"></span>
                     </span>
-                    <span class="mono text-[--accent] text-[10px] tracking-widest uppercase">Accepting New Tenders 2026</span>
+                    <span class="mono text-[--accent] text-[10px] tracking-widest uppercase font-bold">Accepting New Tenders 2026</span>
                 </div>
-                <h2 class="text-6xl md:text-9xl font-black text-[--dark] mb-10">BUILDING<br><span class="text-outline text-transparent">BEYOND.</span></h2>
+                <h2 class="text-6xl md:text-9xl font-black text-[--text-primary] mb-10">BUILDING<br><span class="text-outline text-transparent">BEYOND.</span></h2>
                 <div class="grid md:grid-cols-2 gap-8 text-left max-w-3xl mx-auto">
-                    <div class="p-8 border border-black/10 hover:border-[--accent] transition-colors group">
-                        <p class="mono text-[--accent] text-xs mb-4">// TENDER OFFICE</p>
-                        <p class="text-xl text-[--dark]">mulweli@artandfiends.co.za</p>
-                        <p class="text-gray-600 mt-2">+27 (0) 11 460 0000</p>
+                    <div class="p-8 border border-black/10 hover:border-[--accent] transition-colors group bg-white/90">
+                        <p class="mono text-[--accent] text-xs mb-4 font-bold">// TENDER OFFICE</p>
+                        <p class="text-xl text-[--text-primary] font-semibold">mulweli@artandfiends.co.za</p>
+                        <p class="text-[--text-secondary] mt-2 font-medium">+27 (0) 11 460 0000</p>
                     </div>
-                    <div class="p-8 border border-black/10 hover:border-[--accent] transition-colors group">
-                        <p class="mono text-[--accent] text-xs mb-4">// HEADQUARTERS</p>
-                        <p class="text-xl text-[--dark]">Sandton, Johannesburg</p>
-                        <p class="text-gray-600 mt-2">Gauteng, South Africa</p>
+                    <div class="p-8 border border-black/10 hover:border-[--accent] transition-colors group bg-white/90">
+                        <p class="mono text-[--accent] text-xs mb-4 font-bold">// HEADQUARTERS</p>
+                        <p class="text-xl text-[--text-primary] font-semibold">Sandton, Johannesburg</p>
+                        <p class="text-[--text-secondary] mt-2 font-medium">Gauteng, South Africa</p>
                     </div>
                 </div>
             </div>
@@ -716,33 +1038,33 @@
     });
 </script>
 
-    <!-- Metrics Section with clear background image (overlay reduced to 20%) -->
-    <section id="metrics" class="py-32 px-6 bg-white" style="background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('./images/image5.jpg') center/cover no-repeat; background-size: cover;">
+    <!-- Metrics Section with improved text visibility -->
+    <section id="metrics" class="py-32 px-6" style="background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('./images/image5.jpg') center/cover no-repeat; background-size: cover;">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ PERFORMANCE METRICS /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/30 px-4 py-2 inline-block">/ PERFORMANCE METRICS /</span>
                 <h2 class="text-4xl md:text-5xl font-black uppercase mt-4">Delivery Excellence</h2>
             </div>
             
             <div class="grid md:grid-cols-4 gap-6">
                 <div class="metric-card text-center">
                     <div class="text-5xl font-bold text-[--accent] mb-2">98%</div>
-                    <div class="mono text-xs opacity-60">ON-TIME DELIVERY</div>
+                    <div class="mono text-xs font-bold text-[--text-secondary]">ON-TIME DELIVERY</div>
                     <div class="simple-progress mt-4"><div class="simple-progress-fill" style="width: 98%"></div></div>
                 </div>
                 <div class="metric-card text-center">
                     <div class="text-5xl font-bold text-[--accent] mb-2">0.4%</div>
-                    <div class="mono text-xs opacity-60">DEFECT RATE</div>
+                    <div class="mono text-xs font-bold text-[--text-secondary]">DEFECT RATE</div>
                     <div class="simple-progress mt-4"><div class="simple-progress-fill" style="width: 99.6%"></div></div>
                 </div>
                 <div class="metric-card text-center">
                     <div class="text-5xl font-bold text-[--accent] mb-2">ISO</div>
-                    <div class="mono text-xs opacity-60">9001:2015</div>
+                    <div class="mono text-xs font-bold text-[--text-secondary]">9001:2015</div>
                     <div class="simple-progress mt-4"><div class="simple-progress-fill" style="width: 100%"></div></div>
                 </div>
                 <div class="metric-card text-center">
                     <div class="text-5xl font-bold text-[--accent] mb-2">34</div>
-                    <div class="mono text-xs opacity-60">INDUSTRY AWARDS</div>
+                    <div class="mono text-xs font-bold text-[--text-secondary]">INDUSTRY AWARDS</div>
                     <div class="simple-progress mt-4"><div class="simple-progress-fill" style="width: 100%"></div></div>
                 </div>
             </div>
@@ -752,18 +1074,18 @@
                 <div class="glass-panel p-8">
                     <h3 class="text-xl font-bold mb-6">Software Capabilities</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <div><span class="mono text-[--accent] text-xs">Revit</span><div class="text-sm mt-1">2024</div></div>
-                        <div><span class="mono text-[--accent] text-xs">Navisworks</span><div class="text-sm mt-1">Manage</div></div>
-                        <div><span class="mono text-[--accent] text-xs">ArchiCAD</span><div class="text-sm mt-1">26</div></div>
-                        <div><span class="mono text-[--accent] text-xs">Tekla</span><div class="text-sm mt-1">Structures</div></div>
+                        <div><span class="mono text-[--accent] text-xs font-bold">Revit</span><div class="text-sm mt-1 font-semibold">2024</div></div>
+                        <div><span class="mono text-[--accent] text-xs font-bold">Navisworks</span><div class="text-sm mt-1 font-semibold">Manage</div></div>
+                        <div><span class="mono text-[--accent] text-xs font-bold">ArchiCAD</span><div class="text-sm mt-1 font-semibold">26</div></div>
+                        <div><span class="mono text-[--accent] text-xs font-bold">Tekla</span><div class="text-sm mt-1 font-semibold">Structures</div></div>
                     </div>
                 </div>
                 <div class="glass-panel p-8">
                     <h3 class="text-xl font-bold mb-6">Quality Assurance</h3>
                     <ul class="space-y-2">
-                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> ISO 19650 certification</li>
-                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> Independent peer review</li>
-                        <li class="flex items-center gap-2"><span class="text-[--accent]">→</span> Construction phase audits</li>
+                        <li class="flex items-center gap-2"><span class="text-[--accent] font-bold">→</span> <span class="font-medium">ISO 19650 certification</span></li>
+                        <li class="flex items-center gap-2"><span class="text-[--accent] font-bold">→</span> <span class="font-medium">Independent peer review</span></li>
+                        <li class="flex items-center gap-2"><span class="text-[--accent] font-bold">→</span> <span class="font-medium">Construction phase audits</span></li>
                     </ul>
                 </div>
             </div>
@@ -771,56 +1093,56 @@
     </section>
 
     <!-- Contact Section -->
-     <section id="contact" class="min-h-screen flex items-center justify-center px-6 py-20 bg-white">
-    <div class="max-w-5xl mx-auto text-center">
-        <span class="mono text-[--accent] text-xs tracking-[0.4em] uppercase">/ THE SANDTON STUDIO /</span>
-        
-        <h2 class="text-6xl md:text-9xl font-black uppercase my-10 leading-none tracking-tighter">
-            Let's <span class="text-[--accent]">Connect</span>
-        </h2>
-        
-        <p class="text-lg md:text-2xl opacity-80 mb-16 max-w-2xl mx-auto leading-relaxed text-[--dark]">
-            Integrating premium security, digital print, and brand strategy from the heart of Johannesburg's financial district.
-        </p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12 pt-12 border-t border-black/10">
+    <section id="contact" class="min-h-screen flex items-center justify-center px-6 py-20 bg-white">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="mono text-[--accent] text-xs tracking-[0.4em] uppercase font-bold">/ THE SANDTON STUDIO /</span>
             
-            <div class="space-y-3">
-                <span class="mono text-[--accent] text-xs uppercase tracking-widest">Primary Hub</span>
-                <div class="text-xl font-bold text-[--dark]">Sandton, JHB</div>
-                <div class="text-xs opacity-50 uppercase tracking-tighter leading-relaxed">
-                    South Africa<br>
-                    Gauteng Central
-                </div>
-            </div>
+            <h2 class="text-6xl md:text-9xl font-black uppercase my-10 leading-none tracking-tighter">
+                Let's <span class="text-[--accent]">Connect</span>
+            </h2>
             
-            <div class="space-y-3">
-                <span class="mono text-[--accent] text-xs uppercase tracking-widest">Operations</span>
-                <div class="text-xl font-bold text-[--dark]">Region Wide</div>
-                <div class="text-xs opacity-50 uppercase tracking-tighter">
-                    Full Gauteng Coverage<br>
-                    & Digital Solutions
-                </div>
-            </div>
-            
-            <div class="space-y-3">
-                <span class="mono text-[--accent] text-xs uppercase tracking-widest">Client Entry</span>
-                <div class="text-xl font-bold text-[--dark]">Est. 2025</div>
-                <div class="text-xs opacity-50 uppercase tracking-tighter">
-                    Standard Consultation<br>
-                    by Appointment
-                </div>
-            </div>
-
-        </div>
-
-        <div class="mt-20">
-            <p class="mono text-xs text-black/40 uppercase tracking-[0.3em]">
-                Direct inquiries handled via secure portal
+            <p class="text-lg md:text-2xl opacity-80 mb-16 max-w-2xl mx-auto leading-relaxed text-[--text-secondary] font-medium">
+                Integrating premium security, digital print, and brand strategy from the heart of Johannesburg's financial district.
             </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12 pt-12 border-t border-black/10">
+                
+                <div class="space-y-3">
+                    <span class="mono text-[--accent] text-xs uppercase tracking-widest font-bold">Primary Hub</span>
+                    <div class="text-xl font-bold text-[--text-primary]">Sandton, JHB</div>
+                    <div class="text-xs opacity-60 uppercase tracking-tighter leading-relaxed font-medium">
+                        South Africa<br>
+                        Gauteng Central
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <span class="mono text-[--accent] text-xs uppercase tracking-widest font-bold">Operations</span>
+                    <div class="text-xl font-bold text-[--text-primary]">Region Wide</div>
+                    <div class="text-xs opacity-60 uppercase tracking-tighter font-medium">
+                        Full Gauteng Coverage<br>
+                        & Digital Solutions
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <span class="mono text-[--accent] text-xs uppercase tracking-widest font-bold">Client Entry</span>
+                    <div class="text-xl font-bold text-[--text-primary]">Est. 2025</div>
+                    <div class="text-xs opacity-60 uppercase tracking-tighter font-medium">
+                        Standard Consultation<br>
+                        by Appointment
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-20">
+                <p class="mono text-xs text-[--text-secondary] uppercase tracking-[0.3em] font-medium">
+                    Direct inquiries handled via secure portal
+                </p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 </main>
 
 <!-- Footer (unchanged) -->
@@ -832,68 +1154,68 @@
             
             <div class="space-y-6">
                 <div>
-                    <div class="text-2xl font-black tracking-tighter mb-1 text-[--dark]">ARTANDFIENDS</div>
-                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                    <div class="text-2xl font-black tracking-tighter mb-1 text-[--text-primary]">ARTANDFIENDS</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio — Johannesburg</div>
                 </div>
-                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                <p class="text-[--text-secondary] text-xs leading-relaxed max-w-[240px] font-medium">
                     Chartered Architects & Designers based in South Africa. Redefining the architectural landscape through digital precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Studio Hub</h4>
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// Studio Hub</h4>
                 <ul class="space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
-                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                        <span class="block text-[--text-primary] font-bold uppercase">Johannesburg</span>
+                        <span class="text-[--text-secondary] text-xs font-medium">Sandton, Gauteng, 2196</span>
                     </li>
                     <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Direct Line</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Email</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">mulweli@artandfiends.co.za</span>
                     </li>                    
                 </ul>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// Credentials</h4>
-                <ul class="space-y-3 text-xs text-zinc-600">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// Credentials</h4>
+                <ul class="space-y-3 text-xs">
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SACAP Registered</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SAIA Member</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">GBCSA Accredited</span>
                     </li>
                 </ul>
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-50 border border-black/5 p-4 rounded-sm text-left min-w-[200px]">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-6 font-bold">// System Status</h4>
+                <div class="inline-block bg-zinc-50 border border-black/10 p-4 rounded-sm text-left min-w-[200px]">
                     <div class="flex justify-between items-center gap-8 mb-2">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--text-primary] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/10 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-8">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
@@ -903,15 +1225,15 @@
             </div>
         </div>
 
-        <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em]">
+        <div class="pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mono text-[9px] text-[--text-secondary] uppercase tracking-[0.2em] font-bold">
                 © 2026 ARTANDFIENDS. ARCHITECTURAL PROTOCOL ACTIVE.
             </div>
             
             <div class="flex items-center gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Legal</a>
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-10 h-10 border border-black/20 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all font-bold">
                     ↑
                 </button>
             </div>

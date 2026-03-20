@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* === base styling – now slick white professional === */
+        /* === base styling – now slick white professional with improved contrast === */
         :root { 
             --primary: #1E3A5F;      
             --secondary: #4A6FA5;    
@@ -21,11 +21,13 @@
             --light: #F5F7FA;         
             --dark: #0B1A2A;          
             --success: #2E7D32;       
+            --text-primary: #1a1a1a;     /* Darker text for better contrast */
+            --text-secondary: #4a4a4a;    /* Secondary text color */
         }
         
         body { 
             background: #ffffff;       /* pure white background */
-            color: var(--dark); 
+            color: var(--text-primary); 
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
             cursor: none;
@@ -41,17 +43,17 @@
         #cursor { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; }
         #cursor-follower { width: 40px; height: 40px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease-out; }
 
-        /* light glass */
+        /* light glass with improved contrast */
         .glass-panel { 
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(195, 160, 96, 0.2);
             border-radius: 4px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-            color: var(--dark);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            color: var(--text-primary);
         }
         
-        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.2); }
+        .tech-border { position: relative; border: 1px solid rgba(195, 160, 96, 0.3); }
         .tech-border::before { content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
         .tech-border::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
 
@@ -67,7 +69,7 @@
             align-items: center;
             padding: 2rem 4vw;
             position: relative;
-            border-bottom: 1px solid rgba(195, 160, 96, 0.1);
+            border-bottom: 1px solid rgba(195, 160, 96, 0.15);
             overflow: hidden;
             background: #ffffff;
         }
@@ -80,7 +82,7 @@
         .diagonal-split {
             position: absolute;
             inset: 0;
-            background: linear-gradient(105deg, #f8f8f8 45%, rgba(195,160,96,0.03) 45%, rgba(195,160,96,0.01) 60%, #f8f8f8 60%);
+            background: linear-gradient(105deg, #f5f5f5 45%, rgba(195,160,96,0.04) 45%, rgba(195,160,96,0.02) 60%, #f5f5f5 60%);
             z-index: 1;
             transform: translateX(-10%) scale(1.2);
             transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
@@ -112,7 +114,7 @@
             margin-bottom: 1.5rem;
             position: relative;
             display: inline-block;
-            color: var(--dark);
+            color: var(--text-primary);
         }
         
         @media (max-width: 640px) {
@@ -124,9 +126,9 @@
             color: transparent;
         }
 
-        /* floating card (light, with shadow) */
+        /* floating card (light, with shadow) - improved contrast */
         .floating-card {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             border: 1px solid var(--accent);
             padding: 2.5rem;
@@ -134,8 +136,8 @@
             transition: transform 0.8s ease;
             max-width: 500px;
             margin-left: auto;
-            box-shadow: 20px 20px 40px rgba(0,0,0,0.05);
-            color: var(--dark);
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.08);
+            color: var(--text-primary);
         }
         
         @media (max-width: 1024px) {
@@ -145,17 +147,27 @@
         .service-panel:hover .floating-card {
             transform: translateY(0) rotate(0);
         }
+        
+        .floating-card h3 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .floating-card ul li {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
 
         /* service metrics with progress bar (light) */
         .service-metric {
             margin-top: 1.5rem;
-            border-top: 1px solid rgba(195,160,96,0.2);
+            border-top: 1px solid rgba(195,160,96,0.3);
             padding-top: 1rem;
         }
         .metric-bar {
             width: 100%;
             height: 2px;
-            background: rgba(0,0,0,0.05);
+            background: rgba(0,0,0,0.1);
             margin: 0.5rem 0;
             position: relative;
         }
@@ -164,6 +176,16 @@
             background: var(--accent);
             width: 0%; /* animated via GSAP */
         }
+        
+        .service-metric .flex .mono {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .service-metric .text-\[--accent\] {
+            color: var(--accent);
+            font-weight: 700;
+        }
 
         /* floating numbers (kinetic) – soft */
         .kinetic-number {
@@ -171,21 +193,21 @@
             font-family: 'Space Mono';
             font-size: 15vw;
             font-weight: 900;
-            color: rgba(195,160,96,0.06);
+            color: rgba(195,160,96,0.1);
             pointer-events: none;
             z-index: 0;
             line-height: 1;
         }
         @media (max-width: 768px) {
-            .kinetic-number { font-size: 25vw; opacity: 0.1; }
+            .kinetic-number { font-size: 25vw; opacity: 0.15; }
         }
 
-        /* stacked bento grid – light version */
+        /* stacked bento grid – light version with improved text contrast */
         .bento-stack {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1px;
-            background: rgba(195,160,96,0.2);
+            background: rgba(195,160,96,0.25);
             padding: 1px;
             margin: 2rem 0;
         }
@@ -198,15 +220,16 @@
             justify-content: flex-end;
             transition: 0.4s;
             border: 1px solid transparent;
-            color: var(--dark);
+            color: var(--text-primary);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         .bento-item .bg-img {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
-            opacity: 0.6;
+            opacity: 0.7;
             z-index: 0;
             filter: grayscale(100%) brightness(1.1);
             transition: filter 0.5s, transform 0.7s;
@@ -214,84 +237,220 @@
         .bento-item:hover .bg-img {
             filter: grayscale(0%) brightness(1);
             transform: scale(1.1);
+            opacity: 0.9;
         }
         .bento-item > *:not(.bg-img) {
             position: relative;
             z-index: 2;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+            text-shadow: 0 2px 6px rgba(255,255,255,0.9);
         }
         .bento-item:hover {
             border-color: var(--accent);
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
         }
+        
+        .bento-item h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.8);
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .bento-item .mono {
+            color: var(--accent);
+            font-weight: 700;
+            background: rgba(255,255,255,0.8);
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+        }
+        
+        .bento-item p {
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: rgba(255,255,255,0.8);
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+        }
+        
         @media (max-width: 768px) {
             .bento-stack { grid-template-columns: 1fr; gap: 1px; }
-            .bento-item { aspect-ratio: auto; min-height: 150px; padding: 1rem; }
+            .bento-item { aspect-ratio: auto; min-height: 200px; padding: 1rem; }
         }
 
-        /* Mobile menu (light) */
+        /* Mobile menu (light) with improved contrast */
         .mobile-menu { 
             position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; 
-            background: white; backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.2); 
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(40px); border-left: 1px solid rgba(195,160,96,0.3); 
             z-index: 10001; display: flex; flex-direction: column; justify-content: center; align-items: center; 
             gap: 2rem; transition: right 0.5s cubic-bezier(0.77,0,0.18,1); padding: 2rem; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.03);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
         }
         .mobile-menu.open { right: 0; }
-        .mobile-menu a { color: var(--dark); font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+        .mobile-menu a { 
+            color: var(--text-primary); 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            text-decoration: none; 
+            transition: color 0.2s; 
+        }
         .mobile-menu a:hover { color: var(--accent); }
         
         .menu-toggle { 
             display: none; flex-direction: column; justify-content: space-between; width: 30px; height: 24px; 
             background: transparent; border: none; cursor: pointer; z-index: 10002; position: relative; 
         }
-        .menu-toggle span { width: 100%; height: 2px; background: var(--dark); transition: 0.3s; transform-origin: left; }
+        .menu-toggle span { 
+            width: 100%; height: 2px; background: var(--text-primary); 
+            transition: 0.3s; transform-origin: left; 
+        }
         .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); background: var(--accent); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(2px, 2px); background: var(--accent); }
         @media (max-width: 1024px) { .menu-toggle { display: flex; } }
 
-        /* navigation light */
+        /* navigation light with improved contrast */
         nav.glass-panel {
-            background: rgba(255,255,255,0.9);
-            color: var(--dark);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        nav a { color: var(--dark); }
+        nav a { 
+            color: var(--text-primary);
+            font-weight: 600;
+        }
         nav a:hover { color: var(--accent); }
 
-        /* metric card light */
+        /* metric card light with improved contrast */
         .metric-card {
-            background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0,0,0,0.08);
             padding: 1.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
-            color: var(--dark);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            color: var(--text-primary);
         }
         .metric-card:hover {
             border-color: var(--accent);
             background: #ffffff;
-            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.08);
+            box-shadow: 0 15px 30px rgba(195, 160, 96, 0.12);
+        }
+        
+        .metric-card h3 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .metric-card p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .metric-card .text-\[--accent\] {
+            color: var(--accent);
+            font-weight: 700;
         }
 
-        /* footer light */
+        /* footer light with improved contrast */
         footer {
             background: white;
-            color: var(--dark);
-            border-top: 1px solid rgba(0,0,0,0.05);
+            color: var(--text-primary);
+            border-top: 1px solid rgba(0,0,0,0.08);
         }
-        footer .text-zinc-300 { color: #1f2937 !important; }
-        footer .text-zinc-500 { color: #6b7280 !important; }
-        footer .border-white\/10 { border-color: rgba(0,0,0,0.05); }
-        footer .bg-zinc-900 { background: #f9f9f9; }
-        footer .text-white { color: var(--dark) !important; }
+        footer .text-zinc-300 { color: var(--text-primary) !important; }
+        footer .text-zinc-500 { color: var(--text-secondary) !important; font-weight: 500; }
+        footer .text-zinc-800 { color: var(--text-primary) !important; font-weight: 600; }
+        footer .border-white\/10 { border-color: rgba(0,0,0,0.08); }
+        footer .bg-zinc-50 { background: #fafafa; }
+        footer .text-white { color: var(--text-primary) !important; }
 
-        /* image backgrounds with light overlay for readability */
+        /* image backgrounds with improved overlay for readability */
         .plan-bg {
-            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed;
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070') center/cover fixed;
         }
         .cta-bg {
-            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.4)), url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?q=80&w=2070') center/cover;
+        }
+        
+        /* General text improvements */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .text-sm, .text-xs, .text-base {
+            color: var(--text-secondary);
+        }
+        
+        .font-bold, .font-black {
+            color: var(--text-primary);
+        }
+        
+        .opacity-70, .opacity-60, .opacity-50 {
+            color: var(--text-secondary);
+        }
+        
+        a:not([class*="text-white"]):not([class*="text-[--accent]"]) {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        /* Service grid cards */
+        .group.bg-white {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(195, 160, 96, 0.25);
+        }
+        
+        .group h3 {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        .group p {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .group .mono {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        /* Overlay styles */
+        #project-overlay {
+            background: white;
+            color: var(--text-primary);
+        }
+        
+        #project-overlay .text-\[--dark\] {
+            color: var(--text-primary);
+        }
+        
+        #project-overlay h2 {
+            color: var(--text-primary);
+            font-weight: 900;
+        }
+        
+        #project-overlay p {
+            color: var(--text-secondary);
+        }
+        
+        #project-overlay .mono {
+            color: var(--text-secondary);
+        }
+        
+        #project-overlay .text-\[--accent\] {
+            color: var(--accent);
         }
     </style>
 </head>
@@ -306,13 +465,289 @@
     <span></span>
     <span></span>
 </button>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="home.html">HOME</a>
-    <a href="about.html">ABOUT</a>
-    <a href="attire.html">SERVICES</a>
-    <a href="projects.html">PROJECTS</a>    
-    <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent]">CONTACT</a>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Decorative elements for visual interest -->
+    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[--accent]/5 to-transparent pointer-events-none"></div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[--accent]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+    
+    <!-- Close indicator (optional subtle element) -->
+    <div class="absolute top-6 right-6 opacity-30">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </div>
+    
+    <!-- Logo/Studio mark at top -->
+    <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 mb-3">
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+            <div class="w-6 h-[1px] bg-[--accent]"></div>
+        </div>
+        <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio</div>
+        <div class="text-xs text-[--text-secondary] mt-1 font-light">Architectural Intelligence</div>
+    </div>
+    
+    <!-- Navigation links with improved styling - SERVICES page active state -->
+    <nav class="flex flex-col items-center gap-6 w-full">
+        <a href="home.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">HOME</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="about.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">ABOUT</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="attire.html" class="nav-link group relative active">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider text-[--accent]">SERVICES</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-[1px] bg-[--accent]"></span>
+        </a>
+        
+        <a href="projects.html" class="nav-link group relative">
+            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">PROJECTS</span>
+            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
+        </a>
+        
+        <a href="contact.html" class="mt-4 group relative overflow-hidden">
+            <div class="relative px-8 py-3 border border-[--accent] text-[--accent] hover:text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase overflow-hidden">
+                <span class="relative z-10">CONTACT STUDIO</span>
+                <div class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            </div>
+        </a>
+    </nav>
+    
+    <!-- Contact info at bottom -->
+    <div class="absolute bottom-8 left-0 right-0 text-center space-y-3 px-6">
+        <div class="flex justify-center gap-6 text-[10px] text-[--text-secondary] mono">
+            <span>+27 71 675 5906</span>
+            <span class="w-px h-3 bg-[--text-secondary]/30"></span>
+            <span>mulweli@artandfiends.co.za</span>
+        </div>
+        <div class="flex justify-center gap-4 pt-2">
+            <a href="https://www.instagram.com/art_f_iends" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+        </div>
+        <div class="mono text-[8px] text-[--text-secondary]/40 tracking-widest uppercase pt-2">
+            EST. 2025
+        </div>
+    </div>
 </div>
+
+<style>
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 400px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(195, 160, 96, 0.3);
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+        padding: 2rem 1.5rem;
+        box-shadow: -5px 0 50px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+    
+    .mobile-menu.open {
+        right: 0;
+    }
+    
+    /* Custom scrollbar */
+    .mobile-menu::-webkit-scrollbar {
+        width: 2px;
+    }
+    
+    .mobile-menu::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .mobile-menu::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 10px;
+    }
+    
+    /* Navigation link styles */
+    .nav-link {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        color: var(--accent);
+    }
+    
+    /* Active link styling - for SERVICES page */
+    .nav-link.active span {
+        color: var(--accent);
+    }
+    
+    /* Social icon hover effect */
+    .social-icon {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+        box-shadow: 0 5px 15px rgba(195, 160, 96, 0.2);
+    }
+    
+    /* Animation for menu items on open */
+    .mobile-menu.open .nav-link {
+        animation: slideIn 0.5s ease forwards;
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    
+    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.1s; }
+    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.2s; }
+    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.3s; }
+    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.4s; }
+    .mobile-menu.open .nav-link:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideIn {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Animate contact info */
+    .mobile-menu.open .absolute.bottom-8 {
+        animation: fadeInUp 0.6s ease forwards;
+        animation-delay: 0.6s;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Animate logo section */
+    .mobile-menu.open .text-center {
+        animation: fadeIn 0.5s ease forwards;
+        opacity: 0;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+    
+    /* Decorative line animation */
+    .mobile-menu.open .inline-flex {
+        animation: expandLine 0.6s ease forwards;
+    }
+    
+    @keyframes expandLine {
+        from {
+            width: 0;
+            opacity: 0;
+        }
+        to {
+            width: auto;
+            opacity: 1;
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .mobile-menu {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0 !important;
+        }
+        
+        .mobile-menu a span {
+            font-size: 1.75rem;
+        }
+        
+        .absolute.bottom-8 {
+            bottom: 1.5rem;
+        }
+    }
+    
+    /* Optional: Add subtle texture */
+    .mobile-menu::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 20% 80%, rgba(195, 160, 96, 0.02) 0%, transparent 50%);
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    // Active link highlighting for SERVICES page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get current page filename
+        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
+        
+        // Map of page names to link hrefs
+        const pageMap = {
+            'home.html': 'home.html',
+            'about.html': 'about.html',
+            'attire.html': 'attire.html',  // Services page
+            'services.html': 'attire.html', // Alternative name
+            'projects.html': 'projects.html',
+            'contact.html': 'contact.html'
+        };
+        
+        // Find all navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const href = link.getAttribute('href');
+            
+            // Check if this link matches the current page
+            if (href === currentPage || 
+                (currentPage === '' && href === 'home.html') ||
+                (currentPage === 'attire.html' && href === 'attire.html') ||
+                (currentPage === 'services.html' && href === 'attire.html')) {
+                
+                // Add active class
+                link.classList.add('active');
+                
+                // Update the span text color
+                const span = link.querySelector('span');
+                if (span) {
+                    span.classList.add('text-[--accent]');
+                }
+                
+                // Show the underline
+                const underline = link.querySelector('span + span');
+                if (underline) {
+                    underline.style.width = '2rem';
+                }
+            }
+        });
+    });
+</script>
 
 <!-- nav (light) -->
 <nav class="fixed w-full z-[100] px-4 md:px-8 py-4 glass-panel">
@@ -320,14 +755,14 @@
         <div class="flex items-center gap-2 md:gap-3">
             <div class="w-6 md:w-8 h-[2px] bg-[--accent]"></div>
             <span class="text-sm md:text-lg font-bold tracking-[0.1em] md:tracking-[0.2em] uppercase">ART AND FIENDS</span>
-            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block">ARCHITECTURAL</span>
+            <span class="mono text-[8px] md:text-[10px] text-[--accent] ml-2 md:ml-4 hidden sm:block font-bold">ARCHITECTURAL</span>
         </div>
         <div class="hidden lg:flex items-center gap-6 xl:gap-8">
-            <a href="home.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">HOME</a>
-            <a href="about.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">ABOUT</a>
-            <a href="attire.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">SERVICES</a>
-            <a href="projects.html" class="text-xs font-medium tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
-            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-medium">CONTACT</a>
+            <a href="home.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">HOME</a>
+            <a href="about.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">ABOUT</a>
+            <a href="attire.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">SERVICES</a>
+            <a href="projects.html" class="text-xs font-bold tracking-widest hover:text-[--accent] transition">PROJECTS</a>            
+            <a href="contact.html" class="px-6 py-2 border border-[--accent] text-[--accent] hover:bg-[--accent] hover:text-white transition text-xs font-bold">CONTACT</a>
         </div>
     </div>
 </nav>
@@ -336,213 +771,213 @@
 
 <main class="content-layer">
 
-    <!-- Hero with kinetic number - white version -->
+    <!-- Hero with kinetic number - white version with improved contrast -->
     <section class="h-screen flex items-center px-4 md:px-20 relative overflow-hidden bg-white">
         <div class="kinetic-number" style="top: 10%; left: 5%;">4</div>
         <div class="kinetic-number" style="bottom: 10%; right: 5%;">TIER</div>
         <div class="max-w-7xl mx-auto relative z-20">
             <div class="flex items-center gap-4 mb-4 md:mb-6">
-                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold">ARCHITECTURAL INTELLIGENCE STUDIO</span>
+                <span class="mono text-[--accent] text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-bold bg-white/80 px-3 py-1">ARCHITECTURAL INTELLIGENCE STUDIO</span>
             </div>
-            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-[--dark]" id="hero-main">
+            <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-4 md:mb-8 text-[--text-primary]" id="hero-main">
                 4-TIER SERVICE<br><span class="text-[--accent]">ARCHITECTURE</span>
             </h1>
             <div class="grid md:grid-cols-2 gap-6 md:gap-10 max-w-4xl">
-                <p class="text-base md:text-xl opacity-70 leading-relaxed">Intervene at any stage of the project lifecycle — from feasibility studies to construction delivery.</p>
+                <p class="text-base md:text-xl font-medium text-[--text-secondary] leading-relaxed">Intervene at any stage of the project lifecycle — from feasibility studies to construction delivery.</p>
                 <div class="border-l border-[--accent] pl-4 md:pl-6">
-                    <div class="mono text-xs md:text-sm text-[--accent] mb-2">FULL-SPECTRUM CAPABILITY</div>
-                    <div class="text-xs md:text-sm opacity-60">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</div>
+                    <div class="mono text-xs md:text-sm text-[--accent] mb-2 font-bold">FULL-SPECTRUM CAPABILITY</div>
+                    <div class="text-xs md:text-sm font-medium text-[--text-secondary]">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Comprehensive Services Grid - All Services in One Place (white cards) -->
-<section class="px-4 md:px-20 py-16 md:py-24 relative bg-white">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[--accent]/5 to-transparent pointer-events-none"></div>
-    <div class="max-w-7xl mx-auto relative z-10">
-        
-        <!-- Section Header -->
-        <div class="flex items-center gap-4 mb-12 md:mb-16">
-            <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ CORE SERVICES /</span>
-            <div class="h-[1px] flex-grow bg-[--accent] opacity-20"></div>
-        </div>
-
-        <!-- Main Title -->
-        <h2 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-8 md:mb-12">
-            WHAT <span class="text-[--accent]">WE DO</span>
-        </h2>
-
-        <!-- Services Grid - 3 columns on desktop, 2 on tablet, 1 on mobile (light cards) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <!-- Comprehensive Services Grid - All Services in One Place (white cards) with improved contrast -->
+    <section class="px-4 md:px-20 py-16 md:py-24 relative bg-white">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[--accent]/5 to-transparent pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
             
-            <!-- Conceptual Design -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">01</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Conceptual Design</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Initial creative exploration and architectural vision development. Translating client aspirations into spatial concepts.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">IDEA → CONCEPT</div>
+            <!-- Section Header -->
+            <div class="flex items-center gap-4 mb-12 md:mb-16">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ CORE SERVICES /</span>
+                <div class="h-[1px] flex-grow bg-[--accent] opacity-30"></div>
+            </div>
+
+            <!-- Main Title -->
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter mb-8 md:mb-12">
+                WHAT <span class="text-[--accent]">WE DO</span>
+            </h2>
+
+            <!-- Services Grid - 3 columns on desktop, 2 on tablet, 1 on mobile (light cards) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                
+                <!-- Conceptual Design -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">01</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Conceptual Design</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Initial creative exploration and architectural vision development. Translating client aspirations into spatial concepts.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">IDEA → CONCEPT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schematic Development -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">02</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Schematic Development</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Developing concepts into coherent architectural schemes. Spatial planning, massing studies, and design refinement.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">CONCEPT → DESIGN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architectural Rendering -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">03</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Architectural Rendering</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Photorealistic visualizations and 3D imagery for client presentations, marketing, and stakeholder engagement.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">VISUALIZATION</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pre-Design -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">04</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Pre-Design</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Site analysis, brief development, feasibility studies, and project planning before design commences.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">RESEARCH + ANALYSIS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Concept Viability -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">05</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Concept Viability</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Testing design concepts against site constraints, budget parameters, and regulatory requirements.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">FEASIBILITY</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Construction Documentation -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">06</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Technical Construction Docs</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Detailed construction drawings, specifications, and tender documentation for contractor procurement.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">DETAILING</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interior Architecture -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">07</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Interior Architecture</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Spatial planning, material selection, joinery detailing, and interior design integration.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">INTERIOR DESIGN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Management -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">08</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Project Management</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Coordination of all project stakeholders, scheduling, budget monitoring, and quality control.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">COORDINATION</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Site Supervision -->
+                <div class="group bg-white border border-[rgba(195,160,96,0.25)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
+                    <div class="flex items-start gap-4">
+                        <span class="mono text-3xl font-black text-[--accent] opacity-40 group-hover:opacity-70 transition-opacity">09</span>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Site Supervision</h3>
+                            <p class="text-sm font-medium text-[--text-secondary] leading-relaxed">Regular site inspections, quality assurance, contractor coordination, and design clarification during construction.</p>
+                            <div class="mt-3 text-xs mono text-[--accent] font-bold opacity-80 group-hover:opacity-100">CONSTRUCTION MONITORING</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Schematic Development -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">02</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Schematic Development</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Developing concepts into coherent architectural schemes. Spatial planning, massing studies, and design refinement.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">CONCEPT → DESIGN</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Architectural Rendering -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">03</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Architectural Rendering</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Photorealistic visualizations and 3D imagery for client presentations, marketing, and stakeholder engagement.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">VISUALIZATION</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pre-Design -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">04</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Pre-Design</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Site analysis, brief development, feasibility studies, and project planning before design commences.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">RESEARCH + ANALYSIS</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Concept Viability -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">05</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Concept Viability</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Testing design concepts against site constraints, budget parameters, and regulatory requirements.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">FEASIBILITY</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Technical Construction Documentation -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">06</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Technical Construction Docs</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Detailed construction drawings, specifications, and tender documentation for contractor procurement.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">DETAILING</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Interior Architecture -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">07</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Interior Architecture</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Spatial planning, material selection, joinery detailing, and interior design integration.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">INTERIOR DESIGN</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Management -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">08</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Project Management</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Coordination of all project stakeholders, scheduling, budget monitoring, and quality control.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">COORDINATION</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Site Supervision -->
-            <div class="group bg-white border border-[rgba(195,160,96,0.2)] hover:border-[--accent] p-6 transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl hover:shadow-[--accent]/10">
-                <div class="flex items-start gap-4">
-                    <span class="mono text-3xl font-black text-[--accent] opacity-30 group-hover:opacity-60 transition-opacity">09</span>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 uppercase tracking-wide">Site Supervision</h3>
-                        <p class="text-sm opacity-70 leading-relaxed">Regular site inspections, quality assurance, contractor coordination, and design clarification during construction.</p>
-                        <div class="mt-3 text-xs mono text-[--accent] opacity-70 group-hover:opacity-100">CONSTRUCTION MONITORING</div>
-                    </div>
-                </div>
+            <!-- Bottom decorative line -->
+            <div class="mt-16 flex justify-center">
+                <div class="w-24 h-[2px] bg-[--accent] opacity-40"></div>
             </div>
         </div>
+    </section>
 
-        <!-- Bottom decorative line -->
-        <div class="mt-16 flex justify-center">
-            <div class="w-24 h-[2px] bg-[--accent] opacity-30"></div>
-        </div>
-    </div>
-</section>
-
-    <!-- SERVICE PANEL 1: Tier 1 - Development Feasibility (light) -->
+    <!-- SERVICE PANEL 1: Tier 1 - Development Feasibility (light) with improved contrast -->
     <section class="service-panel" id="service-tier1">
         <div class="diagonal-split"></div>
         <div class="service-content">
             <div class="relative z-30">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 1 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">/ TIER 1 /</span>
                 <h2 class="service-title mt-2">
                     <span class="outline">DEVELOPMENT</span><br>FEASIBILITY
                 </h2>
-                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Evaluate opportunities before committing to full project design. Site analysis, zoning review, and financial viability studies.</p>
+                <p class="text-sm md:text-lg font-medium text-[--text-secondary] leading-relaxed max-w-md">Evaluate opportunities before committing to full project design. Site analysis, zoning review, and financial viability studies.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>YIELD ANALYSIS</span> <span class="text-[--accent]">ACCURATE</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>YIELD ANALYSIS</span> <span class="text-[--accent]">ACCURATE</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 100%"></div></div>
-                    <div class="flex justify-between mono text-xs"><span>PROJECT STAGE</span> <span class="text-[--accent]">INITIATION</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>PROJECT STAGE</span> <span class="text-[--accent]">INITIATION</span></div>
                 </div>
             </div>
             <div class="floating-card">
                 <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Feasibility Studies</h3>
-                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                <ul class="space-y-2 mono text-xs md:text-sm font-medium">
                     <li>→ Site analysis & zoning review</li>
                     <li>→ Conceptual massing studies</li>
                     <li>→ Development yield analysis</li>
                     <li>→ Early financial feasibility design</li>
                 </ul>
-                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">TYPICAL: Property Developers, Investors</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs font-bold">TYPICAL: Property Developers, Investors</div>
             </div>
         </div>
     </section>
 
     <!-- SERVICE PANEL 2: Tier 2 - Architectural Design -->
     <section class="service-panel" id="service-tier2">
-        <div class="diagonal-split" style="background: linear-gradient(75deg, #f8f8f8 45%, rgba(195,160,96,0.03) 45%, rgba(195,160,96,0.01) 60%, #f8f8f8 60%);"></div>
+        <div class="diagonal-split" style="background: linear-gradient(75deg, #f5f5f5 45%, rgba(195,160,96,0.04) 45%, rgba(195,160,96,0.02) 60%, #f5f5f5 60%);"></div>
         <div class="service-content">
             <div class="floating-card order-2 md:order-1" style="margin-left: 0; margin-right: auto;">
                 <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Architectural Design</h3>
-                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                <ul class="space-y-2 mono text-xs md:text-sm font-medium">
                     <li>→ Concept design & spatial innovation</li>
                     <li>→ Schematic development</li>
                     <li>→ Municipal approval documentation</li>
                     <li>→ Technical construction drawings</li>
                 </ul>
-                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">SECTORS: Residential, Commercial, Mixed-Use</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs font-bold">SECTORS: Residential, Commercial, Mixed-Use</div>
             </div>
             <div class="relative z-30 order-1 md:order-2">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 2 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">/ TIER 2 /</span>
                 <h2 class="service-title mt-2">
                     <span class="outline">ARCHITECTURAL</span><br>DESIGN
                 </h2>
-                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Exceptional architectural creativity and spatial innovation. The core architectural scope and foundation of commissions.</p>
+                <p class="text-sm md:text-lg font-medium text-[--text-secondary] leading-relaxed max-w-md">Exceptional architectural creativity and spatial innovation. The core architectural scope and foundation of commissions.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>RIBA STAGES</span> <span class="text-[--accent]">0-4</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>RIBA STAGES</span> <span class="text-[--accent]">0-4</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 95%"></div></div>
                 </div>
             </div>
@@ -551,268 +986,268 @@
 
     <!-- SERVICE PANEL 3: Tier 3 - BIM & Technical Coordination -->
     <section class="service-panel" id="service-tier3">
-        <div class="diagonal-split" style="background: linear-gradient(135deg, #f8f8f8 40%, rgba(195,160,96,0.03) 40%, rgba(195,160,96,0.01) 70%, #f8f8f8 70%);"></div>
+        <div class="diagonal-split" style="background: linear-gradient(135deg, #f5f5f5 40%, rgba(195,160,96,0.04) 40%, rgba(195,160,96,0.02) 70%, #f5f5f5 70%);"></div>
         <div class="service-content">
             <div class="relative z-30">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 3 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">/ TIER 3 /</span>
                 <h2 class="service-title mt-2">
                     <span class="outline">BIM & TECHNICAL</span><br>COORDINATION
                 </h2>
-                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">De-risking complex building systems and reducing construction errors through advanced BIM coordination.</p>
+                <p class="text-sm md:text-lg font-medium text-[--text-secondary] leading-relaxed max-w-md">De-risking complex building systems and reducing construction errors through advanced BIM coordination.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>CLASH DETECTION</span> <span class="text-[--accent]">98%</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>CLASH DETECTION</span> <span class="text-[--accent]">98%</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 98%"></div></div>
-                    <div class="flex justify-between mono text-xs"><span>BIM LEVEL</span> <span class="text-[--accent]">LOD 400</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>BIM LEVEL</span> <span class="text-[--accent]">LOD 400</span></div>
                 </div>
             </div>
             <div class="floating-card">
                 <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Technical Excellence</h3>
-                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                <ul class="space-y-2 mono text-xs md:text-sm font-medium">
                     <li>→ BIM modelling & clash detection</li>
                     <li>→ Consultant coordination</li>
                     <li>→ Buildability analysis</li>
                     <li>→ Technical detailing</li>
                 </ul>
-                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">ISO 19650 · Revit · Navisworks</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs font-bold">ISO 19650 · Revit · Navisworks</div>
             </div>
         </div>
     </section>
 
     <!-- SERVICE PANEL 4: Tier 4 - Construction Advisory -->
     <section class="service-panel" id="service-tier4">
-        <div class="diagonal-split" style="background: linear-gradient(105deg, #f8f8f8 45%, rgba(195,160,96,0.03) 45%, rgba(195,160,96,0.01) 60%, #f8f8f8 60%);"></div>
+        <div class="diagonal-split" style="background: linear-gradient(105deg, #f5f5f5 45%, rgba(195,160,96,0.04) 45%, rgba(195,160,96,0.02) 60%, #f5f5f5 60%);"></div>
         <div class="service-content">
             <div class="floating-card order-2 md:order-1" style="margin-left: 0; margin-right: auto;">
                 <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Construction Advisory</h3>
-                <ul class="space-y-2 mono text-xs md:text-sm opacity-80">
+                <ul class="space-y-2 mono text-xs md:text-sm font-medium">
                     <li>→ Contractor evaluation</li>
                     <li>→ Construction monitoring</li>
                     <li>→ Technical problem-solving</li>
                     <li>→ Design clarification</li>
                 </ul>
-                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs">ON-TIME DELIVERY: 98%</div>
+                <div class="mt-4 md:mt-6 text-[--accent] mono text-xs font-bold">ON-TIME DELIVERY: 98%</div>
             </div>
             <div class="relative z-30 order-1 md:order-2">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ TIER 4 /</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">/ TIER 4 /</span>
                 <h2 class="service-title mt-2">
                     <span class="outline">CONSTRUCTION</span><br>ADVISORY
                 </h2>
-                <p class="text-sm md:text-lg opacity-70 leading-relaxed max-w-md">Maintaining design quality and solving technical problems during implementation.</p>
+                <p class="text-sm md:text-lg font-medium text-[--text-secondary] leading-relaxed max-w-md">Maintaining design quality and solving technical problems during implementation.</p>
                 <div class="service-metric">
-                    <div class="flex justify-between mono text-xs"><span>ON-TIME</span> <span class="text-[--accent]">98%</span></div>
+                    <div class="flex justify-between mono text-xs font-bold"><span>ON-TIME</span> <span class="text-[--accent]">98%</span></div>
                     <div class="metric-bar"><div class="metric-fill" style="width: 98%"></div></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- BENTO STACK: High-Value Market Niches (light, with images clear) -->
-   <section class="px-4 md:px-20 py-16 md:py-32 bg-white">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex items-center gap-4 mb-8 md:mb-12">
-            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ HIGH-VALUE NICHES /</span>
-            <div class="h-[1px] flex-grow bg-[--accent] opacity-20"></div>
-        </div>
-
-        <div class="bento-stack">
-            <div class="bento-item group cursor-pointer" onclick="openProject('prop-dev')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 21-48-37.jpg" alt="Modern high-rise" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">01</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Property Development</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
+    <!-- BENTO STACK: High-Value Market Niches (light, with images clear) with improved text contrast -->
+    <section class="px-4 md:px-20 py-16 md:py-32 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-8 md:mb-12">
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ HIGH-VALUE NICHES /</span>
+                <div class="h-[1px] flex-grow bg-[--accent] opacity-30"></div>
             </div>
 
-            <div class="bento-item group cursor-pointer" onclick="openProject('lux-res')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-55-56.jpg" alt="Luxury villa" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">02</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Luxury Residential</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
-            </div>
-
-            <div class="bento-item group cursor-pointer" onclick="openProject('estate')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-46-57.jpg" alt="Estate" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">03</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Estate & Lifestyle</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
-            </div>
-
-            <div class="bento-item group cursor-pointer" onclick="openProject('hospitality')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 18-58-39.jpg" alt="Resort" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">04</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Hospitality & Tourism</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
-            </div>
-
-            <div class="bento-item group cursor-pointer" onclick="openProject('bim')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 15-56-29 - GROENDAL_CLINIC.jpg" alt="BIM" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">05</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">BIM Consulting</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
-            </div>
-
-            <div class="bento-item group cursor-pointer" onclick="openProject('advisory')">
-                <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-29-07 - SIMONDIUM CLINIC_V2.jpg" alt="Advisory" onerror="this.style.display='none'">
-                <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">06</span>
-                <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Development Advisory</h4>
-                <p class="text-xs opacity-60 mt-2 relative z-10">View Case Study →</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- overlay (light background) -->
-<div id="project-overlay" class="fixed inset-0 z-[200] bg-white text-[--dark] translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto">
-    
-    <div class="fixed top-20 left-4 md:top-12 md:left-12 z-[210]">
-        <button onclick="closeProject()" class="flex items-center gap-2 md:gap-4 group bg-white/80 backdrop-blur-2xl border border-black/10 p-2 md:p-3 rounded-full pr-5 md:pr-8 hover:border-[--accent] shadow-[0_0_20px rgba(0,0,0,0.1)] transition-all active:scale-90">
-            <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[--accent] text-white flex items-center justify-center font-bold shadow-[0_0_15px_rgba(195,160,96,0.3)]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-            </div>
-            <div class="flex flex-col items-start">
-                <span class="mono text-[--accent] text-[10px] md:text-xs tracking-[0.2em] uppercase font-black leading-none">Exit</span>
-                <span class="text-[9px] opacity-40 uppercase hidden md:block">Project Overview</span>
-            </div>
-        </button>
-    </div>
-
-    <div class="flex flex-col lg:flex-row min-h-screen">
-        <div class="w-full lg:w-1/3 p-8 md:p-20 pt-40 md:pt-20 lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center border-r border-black/5 bg-white">
-            <h2 id="view-title" class="text-4xl md:text-7xl font-black uppercase italic leading-[0.85] mb-8">Title</h2>
-            <p id="view-desc" class="text-base md:text-lg opacity-60 leading-relaxed mb-12">Description</p>
-            
-            <div class="grid grid-cols-2 gap-8 border-t border-black/10 pt-10">
-                <div>
-                    <p class="mono text-[10px] opacity-40 uppercase mb-2">Category</p>
-                    <p id="view-cat" class="text-sm font-bold tracking-widest uppercase">---</p>
+            <div class="bento-stack">
+                <div class="bento-item group cursor-pointer" onclick="openProject('prop-dev')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 21-48-37.jpg" alt="Modern high-rise" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">01</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Coastal Atmospheric Planes</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
                 </div>
-                <div>
-                    <p class="mono text-[10px] opacity-40 uppercase mb-2">Primary Focus</p>
-                    <p id="view-focus" class="text-sm font-bold tracking-widest uppercase">---</p>
+
+                <div class="bento-item group cursor-pointer" onclick="openProject('lux-res')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-55-56.jpg" alt="Luxury villa" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">02</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Fluid Tectonic</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
+                </div>
+
+                <div class="bento-item group cursor-pointer" onclick="openProject('estate')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-46-57.jpg" alt="Estate" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">03</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Mountain Datum</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
+                </div>
+
+                <div class="bento-item group cursor-pointer" onclick="openProject('hospitality')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 18-58-39.jpg" alt="Resort" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">04</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">The Civic Anchor:</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
+                </div>
+
+                <div class="bento-item group cursor-pointer" onclick="openProject('bim')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 15-56-29 - GROENDAL_CLINIC.jpg" alt="BIM" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">05</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">Healing Grounds</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
+                </div>
+
+                <div class="bento-item group cursor-pointer" onclick="openProject('advisory')">
+                    <img class="bg-img transition-transform duration-700 group-hover:scale-110" src="./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-29-07 - SIMONDIUM CLINIC_V2.jpg" alt="Advisory" onerror="this.style.display='none'">
+                    <span class="mono text-[--accent] text-xl md:text-2xl font-black mb-2 relative z-10">06</span>
+                    <h4 class="text-base md:text-xl font-bold uppercase relative z-10">The Mineral Cradle</h4>
+                    <p class="text-xs font-semibold mt-2 relative z-10 text-[--text-secondary]">View Case Study →</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div id="view-gallery" class="w-full lg:w-2/3 p-4 md:p-12 space-y-6 md:space-y-12">
-            <!-- injected by js -->
+    <!-- overlay (light background) with improved contrast -->
+    <div id="project-overlay" class="fixed inset-0 z-[200] bg-white text-[--text-primary] translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-y-auto">
+        
+        <div class="fixed top-20 left-4 md:top-12 md:left-12 z-[210]">
+            <button onclick="closeProject()" class="flex items-center gap-2 md:gap-4 group bg-white/90 backdrop-blur-2xl border border-black/10 p-2 md:p-3 rounded-full pr-5 md:pr-8 hover:border-[--accent] shadow-[0_0_20px rgba(0,0,0,0.1)] transition-all active:scale-90">
+                <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-[--accent] text-white flex items-center justify-center font-bold shadow-[0_0_15px_rgba(195,160,96,0.3)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </div>
+                <div class="flex flex-col items-start">
+                    <span class="mono text-[--accent] text-[10px] md:text-xs tracking-[0.2em] uppercase font-black leading-none">Exit</span>
+                    <span class="text-[9px] text-[--text-secondary] uppercase hidden md:block">Project Overview</span>
+                </div>
+            </button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row min-h-screen">
+            <div class="w-full lg:w-1/3 p-8 md:p-20 pt-40 md:pt-20 lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center border-r border-black/10 bg-white">
+                <h2 id="view-title" class="text-4xl md:text-7xl font-black uppercase italic leading-[0.85] mb-8">Title</h2>
+                <p id="view-desc" class="text-base md:text-lg font-medium text-[--text-secondary] leading-relaxed mb-12">Description</p>
+                
+                <div class="grid grid-cols-2 gap-8 border-t border-black/10 pt-10">
+                    <div>
+                        <p class="mono text-[10px] text-[--text-secondary] uppercase mb-2 font-bold">Category</p>
+                        <p id="view-cat" class="text-sm font-bold tracking-widest uppercase">---</p>
+                    </div>
+                    <div>
+                        <p class="mono text-[10px] text-[--text-secondary] uppercase mb-2 font-bold">Primary Focus</p>
+                        <p id="view-focus" class="text-sm font-bold tracking-widest uppercase">---</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-gallery" class="w-full lg:w-2/3 p-4 md:p-12 space-y-6 md:space-y-12">
+                <!-- injected by js -->
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-const projectData = {
-    'prop-dev': {
-        title: "Property Development",
-        desc: "Transforming urban skylines with parametric high-density designs. We focus on maximizing buildable area and marketability through advanced spatial data.",
-        category: "Commercial",
-        focus: "High-Rise Yield",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 21-56-16 (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 22-05-45 (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-10 19-01-50.jpg"]
-    },
-    'lux-res': {
-        title: "Luxury Residential",
-        desc: "Bespoke architectural masterpieces tailored for private clients. Merging structural innovation with high-end lifestyle curation.",
-        category: "Private",
-        focus: "Custom Villas",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-56-56.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-58-06.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-59-05.jpg"]
-    },
-    'estate': {
-        title: "Estate & Lifestyle",
-        desc: "Integrated community infrastructure and luxury clubhouse typologies for large-scale developments.",
-        category: "Hospitality",
-        focus: "Infrastructure",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-47-52.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-54-16.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-08 08-07-28.jpg"]
-    },
-    'hospitality': {
-        title: "Hospitality & Tourism",
-        desc: "Boutique resorts and hotels designed for immersive travel experiences and rapid operational ROI.",
-        category: "Leisure",
-        focus: "Boutique Lodges",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-01-40 - COSMO CITY CENTRE HALL (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-09-40.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-04-56.jpg"]
-    },
-    'bim': {
-        title: "BIM Consulting",
-        desc: "High-margin technical services utilizing Level 400 BIM workflows for clash detection and site management.",
-        category: "Technical",
-        focus: "Digital Delivery",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 16-00-16.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 16-01-11 - GROENDAL_CLINIC.jpg"]
-    },
-    'advisory': {
-        title: "Development Advisory",
-        desc: "Feasibility studies and financial viability modeling for large-scale institutional capital investments.",
-        category: "Consulting",
-        focus: "ROI Modeling",
-        images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-30-29.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-32-34 - SIMONDIUM CLINIC_V2.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-33-47.jpg"]
+    <script>
+    const projectData = {
+        'prop-dev': {
+            title: "Property Development",
+            desc: "Coastal Atmospheric Planes - Modern contemporary residential development featuring innovative spatial planning and coastal integration.",
+            category: "Coastal Atmospheric Planes",
+            focus: "High-Rise Yield",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 21-56-16 (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-06 22-05-45 (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/COASTAL ATMOPSHERIC PLANES MODERN CONTEMPORARY HOUSE/2026-02-10 19-01-50.jpg"]
+        },
+        'lux-res': {
+            title: "Luxury Residential",
+            desc: "Fluid Tectonic Clinic and Swimming Pool - Bespoke architectural masterpieces merging structural innovation with high-end lifestyle curation.",
+            category: "Private",
+            focus: "Custom Villas",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-56-56.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-58-06.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/FLUID TECTONICS CLINIC AND SWIMMING POOL/2026-03-10 17-59-05.jpg"]
+        },
+        'estate': {
+            title: "Estate & Lifestyle",
+            desc: "Mountain Datum Residential Apartments - Integrated community infrastructure and luxury residential typologies for large-scale developments.",
+            category: "Hospitality",
+            focus: "Infrastructure",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-47-52.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-07 16-54-16.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/MOUNTAIN DATUM RESIDENTIAL APARTMENTS/2026-03-08 08-07-28.jpg"]
+        },
+        'hospitality': {
+            title: "Hospitality & Tourism",
+            desc: "The Civic Anchor Public Precinct Centre - Boutique civic spaces designed for immersive community experiences and rapid operational ROI.",
+            category: "Leisure",
+            focus: "Boutique Lodges",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-01-40 - COSMO CITY CENTRE HALL (1).jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-09-40.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE CIVIC ANCHOR PUBLIC PRECINCT CENTRE/2026-03-09 19-04-56.jpg"]
+        },
+        'bim': {
+            title: "BIM Consulting",
+            desc: "The Healing Grounds Public Clinic Centre - High-margin technical services utilizing Level 400 BIM workflows for clash detection and site management.",
+            category: "Technical",
+            focus: "Digital Delivery",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 16-00-16.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE HEALING GROUNDS PUBLIC CLINIC CENTRE/2026-03-07 16-01-11 - GROENDAL_CLINIC.jpg"]
+        },
+        'advisory': {
+            title: "Development Advisory",
+            desc: "The Mineral Cradle Public Clinic Centre - Feasibility studies and financial viability modeling for large-scale institutional capital investments.",
+            category: "Consulting",
+            focus: "ROI Modeling",
+            images: ["./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-30-29.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-32-34 - SIMONDIUM CLINIC_V2.jpg", "./images/PROJECTS IMAGES & DESCRIPTION/THE MINERAL CRADLE PUBLIC CLINIC CENTRE/2026-03-09 18-33-47.jpg"]
+        }
+    };
+
+    function openProject(id) {
+        const data = projectData[id];
+        if(!data) return;
+
+        document.getElementById('view-title').innerText = data.title;
+        document.getElementById('view-desc').innerText = data.desc;
+        document.getElementById('view-cat').innerText = data.category;
+        document.getElementById('view-focus').innerText = data.focus;
+
+        const gallery = document.getElementById('view-gallery');
+        gallery.innerHTML = ''; 
+        data.images.forEach(src => {
+            const div = document.createElement('div');
+            div.className = "w-full overflow-hidden rounded-sm bg-black/5";
+            div.innerHTML = `<img src="${src}" class="w-full h-auto object-cover opacity-90 hover:opacity-100 hover:scale-[1.02] transition-all duration-[1s]" onerror="this.parentElement.style.display='none'">`;
+            gallery.appendChild(div);
+        });
+
+        const overlay = document.getElementById('project-overlay');
+        overlay.classList.remove('translate-y-full');
+        document.body.style.overflow = 'hidden'; 
     }
-};
 
-function openProject(id) {
-    const data = projectData[id];
-    if(!data) return;
+    function closeProject() {
+        document.getElementById('project-overlay').classList.add('translate-y-full');
+        document.body.style.overflow = 'auto'; 
+    }
 
-    document.getElementById('view-title').innerText = data.title;
-    document.getElementById('view-desc').innerText = data.desc;
-    document.getElementById('view-cat').innerText = data.category;
-    document.getElementById('view-focus').innerText = data.focus;
-
-    const gallery = document.getElementById('view-gallery');
-    gallery.innerHTML = ''; 
-    data.images.forEach(src => {
-        const div = document.createElement('div');
-        div.className = "w-full overflow-hidden rounded-sm bg-black/5";
-        div.innerHTML = `<img src="${src}" class="w-full h-auto object-cover opacity-90 hover:opacity-100 hover:scale-[1.02] transition-all duration-[1s]" onerror="this.parentElement.style.display='none'">`;
-        gallery.appendChild(div);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") closeProject();
     });
+    </script>
 
-    const overlay = document.getElementById('project-overlay');
-    overlay.classList.remove('translate-y-full');
-    document.body.style.overflow = 'hidden'; 
-}
-
-function closeProject() {
-    document.getElementById('project-overlay').classList.add('translate-y-full');
-    document.body.style.overflow = 'auto'; 
-}
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") closeProject();
-});
-</script>
-
-    <!-- Market Context & Revenue Model (light cards) -->
-    <section class="px-4 md:px-20 py-16 md:py-24 border-t border-[--accent] border-opacity-10 bg-white">
+    <!-- Market Context & Revenue Model (light cards) with improved contrast -->
+    <section class="px-4 md:px-20 py-16 md:py-24 border-t border-[--accent] border-opacity-20 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-6 md:gap-12">
                 <div class="glass-panel p-6 md:p-8 tech-border">
-                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ SOUTH AFRICAN CONTEXT /</span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ SOUTH AFRICAN CONTEXT /</span>
                     <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4 md:mb-6">Market Opportunity</h3>
                     <ul class="space-y-3">
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Growing property development & urban densification</span></li>
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Demand for luxury residential in urban/coastal markets</span></li>
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Technical skills gap in BIM coordination</span></li>
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">→</span> <span class="text-sm">Complex construction requiring advanced coordination</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Growing property development & urban densification</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Demand for luxury residential in urban/coastal markets</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Technical skills gap in BIM coordination</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Complex construction requiring advanced coordination</span></li>
                     </ul>
                 </div>
                 
                 <div class="glass-panel p-6 md:p-8 tech-border">
-                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ REVENUE MODEL /</span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ REVENUE MODEL /</span>
                     <h3 class="text-xl md:text-2xl font-bold mt-4 mb-4 md:mb-6">Diversified Income</h3>
                     <div class="space-y-3">
                         <div class="flex justify-between items-center p-2 border-b border-black/10">
-                            <span class="text-sm">Development Projects</span>
-                            <span class="text-[--accent] text-sm">Primary</span>
+                            <span class="text-sm font-medium">Development Projects</span>
+                            <span class="text-[--accent] text-sm font-bold">Primary</span>
                         </div>
                         <div class="flex justify-between items-center p-2 border-b border-black/10">
-                            <span class="text-sm">Feasibility Studies</span>
-                            <span class="text-[--accent] text-sm">Strategic</span>
+                            <span class="text-sm font-medium">Feasibility Studies</span>
+                            <span class="text-[--accent] text-sm font-bold">Strategic</span>
                         </div>
                         <div class="flex justify-between items-center p-2 border-b border-black/10">
-                            <span class="text-sm">Residential Commissions</span>
-                            <span class="text-[--accent] text-sm">Core</span>
+                            <span class="text-sm font-medium">Residential Commissions</span>
+                            <span class="text-[--accent] text-sm font-bold">Core</span>
                         </div>
                         <div class="flex justify-between items-center p-2 border-b border-black/10">
-                            <span class="text-sm">BIM Consulting</span>
-                            <span class="text-[--accent] text-sm">High-Margin</span>
+                            <span class="text-sm font-medium">BIM Consulting</span>
+                            <span class="text-[--accent] text-sm font-bold">High-Margin</span>
                         </div>
                     </div>
                 </div>
@@ -820,53 +1255,53 @@ document.addEventListener('keydown', (e) => {
         </div>
     </section>
 
-    <!-- 90-Day Execution Plan (clear image) -->
+    <!-- 90-Day Execution Plan (clear image) with improved text contrast -->
     <section class="px-4 md:px-20 py-16 md:py-24 plan-bg">
         <div class="max-w-5xl mx-auto text-center">
-            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ 90-DAY EXECUTION PLAN /</span>
+            <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-3 py-1 inline-block mb-2">/ 90-DAY EXECUTION PLAN /</span>
             <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase my-4 md:my-8">Roadmap to Market</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12">
                 <div class="metric-card p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 1</div>
                     <h3 class="font-bold text-sm md:text-base mb-2">Foundation</h3>
-                    <p class="text-xs opacity-70">Brand presence, website, company positioning</p>
+                    <p class="text-xs font-medium text-[--text-secondary]">Brand presence, website, company positioning</p>
                 </div>
                 <div class="metric-card p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 2</div>
                     <h3 class="font-bold text-sm md:text-base mb-2">Content Engine</h3>
-                    <p class="text-xs opacity-70">LinkedIn insights, Instagram updates, educational content</p>
+                    <p class="text-xs font-medium text-[--text-secondary]">LinkedIn insights, Instagram updates, educational content</p>
                 </div>
                 <div class="metric-card p-4 md:p-6">
                     <div class="text-2xl md:text-3xl font-bold text-[--accent] mb-2">Month 3</div>
                     <h3 class="font-bold text-sm md:text-base mb-2">Network Expansion</h3>
-                    <p class="text-xs opacity-70">Developer outreach, industry events, direct connections</p>
+                    <p class="text-xs font-medium text-[--text-secondary]">Developer outreach, industry events, direct connections</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Ideal Client Profile (light) -->
+    <!-- Ideal Client Profile (light) with improved contrast -->
     <section class="px-4 md:px-20 py-16 md:py-24 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
                 <div>
-                    <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ IDEAL CLIENT PROFILE /</span>
+                    <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold">/ IDEAL CLIENT PROFILE /</span>
                     <h2 class="text-2xl md:text-4xl lg:text-5xl font-black uppercase mt-4 mb-6">Who We Serve</h2>
-                    <p class="text-base md:text-lg opacity-70 mb-6">Decision-makers focused on achieving high-quality outcomes rather than simply minimizing initial costs.</p>
+                    <p class="text-base md:text-lg font-medium text-[--text-secondary] mb-6">Decision-makers focused on achieving high-quality outcomes rather than simply minimizing initial costs.</p>
                     
                     <div class="space-y-4">
                         <div class="flex gap-3">
                             <span class="text-[--accent] font-bold">35-65</span>
-                            <span class="text-sm">Age range</span>
+                            <span class="text-sm font-medium">Age range</span>
                         </div>
                         <div class="flex gap-3">
                             <span class="text-[--accent] font-bold">Urban & Coastal</span>
-                            <span class="text-sm">Geographic focus</span>
+                            <span class="text-sm font-medium">Geographic focus</span>
                         </div>
                         <div class="flex gap-3">
                             <span class="text-[--accent] font-bold">Developers, Investors</span>
-                            <span class="text-sm">Professions</span>
+                            <span class="text-sm font-medium">Professions</span>
                         </div>
                     </div>
                 </div>
@@ -874,26 +1309,26 @@ document.addEventListener('keydown', (e) => {
                 <div class="glass-panel p-6 md:p-8">
                     <h3 class="text-xl font-bold mb-4">Primary Segments</h3>
                     <ul class="space-y-3">
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">1.</span> <span><strong>Property Developers</strong> — Apartment buildings, townhouses, mixed-use</span></li>
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">2.</span> <span><strong>Luxury Residential</strong> — High-net-worth homeowners</span></li>
-                        <li class="flex items-start gap-2"><span class="text-[--accent]">3.</span> <span><strong>Builder-Developers</strong> — Contractors developing own projects</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">1.</span> <span class="font-medium"><strong class="text-[--text-primary]">Property Developers</strong> — Apartment buildings, townhouses, mixed-use</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">2.</span> <span class="font-medium"><strong class="text-[--text-primary]">Luxury Residential</strong> — High-net-worth homeowners</span></li>
+                        <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">3.</span> <span class="font-medium"><strong class="text-[--text-primary]">Builder-Developers</strong> — Contractors developing own projects</span></li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA section with long-term vision (clear image) -->
+    <!-- CTA section with long-term vision (clear image) with improved text contrast -->
     <section class="h-screen flex items-center justify-center px-4 text-center cta-bg">
         <div>
-            <span class="mono text-[--accent] text-xs tracking-[0.3em]">/ LONG-TERM VISION /</span>
+            <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-3 py-1 inline-block mb-2">/ LONG-TERM VISION /</span>
             <h2 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase my-4 md:my-8">Full-Spectrum<br>Capability</h2>
-            <p class="text-base md:text-xl opacity-80 mb-6 md:mb-8 max-w-3xl mx-auto px-4">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</p>
+            <p class="text-base md:text-xl font-medium text-[--text-secondary] mb-6 md:mb-8 max-w-3xl mx-auto px-4">Architecture · BIM Consulting · Development Feasibility · Construction Strategy</p>
             
             <div class="flex justify-center gap-8 md:gap-16 mb-8 md:mb-12">
-                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter1">0</span><span class="mono text-xs block opacity-50">PROJECTS</span></div>
-                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter2">0</span><span class="mono text-xs block opacity-50">CLIENTS</span></div>
-                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter3">0</span><span class="mono text-xs block opacity-50">AWARDS</span></div>
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter1">0</span><span class="mono text-xs font-bold text-[--text-secondary] block opacity-80">PROJECTS</span></div>
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter2">0</span><span class="mono text-xs font-bold text-[--text-secondary] block opacity-80">CLIENTS</span></div>
+                <div><span class="text-3xl md:text-5xl font-bold text-[--accent]" id="counter3">0</span><span class="mono text-xs font-bold text-[--text-secondary] block opacity-80">AWARDS</span></div>
             </div>
             
             <a href="contact.html" class="inline-block px-8 md:px-12 py-4 md:py-5 border-2 border-[--accent] text-[--accent] mono font-bold hover:bg-[--accent] hover:text-white transition-all text-sm md:text-xl">INITIATE DIALOGUE</a>
@@ -901,8 +1336,8 @@ document.addEventListener('keydown', (e) => {
     </section>
 </main>
 
-<!-- footer (light) -->
-<footer class="relative z-[100] border-t border-black/5 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
+<!-- footer (light) with improved contrast -->
+<footer class="relative z-[100] border-t border-black/10 bg-white px-4 md:px-6 pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden">
     <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
     <div class="max-w-7xl mx-auto relative">
@@ -911,67 +1346,67 @@ document.addEventListener('keydown', (e) => {
             <div class="space-y-4 md:space-y-6">
                 <div>
                     <div class="text-xl md:text-2xl font-black tracking-tighter mb-1">ART AND FIENDS</div>
-                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase opacity-80">Studio — Johannesburg</div>
+                    <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio — Johannesburg</div>
                 </div>
-                <p class="text-zinc-500 text-xs leading-relaxed max-w-[240px]">
+                <p class="text-[--text-secondary] text-xs leading-relaxed max-w-[240px] font-medium">
                     Architectural Intelligence Studio. Bridging design intent and construction reality through technical precision.
                 </p>
                 <div class="flex gap-4 pt-2">
-                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
+                    <a href="https://www.instagram.com/art_f_iends?igsh=MTVsbTd3cHVnYzczaA%3D%3D&utm_source=qr" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all group">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.facebook.com/mulwelimuofhe1" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
+                    <a href="https://www.linkedin.com/company/art-and-f-iends/" class="w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                 </div>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Studio Hub</h4>
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// Studio Hub</h4>
                 <ul class="space-y-3 md:space-y-4 text-sm">
                     <li>
-                        <span class="block text-zinc-800 font-bold uppercase">Johannesburg</span>
-                        <span class="text-zinc-500 text-xs">Sandton, Gauteng, 2196</span>
+                        <span class="block text-[--text-primary] font-bold uppercase">Johannesburg</span>
+                        <span class="text-[--text-secondary] text-xs font-medium">Sandton, Gauteng, 2196</span>
                     </li>
                      <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Direct Line</span>
-                        <span class="text-zinc-800 text-xs">+27 71 675 5906</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Direct Line</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">+27 71 675 5906</span>
                     </li>
                         <li class="pt-2">
-                        <span class="block text-zinc-500 text-[10px] uppercase">Email</span>
-                        <span class="text-zinc-800 text-xs">mulweli@artandfiends.co.za</span>
+                        <span class="block text-[--text-secondary] text-[10px] uppercase font-bold">Email</span>
+                        <span class="text-[--text-primary] text-xs font-semibold">mulweli@artandfiends.co.za</span>
                     </li> 
                 </ul>
             </div>
 
             <div>
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// Credentials</h4>
-                <ul class="space-y-2 md:space-y-3 text-xs text-zinc-600">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// Credentials</h4>
+                <ul class="space-y-2 md:space-y-3 text-xs">
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SACAP Registered
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SACAP Registered</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> SAIA Member
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">SAIA Member</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-[--accent]"></span> GBCSA Accredited
+                        <span class="w-1 h-1 bg-[--accent]"></span> <span class="font-medium">GBCSA Accredited</span>
                     </li>
                 </ul>
             </div>
 
             <div class="lg:text-right">
-                <h4 class="mono text-[10px] text-zinc-500 uppercase tracking-widest mb-4 md:mb-6">// System Status</h4>
-                <div class="inline-block bg-zinc-50 border border-black/5 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
+                <h4 class="mono text-[10px] text-[--text-secondary] uppercase tracking-widest mb-4 md:mb-6 font-bold">// System Status</h4>
+                <div class="inline-block bg-zinc-50 border border-black/10 p-3 md:p-4 rounded-sm text-left min-w-[180px] md:min-w-[200px]">
                     <div class="flex justify-between items-center gap-4 md:gap-8 mb-2">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Local Time (JHB)</span>
-                        <span id="footer-clock" class="text-xs font-bold text-[--dark] tracking-widest">00:00:00</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Local Time (JHB)</span>
+                        <span id="footer-clock" class="text-xs font-bold text-[--text-primary] tracking-widest">00:00:00</span>
                     </div>
-                    <div class="h-[1px] bg-black/5 w-full mb-2"></div>
+                    <div class="h-[1px] bg-black/10 w-full mb-2"></div>
                     <div class="flex justify-between items-center gap-4 md:gap-8">
-                        <span class="text-[10px] text-zinc-500 mono uppercase">Status</span>
+                        <span class="text-[10px] text-[--text-secondary] mono uppercase font-bold">Status</span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span class="text-[10px] font-bold text-emerald-500 uppercase">Available</span>
@@ -981,15 +1416,15 @@ document.addEventListener('keydown', (e) => {
             </div>
         </div>
 
-        <div class="pt-6 md:pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-            <div class="mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] text-center md:text-left">
+        <div class="pt-6 md:pt-8 border-t border-black/10 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <div class="mono text-[9px] text-[--text-secondary] uppercase tracking-[0.2em] text-center md:text-left font-bold">
                 © 2026 ART AND FIENDS. ARCHITECTURAL INTELLIGENCE ACTIVE.
             </div>
             
             <div class="flex items-center gap-4 md:gap-8">
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Legal</a>
-                <a href="#" class="text-[9px] text-zinc-600 hover:text-black transition uppercase mono tracking-widest">Privacy</a>
-                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/10 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all">
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Legal</a>
+                <a href="#" class="text-[9px] text-[--text-secondary] hover:text-[--text-primary] transition uppercase mono tracking-widest font-bold">Privacy</a>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-8 h-8 md:w-10 md:h-10 border border-black/20 flex items-center justify-center hover:bg-[--accent] hover:text-white transition-all font-bold">
                     ↑
                 </button>
             </div>
