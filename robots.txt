@@ -1,16 +1,41 @@
-# Robots.txt for ARTANDFIENDS
-# Optimized for AEC Industry SEO
+# robots.txt for ARTANDFIENDS Architectural Studio
+# https://www.artandfiends.co.za/robots.txt
 
+# Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
-# Allow indexing of high-quality project images
+# Sitemap location - tells Google where to find your sitemap
+Sitemap: https://www.artandfiends.co.za/sitemap.xml
+
+# Crawl delay - be respectful to server resources
+Crawl-delay: 1
+
+# Allow all important pages to be indexed
+Allow: /home.html
+Allow: /about.html
+Allow: /attire.html
+Allow: /projects.html
+Allow: /contact.html
+
+# Allow images and assets for better indexing
 Allow: /images/
+Allow: /css/
+Allow: /js/
+Allow: /fonts/
 
-# Disallow sensitive folders or system files
-Disallow: /cgi-bin/
+# Disallow private/system directories (if they exist)
+Disallow: /admin/
 Disallow: /private/
+Disallow: /backup/
 Disallow: /temp/
+Disallow: /cgi-bin/
 
-# Sitemaps help search engines find your projects faster
-Sitemap: https://yourdomain.com/sitemap.xml
+# Disallow common system files from being indexed
+Disallow: /*.php$
+Disallow: /*.inc$
+Disallow: /*.bak$
+Disallow: /*.old$
+
+# Host directive (optional - helps Google understand preferred domain)
+Host: https://www.artandfiends.co.za

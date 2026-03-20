@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ART + FRIENDS | Creative Intelligence Studio</title>
+    <title>ART + FRIENDS · Architectural Intelligence Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
@@ -153,9 +153,63 @@
 </head>
 <body>
 
-    <div class="nav-header">
-        <h1>ART <span>+</span> FRIENDS</h1>
-    </div>
+  <!-- ===== UPDATED HEADER: ART + FRIENDS with prominent "Intelligence Design Studio" ===== -->
+<!-- Replace your existing .nav-header with this block -->
+
+<div class="nav-header">
+    <h1>ART <span>+</span> FRIENDS</h1>
+    <div class="studio-subhead">Creative INTELLIGENCE DESIGN STUDIO</div>
+</div>
+
+<!-- Add this CSS to your existing styles (in the style section, near other .nav-header rules) -->
+<style>
+    .nav-header {
+        /* ensure proper spacing */
+        line-height: 1.2;
+    }
+    
+    .nav-header h1 {
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--white);
+    }
+    
+    .studio-subhead {
+        font-size: 0.85rem;          /* slightly larger for visibility */
+        letter-spacing: 0.5em;        /* more spacing for elegance */
+        text-transform: uppercase;
+        color: var(--gold, #C3A060);
+        font-weight: 400;             /* medium weight for contrast */
+        opacity: 1;                   /* fully opaque */
+        margin-top: 0.35rem;
+        padding-left: 0.5rem;
+        border-left: 3px solid var(--gold, #C3A060); /* thicker gold border */
+        line-height: 1.3;
+        text-shadow: 0 0 10px rgba(195, 160, 96, 0.3); /* subtle glow */
+        white-space: nowrap;           /* keep on one line on desktop */
+    }
+    
+    /* ensure it's visible on dark backgrounds */
+    @media (max-width: 768px) {
+        .studio-subhead {
+            font-size: 0.7rem;         /* slightly smaller on mobile */
+            letter-spacing: 0.3em;
+            white-space: normal;       /* allow wrap on very small screens */
+        }
+    }
+</style>
+
+<!-- 
+    Improvements:
+    - Larger font size (0.85rem) with increased letter-spacing for presence
+    - Thicker gold border (3px) to anchor the text
+    - Full opacity with a subtle gold glow for visibility
+    - Kept on one line on desktop, wraps gracefully on mobile
+    - Now reads "INTELLIGENCE DESIGN STUDIO" in all caps for consistency with your branding
+    - Stands out clearly against any background while maintaining elegance
+-->
 
     <div class="slider-container">
         <!-- Slide 1 (unchanged) -->
