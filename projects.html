@@ -312,109 +312,185 @@
 
 <div id="cursor"></div>
 <div id="cursor-follower"></div>
+
+
 <!-- mobile menu -->
+<!-- Mobile Menu Toggle Button -->
 <button class="menu-toggle fixed top-8 right-8 z-[10002]" id="menuToggle" aria-label="Menu">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-
-  <div class="mobile-menu" id="mobileMenu">
-    <!-- Decorative elements for visual interest -->
-    <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[--accent]/5 to-transparent pointer-events-none"></div>
-    <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-to-tl from-[--accent]/5 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+<!-- Mobile menu - Clean Professional Design -->
+<div class="mobile-menu" id="mobileMenu">
+    <!-- Subtle gradient background -->
+    <div class="bg-gradient"></div>
     
-    <!-- Close indicator (optional subtle element) -->
-    <div class="absolute top-6 right-6 opacity-30">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M6 18L18 6M6 6l12 12"/>
+    <!-- Close button -->
+    <button class="menu-close-btn" id="closeMenuBtn" aria-label="Close menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round"/>
         </svg>
+    </button>
+    
+    <!-- Studio Brand -->
+    <div class="studio-brand">
+        <div class="brand-mark"></div>
+        <div class="brand-title">ART & FIENDS</div>
+        <div class="brand-subtitle">Architectural Intelligence</div>
     </div>
     
-    <!-- Logo/Studio mark at top -->
-    <div class="text-center mb-8">
-        <div class="inline-flex items-center gap-2 mb-3">
-            <div class="w-6 h-[1px] bg-[--accent]"></div>
-            <div class="w-6 h-[1px] bg-[--accent]"></div>
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+        <a href="home.html" class="nav-link">
+            <span class="nav-text">HOME</span>
+            <span class="nav-line"></span>
+        </a>
+        
+        <a href="about.html" class="nav-link">
+            <span class="nav-text">ABOUT</span>
+            <span class="nav-line"></span>
+        </a>
+        
+        <a href="attire.html" class="nav-link">
+            <span class="nav-text">SERVICES</span>
+            <span class="nav-line"></span>
+        </a>
+        
+        <a href="projects.html" class="nav-link">
+            <span class="nav-text">PROJECTS</span>
+            <span class="nav-line"></span>
+        </a>
+        
+        <div class="cta-wrapper">
+            <a href="contact.html" class="cta-button">
+                <span>CONTACT STUDIO</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
-        <div class="mono text-[10px] text-[--accent] tracking-[0.3em] uppercase font-bold">Studio</div>
-        <div class="text-xs text-[--text-secondary] mt-1 font-light">Architectural Intelligence</div>
-    </div>
-    
-    <!-- Navigation links with improved styling - SERVICES page active state -->
-    <nav class="flex flex-col items-center gap-6 w-full">
-        <a href="home.html" class="nav-link group relative">
-            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">HOME</span>
-            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
-        </a>
-        
-        <a href="about.html" class="nav-link group relative">
-            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">ABOUT</span>
-            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
-        </a>
-        
-        <a href="attire.html" class="nav-link group relative">
-            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider ">SERVICES</span>
-            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-[1px] bg-[--accent]"></span>
-        </a>
-        
-        <a href="projects.html" class="nav-link group relative active">
-            <span class="text-2xl md:text-3xl font-light tracking-wide transition-all duration-300 group-hover:tracking-wider group-hover:text-[--accent]">PROJECTS</span>
-            <span class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-[1px] bg-[--accent] transition-all duration-300 group-hover:w-8"></span>
-        </a>
-        
-        <a href="contact.html" class="mt-4 group relative overflow-hidden">
-            <div class="relative px-8 py-3 border border-[--accent] text-[--accent] hover:text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase overflow-hidden">
-                <span class="relative z-10">CONTACT STUDIO</span>
-                <div class="absolute inset-0 bg-[--accent] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
-            </div>
-        </a>
     </nav>
     
-    <!-- Contact info at bottom -->
-    <div class="absolute bottom-8 left-0 right-0 text-center space-y-3 px-6">
-        <div class="flex justify-center gap-6 text-[10px] text-[--text-secondary] mono">
-            <span>+27 71 675 5906</span>
-            <span class="w-px h-3 bg-[--text-secondary]/30"></span>
-            <span>mulweli@artandfiends.co.za</span>
+    <!-- Professional Social Media Section -->
+    <div class="social-section">
+        <div class="social-divider">
+            <span class="divider-line"></span>
+            <span class="divider-text">CONNECT</span>
+            <span class="divider-line"></span>
         </div>
-        <div class="flex justify-center gap-4 pt-2">
-            <a href="https://www.instagram.com/art_f_iends" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        
+        <div class="social-icons">
+            <a href="https://www.instagram.com/art_f_iends" class="social-icon" target="_blank" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <circle cx="12" cy="12" r="4.5"></circle>
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"></circle>
+                </svg>
             </a>
-            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            
+            <a href="https://www.facebook.com/mulwelimuofhe1" class="social-icon" target="_blank" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
             </a>
-            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon w-8 h-8 rounded-full border border-[--text-secondary]/20 flex items-center justify-center hover:border-[--accent] hover:text-[--accent] transition-all duration-300">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            
+            <a href="https://www.linkedin.com/company/art-and-f-iends/" class="social-icon" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
             </a>
         </div>
-        <div class="mono text-[8px] text-[--text-secondary]/40 tracking-widest uppercase pt-2">
-            EST. 2025
-        </div>
+        
+        <div class="est-year">EST. 2021</div>
     </div>
 </div>
 
 <style>
+    /* CSS Variables */
+    :root {
+        --accent: #C3A060;
+        --accent-light: rgba(195, 160, 96, 0.1);
+        --accent-glow: rgba(195, 160, 96, 0.15);
+        --text-primary: #1A1A1A;
+        --text-secondary: #5A5A5A;
+        --bg-white: #FFFFFF;
+        --bg-glass: rgba(255, 255, 255, 0.98);
+        --border-light: rgba(0, 0, 0, 0.06);
+        --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-smooth: cubic-bezier(0.2, 0.9, 0.4, 1);
+    }
+    
+    /* Menu Toggle Button */
+    .menu-toggle {
+        position: fixed;
+        top: 28px;
+        right: 28px;
+        width: 48px;
+        height: 48px;
+        background: var(--bg-white);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-light);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 10002;
+        transition: all 0.3s var(--transition);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    }
+    
+    .menu-toggle:hover {
+        transform: scale(1.02);
+        border-color: var(--accent);
+        box-shadow: 0 4px 20px rgba(195, 160, 96, 0.15);
+    }
+    
+    .menu-toggle span {
+        display: block;
+        width: 20px;
+        height: 1.5px;
+        background: var(--accent);
+        border-radius: 2px;
+        transition: all 0.3s var(--transition);
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+    
+    /* Mobile Menu Container */
     .mobile-menu {
         position: fixed;
         top: 0;
         right: -100%;
         width: 85%;
-        max-width: 400px;
+        max-width: 420px;
         height: 100vh;
-        background: rgba(255, 255, 255, 0.98);
+        background: var(--bg-glass);
         backdrop-filter: blur(20px);
-        border-left: 1px solid rgba(195, 160, 96, 0.3);
+        border-left: 1px solid var(--border-light);
         z-index: 10001;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: right 0.6s cubic-bezier(0.77, 0, 0.18, 1);
-        padding: 2rem 1.5rem;
-        box-shadow: -5px 0 50px rgba(0, 0, 0, 0.1);
+        transition: right 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 2.5rem 2rem;
+        box-shadow: -5px 0 40px rgba(0, 0, 0, 0.05);
         overflow-y: auto;
     }
     
@@ -422,13 +498,285 @@
         right: 0;
     }
     
-    /* Custom scrollbar */
+    /* Background Gradient */
+    .bg-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 0% 0%, var(--accent-light) 0%, transparent 50%);
+        opacity: 0.4;
+        pointer-events: none;
+    }
+    
+    /* Close Button */
+    .menu-close-btn {
+        position: absolute;
+        top: 28px;
+        right: 28px;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s var(--transition);
+        z-index: 10;
+        border-radius: 50%;
+    }
+    
+    .menu-close-btn:hover {
+        background: var(--accent-light);
+        transform: rotate(90deg);
+    }
+    
+    .menu-close-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-secondary);
+        stroke-width: 1.8;
+        transition: stroke 0.2s;
+    }
+    
+    .menu-close-btn:hover svg {
+        stroke: var(--accent);
+    }
+    
+    /* Studio Brand */
+    .studio-brand {
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .brand-mark {
+        width: 32px;
+        height: 2px;
+        background: var(--accent);
+        margin: 0 auto 1rem auto;
+        position: relative;
+    }
+    
+    .brand-mark::before,
+    .brand-mark::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 2px;
+        background: var(--accent);
+        top: 0;
+    }
+    
+    .brand-mark::before {
+        left: -12px;
+    }
+    
+    .brand-mark::after {
+        right: -12px;
+    }
+    
+    .brand-title {
+        font-size: 0.85rem;
+        letter-spacing: 0.3em;
+        font-weight: 500;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+    
+    .brand-subtitle {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        font-weight: 300;
+        letter-spacing: 0.05em;
+    }
+    
+    /* Navigation Links */
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        padding: 0.75rem 0;
+        position: relative;
+        transition: all 0.3s var(--transition);
+    }
+    
+    .nav-text {
+        font-size: 1.8rem;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        transition: all 0.3s var(--transition);
+        margin-bottom: 0.25rem;
+    }
+    
+    .nav-line {
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.4s var(--transition);
+    }
+    
+    .nav-link:hover .nav-text {
+        color: var(--accent);
+        transform: translateX(8px);
+    }
+    
+    .nav-link:hover .nav-line {
+        width: 40px;
+    }
+    
+    /* Active link styling */
+    .nav-link.active .nav-text {
+        color: var(--accent);
+    }
+    
+    .nav-link.active .nav-line {
+        width: 40px;
+    }
+    
+    /* CTA Button */
+    .cta-wrapper {
+        margin-top: 2rem;
+        padding-top: 1rem;
+    }
+    
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.85rem 1.8rem;
+        background: transparent;
+        border: 1px solid var(--accent);
+        text-decoration: none;
+        transition: all 0.4s var(--transition);
+        cursor: pointer;
+    }
+    
+    .cta-button span {
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        transition: color 0.3s;
+    }
+    
+    .cta-button svg {
+        stroke: var(--accent);
+        transition: transform 0.3s var(--transition);
+    }
+    
+    .cta-button:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+        transform: translateX(4px);
+    }
+    
+    .cta-button:hover span {
+        color: white;
+    }
+    
+    .cta-button:hover svg {
+        stroke: white;
+        transform: translateX(4px);
+    }
+    
+    /* Social Section - Clean Professional */
+    .social-section {
+        position: relative;
+        z-index: 2;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+    }
+    
+    .social-divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .divider-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border-light);
+    }
+    
+    .divider-text {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+    
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .social-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: transparent;
+        border: 1px solid var(--border-light);
+        transition: all 0.3s var(--transition);
+        text-decoration: none;
+    }
+    
+    .social-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-secondary);
+        transition: all 0.3s;
+    }
+    
+    .social-icon:hover {
+        border-color: var(--accent);
+        background: var(--accent-light);
+        transform: translateY(-3px);
+    }
+    
+    .social-icon:hover svg {
+        stroke: var(--accent);
+    }
+    
+    .est-year {
+        text-align: center;
+        font-size: 0.6rem;
+        font-family: monospace;
+        letter-spacing: 0.1em;
+        color: rgba(90, 90, 90, 0.5);
+    }
+    
+    /* Scrollbar */
     .mobile-menu::-webkit-scrollbar {
-        width: 2px;
+        width: 3px;
     }
     
     .mobile-menu::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.05);
+        background: var(--border-light);
     }
     
     .mobile-menu::-webkit-scrollbar-thumb {
@@ -436,47 +784,38 @@
         border-radius: 10px;
     }
     
-    /* Navigation link styles */
-    .nav-link {
-        position: relative;
-        display: inline-block;
-        text-decoration: none;
-        color: var(--text-primary);
-        transition: all 0.3s ease;
+    /* Entrance Animations */
+    .mobile-menu.open .studio-brand {
+        animation: fadeInDown 0.5s var(--transition) forwards;
+        opacity: 0;
+        transform: translateY(-15px);
     }
     
-    .nav-link:hover {
-        color: var(--accent);
-    }
-    
-    /* Active link styling - for SERVICES page */
-    .nav-link.active span {
-        color: var(--accent);
-    }
-    
-    /* Social icon hover effect */
-    .social-icon {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .social-icon:hover {
-        transform: translateY(-2px);
-        border-color: var(--accent);
-        box-shadow: 0 5px 15px rgba(195, 160, 96, 0.2);
-    }
-    
-    /* Animation for menu items on open */
     .mobile-menu.open .nav-link {
-        animation: slideIn 0.5s ease forwards;
         opacity: 0;
         transform: translateX(30px);
+        animation: slideIn 0.5s var(--transition) forwards;
     }
     
-    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.1s; }
-    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.2s; }
-    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.3s; }
-    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.4s; }
-    .mobile-menu.open .nav-link:nth-child(5) { animation-delay: 0.5s; }
+    .mobile-menu.open .nav-link:nth-child(1) { animation-delay: 0.08s; }
+    .mobile-menu.open .nav-link:nth-child(2) { animation-delay: 0.16s; }
+    .mobile-menu.open .nav-link:nth-child(3) { animation-delay: 0.24s; }
+    .mobile-menu.open .nav-link:nth-child(4) { animation-delay: 0.32s; }
+    .mobile-menu.open .cta-wrapper { animation-delay: 0.4s; }
+    
+    .mobile-menu.open .cta-wrapper {
+        opacity: 0;
+        transform: translateX(30px);
+        animation: slideIn 0.5s var(--transition) forwards;
+        animation-delay: 0.4s;
+    }
+    
+    .mobile-menu.open .social-section {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.5s var(--transition) forwards;
+        animation-delay: 0.5s;
+    }
     
     @keyframes slideIn {
         to {
@@ -485,12 +824,11 @@
         }
     }
     
-    /* Animate contact info */
-    .mobile-menu.open .absolute.bottom-8 {
-        animation: fadeInUp 0.6s ease forwards;
-        animation-delay: 0.6s;
-        opacity: 0;
-        transform: translateY(20px);
+    @keyframes fadeInDown {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
     @keyframes fadeInUp {
@@ -500,106 +838,99 @@
         }
     }
     
-    /* Animate logo section */
-    .mobile-menu.open .text-center {
-        animation: fadeIn 0.5s ease forwards;
-        opacity: 0;
-    }
-    
-    @keyframes fadeIn {
-        to {
-            opacity: 1;
-        }
-    }
-    
-    /* Decorative line animation */
-    .mobile-menu.open .inline-flex {
-        animation: expandLine 0.6s ease forwards;
-    }
-    
-    @keyframes expandLine {
-        from {
-            width: 0;
-            opacity: 0;
-        }
-        to {
-            width: auto;
-            opacity: 1;
-        }
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 480px) {
+    /* Responsive */
+    @media (max-width: 550px) {
         .mobile-menu {
             width: 100%;
             max-width: 100%;
-            border-radius: 0 !important;
+            padding: 2rem 1.5rem;
         }
         
-        .mobile-menu a span {
-            font-size: 1.75rem;
+        .nav-text {
+            font-size: 1.6rem;
         }
         
-        .absolute.bottom-8 {
-            bottom: 1.5rem;
+        .social-icons {
+            gap: 1.5rem;
         }
-    }
-    
-    /* Optional: Add subtle texture */
-    .mobile-menu::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: radial-gradient(circle at 20% 80%, rgba(195, 160, 96, 0.02) 0%, transparent 50%);
-        pointer-events: none;
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .menu-close-btn {
+            top: 20px;
+            right: 20px;
+        }
+        
+        .menu-toggle {
+            top: 20px;
+            right: 20px;
+        }
     }
 </style>
 
 <script>
-    // Active link highlighting for SERVICES page
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get current page filename
-        const currentPage = window.location.pathname.split('/').pop() || 'home.html';
-        
-        // Map of page names to link hrefs
-        const pageMap = {
-            'home.html': 'home.html',
-            'about.html': 'about.html',
-            'attire.html': 'attire.html',  // Services page
-            'services.html': 'attire.html', // Alternative name
-            'projects.html': 'projects.html',
-            'contact.html': 'contact.html'
-        };
-        
-        // Find all navigation links
-        document.querySelectorAll('.nav-link').forEach(link => {
-            const href = link.getAttribute('href');
-            
-            // Check if this link matches the current page
-            if (href === currentPage || 
-                (currentPage === '' && href === 'home.html') ||
-                (currentPage === 'attire.html' && href === 'attire.html') ||
-                (currentPage === 'services.html' && href === 'attire.html')) {
-                
-                // Add active class
-                link.classList.add('active');
-                
-                // Update the span text color
-                const span = link.querySelector('span');
-                if (span) {
-                    span.classList.add('text-[--accent]');
-                }
-                
-                // Show the underline
-                const underline = link.querySelector('span + span');
-                if (underline) {
-                    underline.style.width = '2rem';
-                }
-            }
-        });
+    // Menu functionality
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    
+    function openMenu() {
+        mobileMenu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        menuToggle.classList.add('active');
+    }
+    
+    function closeMenu() {
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+        menuToggle.classList.remove('active');
+    }
+    
+    function toggleMenu() {
+        if (mobileMenu.classList.contains('open')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+    }
+    
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', closeMenu);
+    }
+    
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+        if (mobileMenu.classList.contains('open') && 
+            !mobileMenu.contains(e.target) && 
+            !menuToggle.contains(e.target)) {
+            closeMenu();
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+            closeMenu();
+        }
+    });
+    
+    // Active link highlighting for PROJECTS page
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (window.location.pathname.includes(href)) {
+            link.classList.add('active');
+        }
+        // Special handling for projects page
+        if (href === 'projects.html' && window.location.pathname.includes('projects')) {
+            link.classList.add('active');
+        }
     });
 </script>
 
@@ -698,7 +1029,7 @@
         <!-- Project 3: BIM & Technical Coordination (Tier 3) -->
         <div class="project-card reveal-card">
             <div class="data-panel order-2 md:order-1">
-                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 3 // BIM & TECHNICAL</span>
+                <span class="mono text-[--accent] text-xs tracking-[0.3em] font-bold bg-white/80 px-2 py-1 inline-block mb-2">TIER 3 // Concept Design</span>
                 <h2 class="text-3xl md:text-5xl lg:text-7xl font-black uppercase mt-2 md:mt-4 mb-4 md:mb-6">Umhlanga<br>Tower</h2>
                 <p class="text-sm md:text-base font-medium text-[--text-secondary] leading-relaxed mb-4 md:mb-8">24-story mixed-use tower with full BIM coordination. Clash detection reduced construction conflicts by 95%, saving R8.2M in potential rework.</p>
                 <div class="grid grid-cols-2 gap-4 md:gap-6 mono text-xs">
@@ -743,7 +1074,7 @@
                         <ul class="space-y-3">
                             <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Growing property development & urban densification</span></li>
                             <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Sustained luxury residential demand in coastal markets</span></li>
-                            <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Technical skills gap creating demand for BIM expertise</span></li>
+                            <li class="flex items-start gap-2"><span class="text-[--accent] font-bold">→</span> <span class="text-sm font-medium">Construction council drawing submission</span></li>
                         </ul>
                     </div>
                     
@@ -800,8 +1131,8 @@
                         <p class="text-xs font-medium text-[--text-secondary]">Boutique · Lodges</p>
                     </div>
                     <div class="metric-card p-4 text-center">
-                        <div class="text-[--accent] font-bold mb-1">BIM Consulting</div>
-                        <p class="text-xs font-medium text-[--text-secondary]">Technical Coordination</p>
+                        <div class="text-[--accent] font-bold mb-1">Technical Construction</div>
+                        <p class="text-xs font-medium text-[--text-secondary]">council drawing</p>
                     </div>
                 </div>
             </div>
