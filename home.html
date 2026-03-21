@@ -1609,24 +1609,7 @@
             gsap.to(follower, { x: e.clientX - 20, y: e.clientY - 20, duration: 0.3 });
         });
     }
-
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('open');
-            mobileMenu.classList.toggle('open');
-        });
-
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menuToggle.classList.remove('open');
-                mobileMenu.classList.remove('open');
-            });
-        });
-    }
-
+    
     gsap.registerPlugin(ScrollTrigger);
 
     window.onload = () => {
