@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ART + FRIENDS · Architectural Intelligence Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #C3A060;
+            --white: #ffffff;
+            --bg: #070D14;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--white);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Hero Container */
+        .slider-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* Dynamic Backgrounds */
+        .slide-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .slide-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(7,13,20,0.9) 0%, rgba(7,13,20,0.4) 50%, rgba(7,13,20,0.1) 100%);
+        }
+
+        /* Text Content Styling */
+        .slide-content {
+            max-width: 600px;
+            transform: translateY(30px);
+            transition: transform 1.2s ease;
+        }
+
+        .slide.active .slide-content {
+            transform: translateY(0);
+        }
+
+        .label {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            font-weight: 200;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+            font-weight: 300;
+            border-left: 2px solid var(--gold);
+            padding-left: 1.5rem;
+        }
+
+        /* Fixed Brand Elements */
+        .nav-header {
+            position: fixed;
+            top: 40px;
+            left: 10%;
+            z-index: 100;
+            line-height: 1.2;
+        }
+
+        .nav-header h1 {
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .nav-header span { 
+            color: var(--gold); 
+        }
+
+        .studio-subhead {
+            font-size: 0.85rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 400;
+            opacity: 1;
+            margin-top: 0.35rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid var(--gold);
+            line-height: 1.3;
+            text-shadow: 0 0 10px rgba(195, 160, 96, 0.3);
+            white-space: nowrap;
+        }
+
+        .footer-info {
+            position: fixed;
+            bottom: 40px;
+            left: 10%;
+            z-index: 100;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+        }
+
+        /* Slider Controls */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            right: 10%;
+            z-index: 100;
+            display: flex;
+            gap: 15px;
+        }
+
+        .dot {
+            width: 40px;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--gold);
+        }
+
+        /* Professional Home Button - Adaptive Positioning */
+        .home-button-container {
+            position: fixed;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        /* Button Styling */
+        .home-btn {
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(7, 13, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            border-radius: 50px;
+        }
+
+        .home-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: var(--gold);
+            color: var(--bg);
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+
+        .home-btn:hover .home-icon {
+            transform: translateX(-3px);
+        }
+
+        .home-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* DESKTOP STYLES (screen width > 768px) - Centered in middle */
+        @media (min-width: 769px) {
+            .home-button-container {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            
+            .home-btn {
+                padding: 0.9rem 2rem;
+                font-size: 0.9rem;
+                gap: 10px;
+            }
+            
+            .home-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* MOBILE STYLES (screen width ≤ 768px) - Positioned under header text */
+        @media (max-width: 768px) {
+            .home-button-container {
+                top: 130px;
+                left: 10%;
+                transform: none;
+                pointer-events: none;
+            }
+            
+            .home-btn {
+                padding: 0.6rem 1.4rem;
+                font-size: 0.75rem;
+                gap: 8px;
+                background: rgba(7, 13, 20, 0.7);
+                border-width: 1.2px;
+            }
+            
+            .home-icon {
+                font-size: 1rem;
+            }
+            
+            .studio-subhead {
+                font-size: 0.7rem;
+                letter-spacing: 0.3em;
+                white-space: normal;
+            }
+            
+            .nav-header {
+                top: 20px;
+                left: 6%;
+            }
+            
+            h2 { 
+                font-size: 2.2rem; 
+            }
+            
+            .slide-content { 
+                padding-top: 100px; 
+            }
+            
+            .footer-info {
+                left: 6%;
+                bottom: 20px;
+                font-size: 0.6rem;
+            }
+            
+            .controls {
+                right: 6%;
+                bottom: 20px;
+                gap: 12px;
+            }
+            
+            .dot {
+                width: 30px;
+            }
+            
+            .dot.active {
+                width: 40px;
+            }
+        }
+
+        /* MEDIUM MOBILE STYLES (≤ 600px) */
+        @media (max-width: 600px) {
+            .home-button-container {
+                top: 115px;
+            }
+            
+            .home-btn {
+                padding: 0.55rem 1.2rem;
+                font-size: 0.7rem;
+                gap: 6px;
+            }
+            
+            .home-icon {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* SMALL MOBILE STYLES (≤ 480px) */
+        @media (max-width: 480px) {
+            .home-button-container {
+                top: 100px;
+                left: 6%;
+            }
+            
+            .home-btn {
+                padding: 0.5rem 1.1rem;
+                font-size: 0.65rem;
+                gap: 5px;
+                letter-spacing: 0.12em;
+            }
+            
+            .home-icon {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* EXTRA SMALL MOBILE (≤ 380px) */
+        @media (max-width: 380px) {
+            .home-button-container {
+                top: 90px;
+            }
+            
+            .home-btn {
+                padding: 0.45rem 1rem;
+                font-size: 0.6rem;
+                gap: 4px;
+            }
+            
+            .home-icon {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Touch-friendly active state for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .home-btn:active {
+                background: var(--gold);
+                color: var(--bg);
+                transform: scale(0.97);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Brand -->
+    <div class="nav-header">
+        <h1>ART <span>+</span> FRIENDS</h1>
+        <div class="studio-subhead">Creative INTELLIGENCE DESIGN STUDIO</div>
+    </div>
+
+    <!-- Home Button - Professionally placed under header on mobile, centered on desktop -->
+    <div class="home-button-container">
+        <a href="home.html" class="home-btn">
+            <span class="home-icon">⌂</span>
+            <span>HOME</span>
+        </a>
+    </div>
+
+    <div class="slider-container">
+        <!-- Slide 1: Property Development -->
+        <div class="slide active">
+            <div class="slide-bg" style="background-image: url('images/house5.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Property Development</span>
+                <h2>Urban & <br>Mixed-Use</h2>
+                <p class="desc">Feasibility-driven design for densification projects. We bridge the gap between architectural intent and investment reality.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Luxury Residential -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house1.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Luxury Residential</span>
+                <h2>Coastal & <br>Urban Living</h2>
+                <p class="desc">Premium residences for discerning clients. Creating bespoke living spaces that harmonize with South Africa's unique landscapes.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Design-to-Delivery Alignment -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house2.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Design‑to‑Delivery Alignment</span>
+                <h2>Architectural <br>Development</h2>
+                <p class="desc">Accurate Project Integration from creative conceptualization through construction.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Custom Creative Design / Set, Stage & Furniture -->
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('images/house3.jpg');"></div>
+            <div class="slide-content">
+                <span class="label">Custom Creative Design</span>
+                <h2>Set, Stage <br>& Furniture</h2>
+                <p class="desc">Installation, Furniture, set and stage designs. Research-based creative concept development pertaining to custom creative design requirements. Client-Centered Design to Construction Processes.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        Johannesburg · South Africa — Launching 2026
+    </div>
+
+    <div class="controls">
+        <div class="dot active" onclick="setSlide(0)"></div>
+        <div class="dot" onclick="setSlide(1)"></div>
+        <div class="dot" onclick="setSlide(2)"></div>
+        <div class="dot" onclick="setSlide(3)"></div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let autoInterval;
+
+        function setSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            let next = (currentSlide + 1) % slides.length;
+            setSlide(next);
+        }
+
+        function startAutoPlay() {
+            if (autoInterval) clearInterval(autoInterval);
+            autoInterval = setInterval(nextSlide, 4000);
+        }
+
+        function stopAutoPlay() {
+            if (autoInterval) {
+                clearInterval(autoInterval);
+                autoInterval = null;
+            }
+        }
+
+        // Dot click handlers
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                stopAutoPlay();
+                setSlide(idx);
+                startAutoPlay();
+            });
+        });
+
+        // Pause auto-play on hover for better UX
+        const container = document.querySelector('.slider-container');
+        if (container) {
+            container.addEventListener('mouseenter', stopAutoPlay);
+            container.addEventListener('mouseleave', startAutoPlay);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                stopAutoPlay();
+                let prev = (currentSlide - 1 + slides.length) % slides.length;
+                setSlide(prev);
+                startAutoPlay();
+            } else if (e.key === 'ArrowRight') {
+                stopAutoPlay();
+                let next = (currentSlide + 1) % slides.length;
+                setSlide(next);
+                startAutoPlay();
+            }
+        });
+
+        // Start autoplay
+        startAutoPlay();
+    </script>
+</body>
+</html>
