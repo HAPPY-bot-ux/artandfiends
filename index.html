@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ART + FRIENDS </title>
+    <title>ART + FRIENDS</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="./images/favicon.jpg">
     <style>
@@ -21,6 +21,113 @@
             color: var(--white);
             height: 100vh;
             overflow: hidden;
+        }
+
+        /* Loading Screen Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0s linear 0.8s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.8s ease, visibility 0s linear 0s;
+        }
+
+        .loading-content {
+            text-align: center;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+            padding: 0 20px;
+            max-width: 90%;
+        }
+
+        .loading-logo {
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            margin-bottom: 1.2rem;
+            color: var(--white);
+            line-height: 1.2;
+            white-space: normal;
+            word-break: keep-all;
+        }
+
+        .loading-logo span {
+            color: var(--gold);
+        }
+
+        .loading-subhead {
+            font-size: clamp(0.55rem, 2vw, 0.7rem);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        .loading-spinner {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 1.5rem;
+            border: 2px solid rgba(195, 160, 96, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            font-weight: 300;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: blink 1.4s infinite;
+            opacity: 0;
+        }
+
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0; }
+            30% { opacity: 1; }
         }
 
         /* Hero Container */
@@ -364,6 +471,18 @@
 </head>
 <body>
 
+    <!-- Loading Screen Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">ART <span>+</span> FRIENDS</div>
+            <div class="loading-subhead">Architectural Intelligence Design Studio</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                LOADING<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Header with Brand -->
     <div class="nav-header">
         <h1>ART <span>+</span> FRIENDS</h1>
@@ -372,7 +491,7 @@
 
     <!-- Home Button - Professionally placed under header on mobile, centered on desktop -->
     <div class="home-button-container">
-        <a href="home.html" class="home-btn">
+        <a href="#" id="homeButton" class="home-btn">
             <span class="home-icon">⌂</span>
             <span>HOME</span>
         </a>
@@ -436,6 +555,7 @@
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
         let autoInterval;
+        let isNavigating = false;
 
         function setSlide(index) {
             slides[currentSlide].classList.remove('active');
@@ -463,6 +583,37 @@
                 autoInterval = null;
             }
         }
+
+        // Professional Loading Screen Function with slower, premium timing
+        function showLoadingAndNavigate(targetUrl) {
+            if (isNavigating) return;
+            isNavigating = true;
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            // Show loading screen with smooth animation
+            loadingOverlay.classList.add('active');
+            
+            // Disable the home button temporarily
+            const homeBtn = document.getElementById('homeButton');
+            homeBtn.style.pointerEvents = 'none';
+            homeBtn.style.opacity = '0.5';
+            
+            // Stop autoplay while loading
+            stopAutoPlay();
+            
+            // Premium loading time - slower and more deliberate (2.2 seconds)
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 2200);
+        }
+
+        // Enhanced Home Button Handler with Loading Screen
+        const homeButton = document.getElementById('homeButton');
+        homeButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoadingAndNavigate('home.html');
+        });
 
         // Dot click handlers
         dots.forEach((dot, idx) => {
@@ -497,6 +648,12 @@
 
         // Start autoplay
         startAutoPlay();
+
+        // Ensure loading overlay is hidden on initial load
+        window.addEventListener('load', () => {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.remove('active');
+        });
     </script>
 </body>
 </html>
